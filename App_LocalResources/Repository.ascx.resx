@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AuthorCopyright.Text" xml:space="preserve">
+    <value>Copyright and All rights retained by the Author</value>
+  </data>
+  <data name="About.Text" xml:space="preserve">
+    <value>About...</value>
+  </data>
+  <data name="AddComment.Text" xml:space="preserve">
+    <value>ADD YOUR COMMENT:</value>
+  </data>
+  <data name="AddContent.Action" xml:space="preserve">
+    <value>Add new Item</value>
+  </data>
+  <data name="AddRating.Text" xml:space="preserve">
+    <value>ADD YOUR RATING:</value>
+  </data>
+  <data name="Author.Text" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="AuthorEMailTooltip.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="by.Text" xml:space="preserve">
+    <value>by</value>
+  </data>
+  <data name="Categories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="ClickNext.Text" xml:space="preserve">
+    <value>Click to view the next page</value>
+  </data>
+  <data name="ClickPrev.Text" xml:space="preserve">
+    <value>Click to view the previous page</value>
+  </data>
+  <data name="ClickToDownload.Text" xml:space="preserve">
+    <value>Click to download</value>
+  </data>
+  <data name="ClickToEdit.Text" xml:space="preserve">
+    <value>Click to edit</value>
+  </data>
+  <data name="ClickToEditComment.Text" xml:space="preserve">
+    <value>Click to edit this comment</value>
+  </data>
+  <data name="ClickToModerate.Text" xml:space="preserve">
+    <value>Click to moderate uploads</value>
+  </data>
+  <data name="ClickToSearch.Text" xml:space="preserve">
+    <value>Click to search</value>
+  </data>
+  <data name="ClickToUpload.Text" xml:space="preserve">
+    <value>Click to upload</value>
+  </data>
+  <data name="ClickToView.Text" xml:space="preserve">
+    <value>Click to view</value>
+  </data>
+  <data name="ClickToViewAddComments.Text" xml:space="preserve">
+    <value>Click to view/add comments</value>
+  </data>
+  <data name="ClickToVisit.Text" xml:space="preserve">
+    <value>Click to visit</value>
+  </data>
+  <data name="Comments.Text" xml:space="preserve">
+    <value>COMMENTS</value>
+  </data>
+  <data name="Date.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DownloadButton.Text" xml:space="preserve">
+    <value>DOWNLOAD</value>
+  </data>
+  <data name="Downloads.Text" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+  <data name="EMail.Text" xml:space="preserve">
+    <value>EMail</value>
+  </data>
+  <data name="File.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="FileSize.Text" xml:space="preserve">
+    <value>File size</value>
+  </data>
+  <data name="FileSync.Text" xml:space="preserve">
+    <value>Synchronize Files...</value>
+  </data>
+  <data name="Hits.Text" xml:space="preserve">
+    <value>Hits</value>
+  </data>
+  <data name="InitialMessage.Text" xml:space="preserve">
+    <value>&lt;b&gt;&lt;font color=red&gt;ADMIN:&lt;/font&gt;&lt;/b&gt; Select Repository Settings from the Module Settings drop down menu to set the Repository Description text as well as set the number of objects to be displayed on each page.&lt;br&gt;</value>
+  </data>
+  <data name="LoadingVideo.Text" xml:space="preserve">
+    <value>Loading Microsoft Windows Media Player components...</value>
+  </data>
+  <data name="ModerateButton.Text" xml:space="preserve">
+    <value>MODERATE</value>
+  </data>
+  <data name="ModuleSettings.Action" xml:space="preserve">
+    <value>Repository Options</value>
+  </data>
+  <data name="NextButton.Text" xml:space="preserve">
+    <value>NEXT &gt;</value>
+  </data>
+  <data name="of.Text" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="on.Text" xml:space="preserve">
+    <value>on</value>
+  </data>
+  <data name="PostCommentButton.Text" xml:space="preserve">
+    <value>POST YOUR COMMENT</value>
+  </data>
+  <data name="PostCommentTooltip.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Posted.Text" xml:space="preserve">
+    <value>Posted @</value>
+  </data>
+  <data name="PostRatingButton.Text" xml:space="preserve">
+    <value>POST YOUR RATING</value>
+  </data>
+  <data name="PostRatingTooltip.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PrevButton.Text" xml:space="preserve">
+    <value>&lt; BACK</value>
+  </data>
+  <data name="Ratings.Text" xml:space="preserve">
+    <value>RATING:&amp;nbsp;</value>
+  </data>
+  <data name="RatingStats1.Text" xml:space="preserve">
+    <value>There have been&amp;nbsp;</value>
+  </data>
+  <data name="RatingStats2.Text" xml:space="preserve">
+    <value>&amp;nbsp;votes cast. The average rating is&amp;nbsp;</value>
+  </data>
+  <data name="RatingTooltip.Text" xml:space="preserve">
+    <value>RATING: {0} VOTES: {1} (Click to Rate)</value>
+  </data>
+  <data name="said.Text" xml:space="preserve">
+    <value>said</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchButton.Text" xml:space="preserve">
+    <value>GO</value>
+  </data>
+  <data name="SelectCategoryTooltip.Text" xml:space="preserve">
+    <value>Select Category</value>
+  </data>
+  <data name="SelectValueTooltip.Text" xml:space="preserve">
+    <value>Select Value</value>
+  </data>
+  <data name="Size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="Sort.Text" xml:space="preserve">
+    <value>Sort by</value>
+  </data>
+  <data name="SortByAuthor.Text" xml:space="preserve">
+    <value>Author Name</value>
+  </data>
+  <data name="SortByDate.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="SortByDownloads.Text" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+  <data name="SortByTitle.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="SortByUserRating.Text" xml:space="preserve">
+    <value>User Rating</value>
+  </data>
+  <data name="Updated.Text" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="UploadButton.Text" xml:space="preserve">
+    <value>UPLOAD</value>
+  </data>
+  <data name="UploadedBy.Text" xml:space="preserve">
+    <value>Uploaded By</value>
+  </data>
+  <data name="UserComments.Text" xml:space="preserve">
+    <value>USER COMMENTS:</value>
+  </data>
+  <data name="UserRating.Text" xml:space="preserve">
+    <value>USER RATING:</value>
+  </data>
+  <data name="VisitButton.Text" xml:space="preserve">
+    <value>VISIT</value>
+  </data>
+  <data name="YourComment.Text" xml:space="preserve">
+    <value>Your Comment</value>
+  </data>
+  <data name="YourName.Text" xml:space="preserve">
+    <value>Your Name</value>
+  </data>
+  <data name="ReadArticle.Text" xml:space="preserve">
+    <value>read article</value>
+  </data>
+  <data name="HideArticle.Text" xml:space="preserve">
+    <value>close article</value>
+  </data>
+  <data name="ALL.Text" xml:space="preserve">
+    <value>ALL</value>
+  </data>
+  <data name="PermaLink.Text" xml:space="preserve">
+    <value>Permalink</value>
+  </data>
+  <data name="CommentTagLine.Text" xml:space="preserve">
+    <value>&lt;div class='repCommentLine1'&gt;on {0}, {1} said&lt;/div&gt;&lt;div class='repCommentLine2'&gt;{2}&lt;/div&gt;</value>
+  </data>
+  <data name="AllFiles.Text" xml:space="preserve">
+    <value>All Items</value>
+  </data>
+  <data name="Pager.Text" xml:space="preserve">
+    <value>Page {0}</value>
+  </data>
+  <data name="RatedTooltip.Text" xml:space="preserve">
+    <value>RATING: {0} VOTES: {1} (You have already posted a Rating for this item)</value>
+  </data>
+  <data name="ShowDetailsButton.Text" xml:space="preserve">
+    <value>MORE INFORMATION...</value>
+  </data>
+  <data name="ShowDetailsToolTip.Text" xml:space="preserve">
+    <value>Click to view details about this item</value>
+  </data>
+  <data name="ShowListButton.Text" xml:space="preserve">
+    <value>Return to List</value>
+  </data>
+  <data name="ShowListToolTip.Text" xml:space="preserve">
+    <value>Click to return to the list of items</value>
+  </data>
+</root>

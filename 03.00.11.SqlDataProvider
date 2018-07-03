@@ -1,0 +1,189 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.00.11            *****/
+/* =====================================================================*/
+
+/* =====================================================================*/
+/* add a Summary field to the grmRepositoryObjects table					*/
+/* =====================================================================*/
+IF (SELECT COLUMNPROPERTY( OBJECT_ID('{databaseOwner}{objectQualifier}grmRepositoryObjects'),'Summary','AllowsNull')) IS NULL 
+alter table {databaseOwner}[{objectQualifier}grmRepositoryObjects] ADD [Summary] NTEXT NULL
+GO
+
+/* =====================================================================*/
+/* Remove and replace all stored procedures				*/
+/* =====================================================================*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmAddRepositoryObject]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmAddRepositoryObject]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmUpdateRepositoryObject]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmUpdateRepositoryObject]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmUpdateRepositoryRating]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmUpdateRepositoryRating]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmAddRepositoryObject
+
+@UserName	nvarchar(150),
+@ModuleID	int,
+@Name		nvarchar(50),
+@Description	ntext,
+@Author	nvarchar(150),
+@AuthorEMail	nvarchar(150),
+@FileSize	nvarchar(12),
+@PreviewImage	nvarchar(150),
+@Image	nvarchar(150),
+@FileName	nvarchar(150),
+@Approved	int,
+@ShowEMail	int,
+@CategoryId	nvarchar(50),
+@Summary	ntext
+
+as
+
+insert into {databaseOwner}{objectQualifier}grmRepositoryObjects (
+  CreatedByUser,
+  CreatedDate,
+  UpdatedByUser,
+  UpdatedDate,
+  ModuleID,
+  [Name],
+  [Description],
+  Author,
+  AuthorEMail,
+  FileSize,
+  Downloads,
+  PreviewImage,
+  [Image],
+  [FileName],
+  Clicks,
+  RatingVotes,
+  RatingTotal,
+  RatingAverage,
+  Approved,
+  ShowEMail,
+  CategoryId,
+  Summary
+)
+values (
+  @UserName,
+  getdate(),
+  @UserName,
+  getdate(),
+  @ModuleID,
+  @Name,
+  @Description,
+  @Author,
+  @AuthorEMail,
+  @FileSize,
+   0,
+  @PreviewImage,
+  @Image,
+  @FileName,
+  0,
+  0,
+  0,
+  0,
+  @Approved,
+  @ShowEMail,
+  @CategoryId,
+  @Summary
+)
+
+select SCOPE_IDENTITY()
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryObject
+
+@ItemID		int,
+@UserName	nvarchar(150),
+@Name		nvarchar(50),
+@Description	ntext,
+@Author		nvarchar(150),
+@AuthorEMail	nvarchar(150),
+@FileSize		nvarchar(12),
+@PreviewImage	nvarchar(150),
+@Image		nvarchar(150),
+@FileName	nvarchar(150),
+@Approved	int,
+@ShowEMail	int,
+@CategoryId	nvarchar(50),
+@Summary	ntext
+
+as
+
+update {databaseOwner}{objectQualifier}grmRepositoryObjects
+set
+  UpdatedByUser = @UserName,
+  UpdatedDate = getdate(),
+  [Name] = @Name,
+  [Description] = @Description,
+  Author = @Author,
+  AuthorEMail = @AuthorEMail,
+  FileSize = @FileSize,
+  PreviewImage = @PreviewImage,
+  [Image] = @Image,
+  [FileName] = @FileName,
+  Approved = @Approved,
+  ShowEMail = @ShowEMail,
+  CategoryId = @CategoryId,
+  Summary = @Summary
+
+where ItemID = @ItemID
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryRating
+
+@ObjectId	int,
+@Rating	int
+
+as
+
+BEGIN
+
+declare @SQL nvarchar(200)
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingVotes = RatingVotes + 1 where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingTotal = RatingTotal + ' + convert(varchar,@Rating) + ' where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingAverage = RatingTotal / RatingVotes where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+END
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

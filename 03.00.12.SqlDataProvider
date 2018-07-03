@@ -1,0 +1,41 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.00.12            *****/
+/* =====================================================================*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmUpdateRepositoryRating]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmUpdateRepositoryRating]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryRating
+
+@ObjectId	int,
+@Rating	int
+
+as
+
+BEGIN
+
+declare @SQL nvarchar(200)
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingVotes = RatingVotes + 1 where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingTotal = RatingTotal + ' + convert(varchar,@Rating) + ' where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingAverage = RatingTotal / RatingVotes where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+END
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

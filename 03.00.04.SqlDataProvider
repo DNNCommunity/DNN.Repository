@@ -1,0 +1,709 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.00.04           *****/
+/* =====================================================================*/
+
+/* =====================================================================*/
+/* Convert all text fields to ntext 					*/
+/* =====================================================================*/
+
+/* =====================================================================*/
+/* grmRepositoryComments table 						*/
+/* =====================================================================*/
+
+alter table {databaseOwner}[{objectQualifier}grmRepositoryComments] ADD [tmpComment] NTEXT NULL
+GO
+update {databaseOwner}[{objectQualifier}grmRepositoryComments] set [tmpComment] = [Comment]
+GO
+alter table {databaseOwner}[{objectQualifier}grmRepositoryComments] DROP COLUMN [Comment]
+alter table {databaseOwner}[{objectQualifier}grmRepositoryComments] ADD [Comment] NTEXT NULL
+GO
+update {databaseOwner}[{objectQualifier}grmRepositoryComments] set [Comment] = [tmpComment]
+GO
+alter table {databaseOwner}[{objectQualifier}grmRepositoryComments] DROP COLUMN [tmpComment]
+
+/* =====================================================================*/
+/* grmRepositoryObjects table 						*/
+/* =====================================================================*/
+
+alter table {databaseOwner}[{objectQualifier}grmRepositoryObjects] ADD [tmpDescription] NTEXT NULL
+GO
+update {databaseOwner}[{objectQualifier}grmRepositoryObjects] set [tmpDescription] = [Description]
+GO
+alter table {databaseOwner}[{objectQualifier}grmRepositoryObjects] DROP COLUMN [Description]
+alter table {databaseOwner}[{objectQualifier}grmRepositoryObjects] ADD [Description] NTEXT NULL
+GO
+update {databaseOwner}[{objectQualifier}grmRepositoryObjects] set [Description] = [tmpDescription]
+GO
+alter table {databaseOwner}[{objectQualifier}grmRepositoryObjects] DROP COLUMN [tmpDescription]
+
+
+/* =====================================================================*/
+/* Remove and replace all stored procedures				*/
+/* =====================================================================*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmAddRepositoryCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmAddRepositoryCategory]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmAddRepositoryComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmAddRepositoryComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmAddRepositoryObject]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmAddRepositoryObject]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmDeleteRepositoryCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmDeleteRepositoryCategory]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmDeleteRepositoryComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmDeleteRepositoryComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmDeleteRepositoryObject]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmDeleteRepositoryObject]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmGetRepositoryCategories]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmGetRepositoryCategories]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmGetRepositoryComments]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmGetRepositoryComments]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmGetRepositoryModules]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmGetRepositoryModules]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmGetRepositoryObjects]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmGetRepositoryObjects]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmGetSingleRepositoryCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmGetSingleRepositoryCategory]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmGetSingleRepositoryComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmGetSingleRepositoryComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmGetSingleRepositoryObject]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmGetSingleRepositoryObject]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmUpdateRepositoryCategory]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmUpdateRepositoryCategory]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmUpdateRepositoryClicks]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmUpdateRepositoryClicks]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmUpdateRepositoryComment]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmUpdateRepositoryComment]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmUpdateRepositoryObject]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmUpdateRepositoryObject]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}grmUpdateRepositoryRating]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}grmUpdateRepositoryRating]
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+/* =====================================================================*/
+/* Create the stored procedures						*/
+/* =====================================================================*/
+
+CREATE procedure {databaseOwner}{objectQualifier}grmAddRepositoryCategory
+
+@ModuleID int,
+@CategoryName nvarchar(100),
+@ViewOrder int
+
+as
+
+insert into {databaseOwner}{objectQualifier}grmRepositoryCategories (
+  ModuleID,
+  Category,
+  ViewOrder
+)
+values (
+  @ModuleID,
+  @CategoryName,
+  @ViewOrder
+)
+
+select SCOPE_IDENTITY()
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmAddRepositoryComment
+
+@ObjectID int,
+@UserName nvarchar(100),
+@Comment ntext
+
+as
+
+insert into {databaseOwner}{objectQualifier}grmRepositoryComments (
+  ObjectID,
+  CreatedByUser,
+  CreatedDate,
+  Comment
+)
+values (
+  @ObjectID,
+  @UserName,
+  getdate(),
+  @Comment
+)
+
+select SCOPE_IDENTITY()
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmAddRepositoryObject
+
+@UserName	nvarchar(150),
+@ModuleID	int,
+@Name		nvarchar(50),
+@Description	ntext,
+@Author	nvarchar(150),
+@AuthorEMail	nvarchar(150),
+@FileSize	nvarchar(12),
+@PreviewImage	nvarchar(150),
+@Image	nvarchar(150),
+@FileName	nvarchar(150),
+@Approved	int,
+@ShowEMail	int,
+@CategoryId	nvarchar(50)
+
+as
+
+insert into {databaseOwner}{objectQualifier}grmRepositoryObjects (
+  CreatedByUser,
+  CreatedDate,
+  UpdatedByUser,
+  UpdatedDate,
+  ModuleID,
+  [Name],
+  [Description],
+  Author,
+  AuthorEMail,
+  FileSize,
+  Downloads,
+  PreviewImage,
+  [Image],
+  [FileName],
+  Clicks,
+  RatingVotes,
+  RatingTotal,
+  RatingAverage,
+  Approved,
+  ShowEMail,
+  CategoryId
+)
+values (
+  @UserName,
+  getdate(),
+  @UserName,
+  getdate(),
+  @ModuleID,
+  @Name,
+  @Description,
+  @Author,
+  @AuthorEMail,
+  @FileSize,
+   0,
+  @PreviewImage,
+  @Image,
+  @FileName,
+  0,
+  0,
+  0,
+  0,
+  @Approved,
+  @ShowEMail,
+  @CategoryId
+)
+
+select SCOPE_IDENTITY()
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmDeleteRepositoryCategory
+
+@ItemID int
+
+as
+
+delete
+from   {databaseOwner}{objectQualifier}grmRepositoryCategories
+where  ItemID = @ItemID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmDeleteRepositoryComment
+
+@ItemID int
+
+as
+
+delete
+from   {databaseOwner}{objectQualifier}grmRepositoryComments
+where  ItemID = @ItemID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmDeleteRepositoryObject
+
+@ItemID int
+
+as
+
+BEGIN 
+
+delete
+from {databaseOwner}{objectQualifier}grmRepositoryComments
+where ObjectID = @ItemID
+
+delete
+from   {databaseOwner}{objectQualifier}grmRepositoryObjects
+where  ItemID = @ItemID
+
+END
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmGetRepositoryCategories
+
+@ModuleID int
+
+as
+
+select 
+    *, 
+    (select count(ItemId) 
+    from {databaseOwner}{objectQualifier}grmRepositoryObjects 
+    where CHARINDEX(CONVERT(varchar, {databaseOwner}{objectQualifier}grmRepositoryCategories.ItemID), {databaseOwner}{objectQualifier}grmRepositoryObjects.CategoryId)>0) as Count
+
+from 
+    {databaseOwner}{objectQualifier}grmRepositoryCategories
+
+where
+    ModuleID = @ModuleID
+
+ORDER BY ViewOrder
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmGetRepositoryComments
+
+@ItemID int
+
+as
+
+select *
+from {databaseOwner}{objectQualifier}grmRepositoryComments
+where  ObjectID = @ItemID
+order by CreatedDate desc
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmGetRepositoryModules
+
+@PortalId int
+
+as
+
+SELECT    
+    {databaseOwner}{objectQualifier}TabModules.TabID AS TabID, 
+    {databaseOwner}{objectQualifier}Modules.*, 
+    {databaseOwner}{objectQualifier}Modules.PortalID AS PortalID
+FROM         
+    {databaseOwner}{objectQualifier}ModuleDefinitions INNER JOIN
+    {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}ModuleDefinitions.ModuleDefID = {databaseOwner}{objectQualifier}Modules.ModuleDefID INNER JOIN
+    {databaseOwner}{objectQualifier}TabModules ON {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}TabModules.ModuleID
+WHERE     
+    ({databaseOwner}{objectQualifier}ModuleDefinitions.FriendlyName = N'Repository') AND ({databaseOwner}{objectQualifier}Modules.PortalID = @PortalId)
+    and {databaseOwner}{objectQualifier}Modules.IsDeleted=0
+
+order by 
+    TabId
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmGetRepositoryObjects
+
+@ModuleID 	int,
+@sFilter	nvarchar(256),
+@sSort		nvarchar(100),
+@Approved	int,
+@CategoryId	int,
+@RowCount	int
+
+AS
+
+BEGIN
+IF @RowCount > 0
+    SET ROWCOUNT @RowCount
+END
+
+SELECT *, (SELECT COUNT({databaseOwner}{objectQualifier}grmRepositoryComments.ItemID) FROM {databaseOwner}{objectQualifier}grmRepositoryComments 
+WHERE {databaseOwner}{objectQualifier}grmRepositoryComments.ObjectID={databaseOwner}{objectQualifier}grmRepositoryObjects.ItemID) AS CommentCount 
+
+FROM {databaseOwner}{objectQualifier}grmRepositoryObjects 
+
+WHERE ModuleID = @ModuleID
+AND Approved = @Approved
+AND (@CategoryId = -1 OR CHARINDEX(CONVERT(varchar, @CategoryId),CategoryId)>0)
+AND
+(
+    @sFilter = '' 
+    OR UPPER(Name) LIKE UPPER('%' + @sFilter + '%') 
+    OR UPPER(Author) LIKE UPPER('%' + @sFilter + '%') 
+    OR UPPER(AuthorEMail) LIKE UPPER('%' + @sFilter + '%') 
+    OR Description LIKE '%' + @sFilter + '%' 
+)
+
+ORDER BY
+
+CASE @sSort
+    WHEN 'Name' THEN Name
+    WHEN 'Author' THEN Author
+END ASC,
+
+CASE @sSort
+    WHEN 'Downloads' THEN Downloads
+    WHEN 'RatingAverage' THEN RatingAverage
+END DESC,
+
+CASE @sSort
+    WHEN 'UpdatedDate' THEN UpdatedDate
+END DESC
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmGetSingleRepositoryCategory
+
+@ItemID int
+
+as
+
+select *
+from {databaseOwner}{objectQualifier}grmRepositoryCategories
+where  ItemID = @ItemID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmGetSingleRepositoryComment
+
+@ItemID int
+
+as
+
+select *
+from {databaseOwner}{objectQualifier}grmRepositoryComments
+where  ItemID = @ItemID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmGetSingleRepositoryObject
+
+@ItemID int
+
+as
+
+select *
+from {databaseOwner}{objectQualifier}grmRepositoryObjects
+where  ItemID = @ItemID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryCategory
+
+@ItemID		int,
+@CategoryName	nvarchar(100),
+@ViewOrder		int
+as
+
+update {databaseOwner}{objectQualifier}grmRepositoryCategories
+set
+  Category = @CategoryName,
+  ViewOrder = @ViewOrder
+
+where ItemID = @ItemID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryClicks
+
+@ObjectId    int
+
+as
+
+declare @SQL nvarchar(200)
+
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set Downloads = Downloads + 1 where ItemID = ' + convert(varchar,@ObjectId)
+
+EXEC sp_executesql @SQL
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryComment
+
+@ItemID		int,
+@Username    nvarchar(100),
+@Comment   ntext
+as
+
+update {databaseOwner}{objectQualifier}grmRepositoryComments
+set
+  CreatedDate = getdate(),
+  CreatedByUser = @Username,
+  Comment = @Comment
+
+where ItemID = @ItemID
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryObject
+
+@ItemID		int,
+@UserName	nvarchar(150),
+@Name		nvarchar(50),
+@Description	ntext,
+@Author		nvarchar(150),
+@AuthorEMail	nvarchar(150),
+@FileSize	nvarchar(12),
+@PreviewImage	nvarchar(150),
+@Image		nvarchar(150),
+@FileName	nvarchar(150),
+@Approved       int,
+@ShowEMail	int,
+@CategoryId	nvarchar(50)
+
+as
+
+update {databaseOwner}{objectQualifier}grmRepositoryObjects
+set
+  UpdatedByUser = @UserName,
+  UpdatedDate = getdate(),
+  [Name] = @Name,
+  [Description] = @Description,
+  Author = @Author,
+  AuthorEMail = @AuthorEMail,
+  FileSize = @FileSize,
+  PreviewImage = @PreviewImage,
+  [Image] = @Image,
+  [FileName] = @FileName,
+  Approved = @Approved,
+  ShowEMail = @ShowEMail,
+  CategoryId = @CategoryId
+
+where ItemID = @ItemID
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryRating
+
+@ObjectId	int,
+@Rating	int
+
+as
+
+BEGIN
+
+declare @SQL nvarchar(200)
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingVotes = RatingVotes + 1 where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingTotal = RatingTotal + ' + convert(varchar,@Rating) + ' where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+select @SQL = 'update {databaseOwner}{objectQualifier}grmRepositoryObjects set RatingAverage = RatingTotal / RatingVotes where ItemID = ' + convert(varchar,@ObjectId)
+EXEC sp_executesql @SQL
+
+END
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

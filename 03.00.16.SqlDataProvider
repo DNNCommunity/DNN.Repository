@@ -1,0 +1,41 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.00.16            *****/
+/* =====================================================================*/
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET FriendlyName='Gooddogs Repository' WHERE FriendlyName='Repository'
+GO
+
+UPDATE {databaseOwner}{objectQualifier}ModuleDefinitions SET FriendlyName='Gooddogs Repository' WHERE FriendlyName='Repository'
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}grmGetRepositoryModules') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}grmGetRepositoryModules
+GO
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}grmGetRepositoryModules
+@PortalId int
+as
+SELECT    
+    {databaseOwner}{objectQualifier}TabModules.TabID AS TabID, 
+    {databaseOwner}{objectQualifier}Modules.*, 
+    {databaseOwner}{objectQualifier}Modules.PortalID AS PortalID
+FROM         
+    {databaseOwner}{objectQualifier}ModuleDefinitions INNER JOIN
+    {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}ModuleDefinitions.ModuleDefID = {databaseOwner}{objectQualifier}Modules.ModuleDefID INNER JOIN
+    {databaseOwner}{objectQualifier}TabModules ON {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}TabModules.ModuleID
+WHERE     
+    ({databaseOwner}{objectQualifier}ModuleDefinitions.FriendlyName = N'Gooddogs Repository') AND ({databaseOwner}{objectQualifier}Modules.PortalID = @PortalId)
+    and {databaseOwner}{objectQualifier}Modules.IsDeleted=0
+order by 
+    TabId
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

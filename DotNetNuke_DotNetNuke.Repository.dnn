@@ -1,0 +1,444 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+	  <package name="DotNetNuke.Repository" type="Module" version="03.05.04">
+  <friendlyName>Repository</friendlyName>
+  <description>A file/object repository module that includes skinning and community features like comments and user ratings.</description>
+  <vendor>
+    <name>DotNetNuke</name>
+    <organization>DotNetNuke Corporation</organization>
+    <url>www.dotnetnuke.com</url>
+    <email>support@dotnetnuke.com</email>
+  </vendor>
+  <license>DotNetNuke� - http://www.dotnetnuke.com&lt;br/&gt;
+Copyright (c) 2002-2011&lt;br/&gt;
+by DotNetNuke Corporation
+&lt;br/&gt;&lt;br/&gt;
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+&lt;br/&gt;&lt;br/&gt;
+The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+of the Software.
+&lt;br/&gt;&lt;br/&gt;
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.</license>
+  <releaseNotes>There are no release notes for this version.</releaseNotes>
+  <dependencies>
+    <dependency type="CoreVersion">05.03.01</dependency>
+  </dependencies>
+  <components>
+    <component type="ResourceFile">
+      <resourceFiles>
+        <basePath>DesktopModules\Repository</basePath>
+        <resourceFile>
+          <name>Resources.zip</name>
+          <sourceFileName>Resources.zip</sourceFileName>
+        </resourceFile>
+      </resourceFiles>
+    </component>
+    <component type="Assembly">
+      <assemblies>
+		<basePath>bin</basePath>
+        <assembly>
+          <name>DotNetNuke.Modules.Repository.dll</name>
+          <version>03.05.04</version>
+        </assembly>
+        <assembly>
+          <name>DotNetNuke.Modules.Repository.SqlDataProvider.dll</name>
+          <version>03.05.04</version>
+        </assembly>
+      </assemblies>
+    </component>
+    <component type="File">
+      <files>
+        <basePath>DesktopModules\Repository</basePath>
+        <file>
+          <path>App_LocalResources</path>
+          <name>About.ascx.resx</name>
+        </file>
+        <file>
+          <path>App_LocalResources</path>
+          <name>Form.ascx.resx</name>
+        </file>
+        <file>
+          <path>App_LocalResources</path>
+          <name>ModerateUploads.ascx.resx</name>
+        </file>
+        <file>
+          <path>App_LocalResources</path>
+          <name>Repository.ascx.resx</name>
+        </file>
+        <file>
+          <path>App_LocalResources</path>
+          <name>Settings.ascx.resx</name>
+        </file>
+        <file>
+          <name>About.ascx</name>
+        </file>
+        <file>
+          <name>EditComment.ascx</name>
+        </file>
+        <file>
+          <name>Form.ascx</name>
+        </file>
+        <file>
+          <name>MakeThumbnail.aspx</name>
+        </file>
+        <file>
+          <name>ModerateUploads.ascx</name>
+        </file>
+        <file>
+          <name>module.css</name>
+        </file>
+        <file>
+          <name>Repository.ascx</name>
+        </file>
+        <file>
+          <name>Settings.ascx</name>
+        </file>
+        <file>
+          <name>icon_repository_32px.gif</name>
+        </file>
+        <file>
+          <name>03.05.04.txt</name>
+        </file>
+      </files>
+    </component>
+    <component type="File">
+      <files>
+        <basePath>DesktopModules\Dashboard</basePath>
+        <file>
+          <name>DashboardSettings.ascx</name>
+        </file>
+        <file>
+          <name>RepositoryDashboard.ascx</name>
+        </file>
+        <file>
+          <name>icon_repository_32px.gif</name>
+        </file>
+        <file>
+          <path>App_LocalResources</path>
+          <name>RepositoryDashboard.ascx.resx</name>
+        </file>
+        <file>
+          <path>App_LocalResources</path>
+          <name>DashboardSettings.ascx.resx</name>
+        </file>
+      </files>
+    </component>
+    <component type="Script">
+      <scripts>
+        <basePath>DesktopModules\Repository</basePath>
+        <script type="Install">
+          <name>03.00.00.sqldataprovider</name>
+          <version>03.00.00</version>
+        </script>
+        <script type="Install">
+          <name>03.00.01.sqldataprovider</name>
+          <version>03.00.01</version>
+        </script>
+        <script type="Install">
+          <name>03.00.02.sqldataprovider</name>
+          <version>03.00.02</version>
+        </script>
+        <script type="Install">
+          <name>03.00.03.sqldataprovider</name>
+          <version>03.00.03</version>
+        </script>
+        <script type="Install">
+          <name>03.00.04.sqldataprovider</name>
+          <version>03.00.04</version>
+        </script>
+        <script type="Install">
+          <name>03.00.05.sqldataprovider</name>
+          <version>03.00.05</version>
+        </script>
+        <script type="Install">
+          <name>03.00.06.sqldataprovider</name>
+          <version>03.00.06</version>
+        </script>
+        <script type="Install">
+          <name>03.00.07.sqldataprovider</name>
+          <version>03.00.07</version>
+        </script>
+        <script type="Install">
+          <name>03.00.08.sqldataprovider</name>
+          <version>03.00.08</version>
+        </script>
+        <script type="Install">
+          <name>03.00.09.sqldataprovider</name>
+          <version>03.00.09</version>
+        </script>
+        <script type="Install">
+          <name>03.00.10.sqldataprovider</name>
+          <version>03.00.10</version>
+        </script>
+        <script type="Install">
+          <name>03.00.11.sqldataprovider</name>
+          <version>03.00.11</version>
+        </script>
+        <script type="Install">
+          <name>03.00.12.sqldataprovider</name>
+          <version>03.00.12</version>
+        </script>
+        <script type="Install">
+          <name>03.00.13.sqldataprovider</name>
+          <version>03.00.13</version>
+        </script>
+        <script type="Install">
+          <name>03.00.14.sqldataprovider</name>
+          <version>03.00.14</version>
+        </script>
+        <script type="Install">
+          <name>03.00.15.sqldataprovider</name>
+          <version>03.00.15</version>
+        </script>
+        <script type="Install">
+          <name>03.00.16.sqldataprovider</name>
+          <version>03.00.16</version>
+        </script>
+        <script type="Install">
+          <name>03.01.00.sqldataprovider</name>
+          <version>03.01.00</version>
+        </script>
+        <script type="Install">
+          <name>03.01.01.sqldataprovider</name>
+          <version>03.01.01</version>
+        </script>
+        <script type="Install">
+          <name>03.01.02.sqldataprovider</name>
+          <version>03.01.02</version>
+        </script>
+        <script type="Install">
+          <name>03.01.03.sqldataprovider</name>
+          <version>03.01.03</version>
+        </script>
+        <script type="Install">
+          <name>03.01.04.sqldataprovider</name>
+          <version>03.01.04</version>
+        </script>
+        <script type="Install">
+          <name>03.01.05.sqldataprovider</name>
+          <version>03.01.05</version>
+        </script>
+        <script type="Install">
+          <name>03.01.06.sqldataprovider</name>
+          <version>03.01.06</version>
+        </script>
+        <script type="Install">
+          <name>03.01.07.sqldataprovider</name>
+          <version>03.01.07</version>
+        </script>
+        <script type="Install">
+          <name>03.01.08.sqldataprovider</name>
+          <version>03.01.08</version>
+        </script>
+        <script type="Install">
+          <name>03.01.09.sqldataprovider</name>
+          <version>03.01.09</version>
+        </script>
+        <script type="Install">
+          <name>03.01.10.sqldataprovider</name>
+          <version>03.01.10</version>
+        </script>
+        <script type="Install">
+          <name>03.01.11.sqldataprovider</name>
+          <version>03.01.11</version>
+        </script>
+        <script type="Install">
+          <name>03.01.12.sqldataprovider</name>
+          <version>03.01.12</version>
+        </script>
+        <script type="Install">
+          <name>03.01.13.sqldataprovider</name>
+          <version>03.01.13</version>
+        </script>
+        <script type="Install">
+          <name>03.01.14.sqldataprovider</name>
+          <version>03.01.14</version>
+        </script>
+        <script type="Install">
+          <name>03.01.15.sqldataprovider</name>
+          <version>03.01.15</version>
+        </script>
+        <script type="Install">
+          <name>03.01.16.sqldataprovider</name>
+          <version>03.01.16</version>
+        </script>
+        <script type="Install">
+          <name>03.01.17.sqldataprovider</name>
+          <version>03.01.17</version>
+        </script>
+        <script type="Install">
+          <name>03.05.00.sqldataprovider</name>
+          <version>03.05.00</version>
+        </script>
+		<script type="Install">
+		  <name>03.05.01.sqldataprovider</name>
+		  <version>03.05.01</version>
+		</script>
+		<script type="Install">
+			<name>03.05.02.sqldataprovider</name>
+			<version>03.05.02</version>
+		</script>
+		<script type="Install">
+			<name>03.05.03.sqldataprovider</name>
+			<version>03.05.03</version>
+		</script>
+		<script type="Install">
+			<name>03.05.04.sqldataprovider</name>
+			<version>03.05.04</version>
+		</script>
+		<script type="UnInstall">
+			<name>Uninstall.SqlDataProvider</name>
+			<version>03.05.04</version>
+		</script>
+      </scripts>
+    </component>
+    <component type="Module">
+      <desktopModule>
+        <moduleName>Repository</moduleName>
+        <foldername>Repository</foldername>
+        <businessControllerClass>DotNetNuke.Modules.Repository.RepositoryController, DotNetNuke.Modules.Repository</businessControllerClass>
+        <supportedFeatures>
+          <supportedFeature type="Portable" />
+          <supportedFeature type="Searchable" />
+          <supportedFeature type="Upgradeable" />
+        </supportedFeatures>
+        <moduleDefinitions>
+          <moduleDefinition>
+            <friendlyName>Repository</friendlyName>
+            <defaultCacheTime>0</defaultCacheTime>
+            <moduleControls>
+              <moduleControl>
+                <controlKey />
+                <controlSrc>DesktopModules/Repository/Repository.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle />
+                <controlType>View</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>0</viewOrder>
+              </moduleControl>
+              <moduleControl>
+                <controlKey>About</controlKey>
+                <controlSrc>DesktopModules/Repository/About.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle>About the Repository</controlTitle>
+                <controlType>View</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>1</viewOrder>
+              </moduleControl>
+              <moduleControl>
+                <controlKey>Edit</controlKey>
+                <controlSrc>DesktopModules/Repository/Form.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle>Edit Item</controlTitle>
+                <controlType>View</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>2</viewOrder>
+              </moduleControl>
+              <moduleControl>
+                <controlKey>EditComment</controlKey>
+                <controlSrc>DesktopModules/Repository/EditComment.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle>Edit Comment</controlTitle>
+                <controlType>Admin</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>3</viewOrder>
+              </moduleControl>
+              <moduleControl>
+                <controlKey>Moderate</controlKey>
+                <controlSrc>DesktopModules/Repository/ModerateUploads.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle>Moderate Uploads</controlTitle>
+                <controlType>View</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>4</viewOrder>
+              </moduleControl>
+              <moduleControl>
+                <controlKey>Settings</controlKey>
+                <controlSrc>DesktopModules/Repository/Settings.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle>Repository Settings</controlTitle>
+                <controlType>Admin</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>5</viewOrder>
+              </moduleControl>
+              <moduleControl>
+                <controlKey>UserUpload</controlKey>
+                <controlSrc>DesktopModules/Repository/Form.ascx</controlSrc>
+                <supportsPartialRendering>False</supportsPartialRendering>
+                <controlTitle>Add New Item</controlTitle>
+                <controlType>View</controlType>
+                <iconFile />
+                <helpUrl />
+                <viewOrder>6</viewOrder>
+              </moduleControl>
+            </moduleControls>
+          </moduleDefinition>
+        </moduleDefinitions>
+      </desktopModule>
+    </component>
+  </components>
+</package>
+
+<package name="DotNetNuke.Repository.Dashboard" type="Module" version="03.05.04">
+  <friendlyName>Repository Dashboard</friendlyName>
+  <description></description>
+  <vendor></vendor>
+  <license></license>
+  <releaseNotes></releaseNotes>
+  <dependencies>
+	  <dependency type="CoreVersion">05.03.01</dependency>
+  </dependencies>
+  <components>
+	  <component type="Module">
+		  <desktopModule>
+			  <moduleName>Repository Dashboard</moduleName>
+			  <foldername>Dashboard</foldername>
+			  <moduleDefinitions>
+				  <moduleDefinition>
+					  <friendlyName>Repository Dashboard</friendlyName>
+					  <defaultCacheTime>0</defaultCacheTime>
+					  <moduleControls>
+						  <moduleControl>
+							  <controlKey />
+							  <controlSrc>DesktopModules/Dashboard/RepositoryDashboard.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle />
+							  <controlType>View</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <viewOrder>0</viewOrder>
+						  </moduleControl>
+						  <moduleControl>
+							  <controlKey>Settings</controlKey>
+							  <controlSrc>DesktopModules/Dashboard/DashboardSettings.ascx</controlSrc>
+							  <supportsPartialRendering>False</supportsPartialRendering>
+							  <controlTitle />
+							  <controlType>Admin</controlType>
+							  <iconFile />
+							  <helpUrl />
+							  <viewOrder>1</viewOrder>
+						  </moduleControl>
+					  </moduleControls>
+				  </moduleDefinition>
+			  </moduleDefinitions>
+		  </desktopModule>
+	  </component>
+  </components>
+
+</package>
+
+</packages>
+</dotnetnuke>

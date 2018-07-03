@@ -1,0 +1,52 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.05.05                 *****/
+/* =====================================================================*/
+
+/* grmRepositoryCategories */
+if exists (select * from dbo.sysindexes
+where name = 'IX_{objectQualifier}grmRepositoryCategories')
+DROP INDEX {databaseOwner}[{objectQualifier}grmRepositoryCategories].[IX_{objectQualifier}grmRepositoryCategories]
+
+
+CREATE INDEX [IX_{objectQualifier}grmRepositoryCategories]
+ON {databaseOwner}[{objectQualifier}grmRepositoryCategories]([ModuleID])
+
+
+/* grmRepositoryCategories_1 */
+if exists (select * from dbo.sysindexes
+where name = 'IX_{objectQualifier}grmRepositoryCategories_1')
+DROP INDEX {databaseOwner}[{objectQualifier}grmRepositoryCategories].[IX_{objectQualifier}grmRepositoryCategories_1]
+
+
+CREATE INDEX [IX_{objectQualifier}grmRepositoryCategories_1]
+ON {databaseOwner}[{objectQualifier}grmRepositoryCategories]([Parent])
+
+
+/* grmRepositoryObjectCategories */
+if exists (select * from dbo.sysindexes
+where name = 'IX_{objectQualifier}grmRepositoryObjectCategories')
+DROP INDEX {databaseOwner}[{objectQualifier}grmRepositoryObjectCategories].[IX_{objectQualifier}grmRepositoryObjectCategories]
+
+
+CREATE INDEX [IX_{objectQualifier}grmRepositoryObjectCategories]
+ON {databaseOwner}[{objectQualifier}grmRepositoryObjectCategories]([CategoryID])
+
+
+/* grmRepositoryCategories_1 */
+if exists (select * from dbo.sysindexes
+where name = 'IX_{objectQualifier}grmRepositoryObjectCategories_1')
+DROP INDEX {databaseOwner}[{objectQualifier}grmRepositoryObjectCategories].[IX_{objectQualifier}grmRepositoryObjectCategories_1]
+
+
+CREATE INDEX [IX_{objectQualifier}grmRepositoryObjectCategories_1]
+ON {databaseOwner}[{objectQualifier}grmRepositoryObjectCategories]([ObjectID])
+
+
+/* grmRepositoryObjects_1 */
+if exists (select * from dbo.sysindexes
+where name = 'IX_{objectQualifier}grmRepositoryObjects_1')
+DROP INDEX {databaseOwner}[{objectQualifier}grmRepositoryObjects].[IX_{objectQualifier}grmRepositoryObjects_1]
+
+
+CREATE INDEX [IX_{objectQualifier}grmRepositoryObjects_1]
+ON {databaseOwner}[{objectQualifier}grmRepositoryObjects]([Approved])

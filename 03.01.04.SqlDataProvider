@@ -1,0 +1,85 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.01.04        *****/
+/* =====================================================================*/
+
+/* convert the Category and Attribute data from the grmRepositoryObjects where it is */
+/* stored in columns as delimited strings to the new schema */
+
+/* if the CategoryId column exists, we need to upgrade */
+
+IF NOT (SELECT COLUMNPROPERTY( OBJECT_ID('{databaseOwner}{objectQualifier}grmRepositoryObjects'),'CategoryId','AllowsNull')) IS NULL 
+BEGIN
+
+DECLARE 
+@ItemID int,
+@CategoryId nvarchar(50),
+@Attributes nvarchar(150),
+@lcListWork varchar(150), 
+@tcDelimiter nvarchar(1),
+@lnCommaPos int, 
+@lcItem varchar(150)
+
+DECLARE myCursor CURSOR FOR
+SELECT ItemID, CategoryId, Attributes from {databaseOwner}{objectQualifier}grmRepositoryObjects
+OPEN myCursor
+
+FETCH NEXT FROM myCursor INTO @ItemID, @CategoryId, @Attributes
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+    DELETE FROM {databaseOwner}{objectQualifier}grmRepositoryObjectCategories WHERE ObjectID = @ItemID
+    DELETE FROM {databaseOwner}{objectQualifier}grmRepositoryObjectValues WHERE ObjectID = @ItemID
+    
+    SET @lcListWork = @CategoryId
+    SET @tcDelimiter = ';'
+    WHILE LEN(@lcListWork) > 0
+	BEGIN
+	    SET @lnCommaPos = CHARINDEX(@tcDelimiter, @lcListWork)
+	    IF @lnCommaPos > 0
+		BEGIN
+  		    SET @lcItem = SUBSTRING(@lcListWork, 1, @lnCommaPos - 1)
+		    SET @lcListWork = SUBSTRING(@lcListWork, @lnCommaPos + 1, LEN(@lcListWork) - @lnCommaPos)
+		END
+	    ELSE
+		BEGIN
+		    SET @lcItem = @lcListWork
+    		    SET @lcListWork = ''
+		END
+	    IF @lcItem <> '' 
+		INSERT INTO {databaseOwner}{objectQualifier}grmRepositoryObjectCategories (ObjectID, CategoryId) VALUES (@ItemID, @lcItem)
+	END
+
+    SET @lcListWork = @Attributes
+    SET @tcDelimiter = ';'
+    WHILE LEN(@lcListWork) > 0
+	BEGIN
+	    SET @lnCommaPos = CHARINDEX(@tcDelimiter, @lcListWork)
+	    IF @lnCommaPos > 0
+		BEGIN
+  		    SET @lcItem = SUBSTRING(@lcListWork, 1, @lnCommaPos - 1)
+		    SET @lcListWork = SUBSTRING(@lcListWork, @lnCommaPos + 1, LEN(@lcListWork) - @lnCommaPos)
+		END
+	    ELSE
+		BEGIN
+		    SET @lcItem = @lcListWork
+    		    SET @lcListWork = ''
+		END
+	    IF @lcItem <> '' 
+		INSERT INTO {databaseOwner}{objectQualifier}grmRepositoryObjectValues (ObjectID, ValueId) VALUES (@ItemID, @lcItem)
+	END
+
+    FETCH NEXT FROM myCursor INTO @ItemID, @CategoryId, @Attributes
+
+END
+CLOSE myCursor
+DEALLOCATE myCursor
+
+END
+
+IF NOT (SELECT COLUMNPROPERTY( OBJECT_ID('{databaseOwner}{objectQualifier}grmRepositoryObjects'),'CategoryId','AllowsNull')) IS NULL 
+ALTER TABLE {databaseOwner}{objectQualifier}grmRepositoryObjects DROP COLUMN CategoryId
+GO
+
+IF NOT (SELECT COLUMNPROPERTY( OBJECT_ID('{databaseOwner}{objectQualifier}grmRepositoryObjects'),'Attributes','AllowsNull')) IS NULL 
+ALTER TABLE {databaseOwner}{objectQualifier}grmRepositoryObjects DROP COLUMN Attributes
+GO

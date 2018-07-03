@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Repository Settings</value>
+  </data>
+  <data name="plDescription.Text" xml:space="preserve">
+    <value>Repository Description</value>
+  </data>
+  <data name="plDescription.Help" xml:space="preserve">
+    <value>Enter a description for your repository. This text will appear at the top of the repository on your page</value>
+  </data>
+  <data name="plCategory.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="plCategory.Help" xml:space="preserve">
+    <value>Enter the Categories for this repository. To add a new Category, enter the name of the category and click on the Add Category link. To edit a Category, select it and click on the pencil icon. Use the X and arrow icons to delete and change the order of your categories.</value>
+  </data>
+  <data name="plPageSize.Text" xml:space="preserve">
+    <value>Enter the number of Items Per Page</value>
+  </data>
+  <data name="plRSSFeed.Text" xml:space="preserve">
+    <value>Enable RSS Feed</value>
+  </data>
+  <data name="plSecurityRoles.Text" xml:space="preserve">
+    <value>Security Roles</value>
+  </data>
+  <data name="plSkin.Text" xml:space="preserve">
+    <value>Repository Skin</value>
+  </data>
+  <data name="plRatingImage.Text" xml:space="preserve">
+    <value>Image set to use for Ratings</value>
+  </data>
+  <data name="plFolders.Text" xml:space="preserve">
+    <value>Specify the folders to store the Repository files</value>
+  </data>
+  <data name="plNoImage.Text" xml:space="preserve">
+    <value>No Image</value>
+  </data>
+  <data name="plPageSize.Help" xml:space="preserve">
+    <value>Enter the number of files that will display on a page. The default value is 5
+</value>
+  </data>
+  <data name="plRSSFeed.Help" xml:space="preserve">
+    <value>Check this option if you would like to make an RSS feed of the files in your repository available to other web sites. You can turn this on or off at any time</value>
+  </data>
+  <data name="plSecurityRoles.Help" xml:space="preserve">
+    <value>Check the security roles that you would like to assign to each repository function</value>
+  </data>
+  <data name="plSkin.Help" xml:space="preserve">
+    <value>Select the skin to use for your repository
+</value>
+  </data>
+  <data name="plRatingImage.Help" xml:space="preserve">
+    <value>Select the image set to use for the Ratings feature of the repository</value>
+  </data>
+  <data name="plNoImage.Help" xml:space="preserve">
+    <value>If there is no image uploaded for an item, select the image to use</value>
+  </data>
+  <data name="plApprovedFolder.Text" xml:space="preserve">
+    <value>Folder for Approved Files</value>
+  </data>
+  <data name="plUnapprovedFolder.Text" xml:space="preserve">
+    <value>Folder for Unapproved Files</value>
+  </data>
+  <data name="plAnonymousFolder.Text" xml:space="preserve">
+    <value>Folder for Anonymous Files</value>
+  </data>
+  <data name="plApprovedFolder.Help" xml:space="preserve">
+    <value>Enter the full path to the location where the Repository folder will be located. For example: C:\Inetpub\WWWRoot\DNN20\Portals\0\Repository</value>
+  </data>
+  <data name="plUnapprovedFolder.Help" xml:space="preserve">
+    <value>Enter the full path to the location where the Pending folder will be located. For example: C:\Inetpub\WWWRoot\DNN20\Portals\0\Repository\Pending</value>
+  </data>
+  <data name="plAnonymousFolder.Help" xml:space="preserve">
+    <value>Enter the full path to the location where files uploaded by Anonymous Users will be located. For example: C:\Inetpub\WWWRoot\DNN20\Portals\0\Repository\Anonymous</value>
+  </data>
+  <data name="plUploadFields.Text" xml:space="preserve">
+    <value>Upload fields</value>
+  </data>
+  <data name="plUploadFields.Help" xml:space="preserve">
+    <value>Select whether this repository allows uploading Files only, Images only, or Files with Images</value>
+  </data>
+  <data name="plUserFolders.Text" xml:space="preserve">
+    <value>Do you wish to store each user's files in their own folder?</value>
+  </data>
+  <data name="plUserFolders.Help" xml:space="preserve">
+    <value>If checked, each user's uploaded will be stored in their own folder with the Approved Files folder. If NOT checked, then all user uploads will be stored directly in the Approved Files folder.</value>
+  </data>
+  <data name="plDefaultSort.Text" xml:space="preserve">
+    <value>Default Sort</value>
+  </data>
+  <data name="plDefaultSort.Help" xml:space="preserve">
+    <value>Select the default sort order</value>
+  </data>
+  <data name="plViewComments.Text" xml:space="preserve">
+    <value>View User Comments</value>
+  </data>
+  <data name="plViewComments.Help" xml:space="preserve">
+    <value>Select whether only users who can post comments can see them, or can everyone see comments</value>
+  </data>
+  <data name="plViewRatings.Text" xml:space="preserve">
+    <value>View User Ratings</value>
+  </data>
+  <data name="plViewRatings.Help" xml:space="preserve">
+    <value>Select whether only users who can post ratings can see them, or can everyone see ratings</value>
+  </data>
+  <data name="plAttribute.Text" xml:space="preserve">
+    <value>Attributes</value>
+  </data>
+  <data name="plAttribute.Help" xml:space="preserve">
+    <value>Setup any custom attributes for this Repository  module.</value>
+  </data>
+  <data name="plValues.Text" xml:space="preserve">
+    <value>Attribute Values</value>
+  </data>
+  <data name="plValues.Help" xml:space="preserve">
+    <value>Setup the possible values for the currently selected custom attribute.</value>
+  </data>
+  <data name="DeleteCategory.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this Category?</value>
+  </data>
+  <data name="DeleteAttribute.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this Attribute?</value>
+  </data>
+  <data name="DeleteValue.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this Value?</value>
+  </data>
+  <data name="AddCategory.Text" xml:space="preserve">
+    <value>ADD CATEGORY</value>
+  </data>
+  <data name="CancelCategory.Text" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="AddAttribute.Text" xml:space="preserve">
+    <value>ADD ATTRIBUTE</value>
+  </data>
+  <data name="CancelAttribute.Text" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="AddValue.Text" xml:space="preserve">
+    <value>ADD VALUE</value>
+  </data>
+  <data name="CancelValue.Text" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="SortByDate.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="SortByDownloads.Text" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+  <data name="SortByUserRating.Text" xml:space="preserve">
+    <value>User Rating</value>
+  </data>
+  <data name="SortByTitle.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="SortByAuthor.Text" xml:space="preserve">
+    <value>Author Name</value>
+  </data>
+  <data name="UploadFiles.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="UploadLinks.Text" xml:space="preserve">
+    <value>Link (URL)</value>
+  </data>
+  <data name="UploadImageFiles.Text" xml:space="preserve">
+    <value>Image File</value>
+  </data>
+  <data name="UploadImageLinks.Text" xml:space="preserve">
+    <value>Image Link (URL)</value>
+  </data>
+  <data name="ViewCommentsAuth.Text" xml:space="preserve">
+    <value>Authorized Users Only</value>
+  </data>
+  <data name="ViewCommentsAll.Text" xml:space="preserve">
+    <value>All Users</value>
+  </data>
+  <data name="ViewRatingsAuth.Text" xml:space="preserve">
+    <value>Authorized Users Only</value>
+  </data>
+  <data name="ViewRatingsAll.Text" xml:space="preserve">
+    <value>All Users</value>
+  </data>
+  <data name="UserFolders.Text" xml:space="preserve">
+    <value>Store uploaded files in User folders</value>
+  </data>
+  <data name="ModerationRoles.Text" xml:space="preserve">
+    <value>Moderation Roles (Can Moderate Uploads)</value>
+  </data>
+  <data name="DownloadRoles.Text" xml:space="preserve">
+    <value>Download Roles (Can download items)</value>
+  </data>
+  <data name="UploadRoles.Text" xml:space="preserve">
+    <value>Upload Roles (Can upload items NOTE: May require Moderation)</value>
+  </data>
+  <data name="CommentRoles.Text" xml:space="preserve">
+    <value>Comment Roles (Can comment on items)</value>
+  </data>
+  <data name="RatingRoles.Text" xml:space="preserve">
+    <value>Rating Roles (Can rate items)</value>
+  </data>
+  <data name="SaveButton.Text" xml:space="preserve">
+    <value>SAVE</value>
+  </data>
+  <data name="ALL.Text" xml:space="preserve">
+    <value>ALL</value>
+  </data>
+  <data name="plRoot.Text" xml:space="preserve">
+    <value>&lt;root&gt;</value>
+  </data>
+  <data name="AllUsers.Text" xml:space="preserve">
+    <value>All Users</value>
+  </data>
+  <data name="hasItemsCannotDelete.Text" xml:space="preserve">
+    <value>You cannot delete a Category that has Items assigned to it.</value>
+  </data>
+  <data name="SortByCreationDate.Text" xml:space="preserve">
+    <value>Uploaded Date</value>
+  </data>
+  <data name="lblAllFiles.Text" xml:space="preserve">
+    <value>Include All Files</value>
+  </data>
+  <data name="lblAllFiles.Help" xml:space="preserve">
+    <value>Checking this will insert a category named All Items that will allow a user to see all items regardless of the category they are assigned to</value>
+  </data>
+  <data name="AllowAllFiles.Text" xml:space="preserve">
+    <value>Include 'All Items' category</value>
+  </data>
+  <data name="plFolders.Help" xml:space="preserve">
+    <value>Enter the location where you would like the Repository module to store uploaded files.</value>
+  </data>
+  <data name="plDataControl.Text" xml:space="preserve">
+    <value>Data Control</value>
+  </data>
+  <data name="plDataControl.Help" xml:space="preserve">
+    <value>Select which type of Data Control to use for the output</value>
+  </data>
+  <data name="plWatermark.Text" xml:space="preserve">
+    <value>Watermark Text</value>
+  </data>
+  <data name="plWatermark.Help" xml:space="preserve">
+    <value>Enter text that will be overlayed over full size images. Leave blank if you do not wish to use a watermark</value>
+  </data>
+  <data name="plIsPersonal.Help" xml:space="preserve">
+    <value>Checking this will this a Personal Repository and each user will only be able to see the files that they uploaded.</value>
+  </data>
+  <data name="plIsPersonal.Text" xml:space="preserve">
+    <value>Personal Repository</value>
+  </data>
+  <data name="IsPersonal.Text" xml:space="preserve">
+    <value>Allow users to see ONLY the files that THEY uploaded (Admins can see all  files)</value>
+  </data>
+  <data name="plEmailOnComment.Help" xml:space="preserve">
+    <value>If you want to receive an email when a comment is posted, check this box and enter the email address where you would like the notification sent</value>
+  </data>
+  <data name="plEmailOnComment.Text" xml:space="preserve">
+    <value>Send Email when Comment Posted</value>
+  </data>
+  <data name="plEmailOnUpload.Help" xml:space="preserve">
+    <value>If you want to receive an email when a new item is uploaded, check this box and enter the email address where you would like the notification sent</value>
+  </data>
+  <data name="plEmailOnUpload.Text" xml:space="preserve">
+    <value>Send Email when Item Uploaded</value>
+  </data>
+  <data name="InvalidCategory.Text" xml:space="preserve">
+    <value>Invalid Category</value>
+  </data>
+  <data name="plAnonEditDelete.Help" xml:space="preserve">
+    <value>If checked, uploads by Anonymous users will be editable by any other Anonymous user.</value>
+  </data>
+  <data name="plAnonEditDelete.Text" xml:space="preserve">
+    <value>Allow Anonymous Users to Edit/Delete?</value>
+  </data>
+  <data name="AnonEditDelete.Text" xml:space="preserve">
+    <value>NOTE: This setting is ONLY used if you've allowed All Users to Upload (Anonymous Uploads)</value>
+  </data>
+  <data name="TrustedRoles.Text" xml:space="preserve">
+    <value>Trusted Roles (Do not require Moderation)</value>
+  </data>
+</root>

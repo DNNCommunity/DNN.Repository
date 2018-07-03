@@ -1,0 +1,151 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.05.01                 *****/
+/* =====================================================================*/
+
+/* =====================================================================*/
+/* Add SecurityRoles column to RepositoryObjects table                  */
+/* to allow the uploader to set a list of required roles in order to    */
+/* view or download the item                                            */
+/* =====================================================================*/
+
+IF (SELECT COLUMNPROPERTY( OBJECT_ID('{databaseOwner}{objectQualifier}grmRepositoryObjects'),'SecurityRoles','AllowsNull')) IS NULL 
+ALTER TABLE {databaseOwner}{objectQualifier}grmRepositoryObjects ADD [SecurityRoles] [ntext] NULL
+GO
+
+
+/* =====================================================================*/
+/* Drop Add and Update SProcs                                           */
+/* =====================================================================*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}grmAddRepositoryObject') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}grmAddRepositoryObject
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}grmUpdateRepositoryObject') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryObject
+GO
+
+
+/* =====================================================================*/
+/* Create updated SProcs to support new SecurityRoles column            */
+/* =====================================================================*/
+
+CREATE procedure {databaseOwner}{objectQualifier}grmAddRepositoryObject
+
+@UserName	nvarchar(150),
+@ModuleID	int,
+@Name		nvarchar(150),
+@Description	ntext,
+@Author	nvarchar(150),
+@AuthorEMail	nvarchar(150),
+@FileSize	nvarchar(12),
+@PreviewImage	nvarchar(150),
+@Image	nvarchar(150),
+@FileName	nvarchar(150),
+@Approved	int,
+@ShowEMail	int,
+@Summary	ntext,
+@SecurityRoles  ntext
+
+as
+
+insert into {databaseOwner}{objectQualifier}grmRepositoryObjects (
+  CreatedByUser,
+  CreatedDate,
+  UpdatedByUser,
+  UpdatedDate,
+  ModuleID,
+  [Name],
+  [Description],
+  Author,
+  AuthorEMail,
+  FileSize,
+  Downloads,
+  PreviewImage,
+  [Image],
+  [FileName],
+  Clicks,
+  RatingVotes,
+  RatingTotal,
+  RatingAverage,
+  Approved,
+  ShowEMail,
+  Summary,
+  SecurityRoles
+)
+values (
+  @UserName,
+  getdate(),
+  @UserName,
+  getdate(),
+  @ModuleID,
+  @Name,
+  @Description,
+  @Author,
+  @AuthorEMail,
+  @FileSize,
+   0,
+  @PreviewImage,
+  @Image,
+  @FileName,
+  0,
+  0,
+  0,
+  0,
+  @Approved,
+  @ShowEMail,
+  @Summary,
+  @SecurityRoles
+)
+
+select SCOPE_IDENTITY()
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+CREATE procedure {databaseOwner}{objectQualifier}grmUpdateRepositoryObject
+
+@ItemID		int,
+@UserName	nvarchar(150),
+@Name		nvarchar(150),
+@Description	ntext,
+@Author		nvarchar(150),
+@AuthorEMail	nvarchar(150),
+@FileSize		nvarchar(12),
+@PreviewImage	nvarchar(150),
+@Image		nvarchar(150),
+@FileName	nvarchar(150),
+@Approved	int,
+@ShowEMail	int,
+@Summary	ntext,
+@SecurityRoles ntext
+
+as
+
+update {databaseOwner}{objectQualifier}grmRepositoryObjects
+set
+  UpdatedByUser = @UserName,
+  UpdatedDate = getdate(),
+  [Name] = @Name,
+  [Description] = @Description,
+  Author = @Author,
+  AuthorEMail = @AuthorEMail,
+  FileSize = @FileSize,
+  PreviewImage = @PreviewImage,
+  [Image] = @Image,
+  [FileName] = @FileName,
+  Approved = @Approved,
+  ShowEMail = @ShowEMail,
+  Summary = @Summary,
+  SecurityRoles = @SecurityRoles
+
+where ItemID = @ItemID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

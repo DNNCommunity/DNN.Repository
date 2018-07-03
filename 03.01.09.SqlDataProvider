@@ -1,0 +1,10 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.01.08        *****/
+/* =====================================================================*/
+
+/* =====================================================================*/
+/* remove module settings for UserUpload and EditRepository             */
+/* which will be replaced with Form                                     */
+/* =====================================================================*/
+
+DELETE FROM {databaseOwner}{objectQualifier}ModuleControls WHERE ControlSrc='DesktopModules/Repository/EditRepository.ascx' OR ControlSrc='DesktopModules/Repository/UserUpload.ascx'

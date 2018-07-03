@@ -1,0 +1,9 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.01.05        *****/
+/* =====================================================================*/
+
+/* =====================================================================*/
+/* change grmRepositoryObjects, replace username with userid  */
+/* =====================================================================*/
+
+update {databaseOwner}{objectQualifier}grmRepositoryObjects set CreatedByUser = (select userid from {databaseOwner}{objectQualifier}users where username= {databaseOwner}{objectQualifier}grmRepositoryObjects.CreatedByUser)

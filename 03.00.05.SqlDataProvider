@@ -1,0 +1,24 @@
+﻿/* =====================================================================*/
+/*****              Initialization Script  03.00.05            *****/
+/* =====================================================================*/
+
+/* add the missing stored proc ApproveRepositoryObject		*/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}grmApproveRepositoryObject') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}grmApproveRepositoryObject
+GO
+
+create procedure {databaseOwner}{objectQualifier}grmApproveRepositoryObject
+@ItemID	int
+as
+update {databaseOwner}{objectQualifier}grmRepositoryObjects
+set
+  Approved = 1
+where 
+  ItemID = @ItemID
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
