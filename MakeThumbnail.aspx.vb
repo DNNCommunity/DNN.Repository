@@ -24,6 +24,7 @@ Imports System.Drawing.Image
 Imports System.Drawing.Imaging
 Imports DotNetNuke
 Imports DotNetNuke.Entities.Portals
+Imports DotNetNuke.Entities.Modules
 
 Namespace DotNetNuke.Modules.Repository
 
@@ -68,6 +69,7 @@ Namespace DotNetNuke.Modules.Repository
             Dim bIsURL As Boolean = False
 
             Dim _portalSettings As PortalSettings = CType(HttpContext.Current.Items("PortalSettings"), PortalSettings)
+            Dim _moduleController As New ModuleController
 
             Dim repository As New RepositoryController
             Dim objRepository As RepositoryInfo
@@ -79,7 +81,7 @@ Namespace DotNetNuke.Modules.Repository
 
                     If objRepository.Image = "" Then
                         ' no image, display an icon or generic image based on module settings
-                        Dim settings As Hashtable = _portalSettings.GetModuleSettings(ModuleId)
+                        Dim settings As Hashtable = _moduleController.GetModuleSettings(ModuleId)
 
                         If CType(settings("noimage"), String) <> "" Then
                             strPathToImage = _portalSettings.HomeDirectory & CType(settings("noimage"), String)
@@ -213,7 +215,7 @@ Namespace DotNetNuke.Modules.Repository
 
                 ' we are serving out the full size image
                 ' if the settings indicate to use a watermark, add the watermark to the image
-                Dim settings As Hashtable = _portalSettings.GetModuleSettings(ModuleId)
+                Dim settings As Hashtable = _moduleController.GetModuleSettings(ModuleId)
                 Dim watermarkText As String = ""
 
                 ' to avoid GIF image issues, create a new blank canvas and copy the image.
@@ -229,7 +231,7 @@ Namespace DotNetNuke.Modules.Repository
                     Dim StringSizeF As SizeF, DesiredWidth As Single, wmFont As Font, RequiredFontSize As Single, Ratio As Single
                     wmFont = New Font("Verdana", 6, FontStyle.Bold)
                     DesiredWidth = fullSizeImg.Width * 0.75
-                    
+
                     StringSizeF = canvas.MeasureString(watermarkText, wmFont)
                     Ratio = StringSizeF.Width / wmFont.SizeInPoints
                     RequiredFontSize = DesiredWidth / Ratio

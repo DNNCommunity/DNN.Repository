@@ -353,7 +353,7 @@ Namespace DotNetNuke.Modules.Repository
 
         End Function
 
-        Public Function GetSkinAttribute(ByVal xDoc As XmlDocument, ByVal tag As String, ByVal attrib As String, ByVal defaultValue As String)
+        Public Function GetSkinAttribute(ByVal xDoc As XmlDocument, ByVal tag As String, ByVal attrib As String, ByVal defaultValue As String) As String
             Dim retValue As String = defaultValue
             Dim xmlSkinAttributeRoot As XmlNode = xDoc.SelectSingleNode("descendant::Object[Token='[" & tag & "]']")
             If Not xmlSkinAttributeRoot Is Nothing Then
@@ -1344,7 +1344,7 @@ Namespace DotNetNuke.Modules.Repository
 
         End Function
 
-        Private Function MoveFolder(ByVal oldFolder As String, ByVal newFolder As String)
+        Private Function MoveFolder(ByVal oldFolder As String, ByVal newFolder As String) As String
 
             Dim results As String = ""
 

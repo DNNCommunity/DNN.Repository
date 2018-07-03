@@ -1645,7 +1645,9 @@ Namespace DotNetNuke.Modules.Repository
 
                 End If
 
-                Select Case ViewState("mView")
+                Dim mView As String 
+                mView = ViewState("mView")
+                Select Case mView
 
                     Case "Details"
                         DataList1.Visible = True

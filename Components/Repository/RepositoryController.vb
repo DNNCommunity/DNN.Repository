@@ -28,7 +28,7 @@ Namespace DotNetNuke.Modules.Repository
         Public Function GetSingleRepositoryObject(ByVal ItemId As Integer) As RepositoryInfo
             Return CType(CBO.FillObject(DataProvider.Instance().GetSingleRepositoryObject(ItemId), GetType(RepositoryInfo)), RepositoryInfo)
         End Function
-        Public Function AddRepositoryObject(ByVal UserName As String, ByVal ModuleId As Integer, ByVal objRepository As RepositoryInfo)
+        Public Function AddRepositoryObject(ByVal UserName As String, ByVal ModuleId As Integer, ByVal objRepository As RepositoryInfo) As Integer
             Return CType(DataProvider.Instance().AddRepositoryObject(UserName, ModuleId, objRepository.Name, _
                 objRepository.Description, objRepository.Author, objRepository.AuthorEMail, objRepository.FileSize, _
                 objRepository.PreviewImage, objRepository.Image, objRepository.FileName, objRepository.Approved, objRepository.ShowEMail, objRepository.Summary, objRepository.SecurityRoles), Integer)
