@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-	  <package name="DotNetNuke.Repository" type="Module" version="03.05.04">
+	  <package name="DotNetNuke.Repository" type="Module" version="03.05.06">
   <friendlyName>Repository</friendlyName>
   <description>A file/object repository module that includes skinning and community features like comments and user ratings.</description>
   <vendor>
@@ -45,11 +45,11 @@ DEALINGS IN THE SOFTWARE.</license>
 		<basePath>bin</basePath>
         <assembly>
           <name>DotNetNuke.Modules.Repository.dll</name>
-          <version>03.05.04</version>
+          <version>03.05.06</version>
         </assembly>
         <assembly>
           <name>DotNetNuke.Modules.Repository.SqlDataProvider.dll</name>
-          <version>03.05.04</version>
+          <version>03.05.06</version>
         </assembly>
       </assemblies>
     </component>
@@ -104,7 +104,7 @@ DEALINGS IN THE SOFTWARE.</license>
           <name>icon_repository_32px.gif</name>
         </file>
         <file>
-          <name>03.05.04.txt</name>
+          <name>03.05.06.txt</name>
         </file>
       </files>
     </component>
@@ -293,9 +293,13 @@ DEALINGS IN THE SOFTWARE.</license>
 			<name>03.05.04.sqldataprovider</name>
 			<version>03.05.04</version>
 		</script>
+		<script type="Install">
+			<name>03.05.06.sqldataprovider</name>
+			<version>03.05.06</version>
+		</script>
 		<script type="UnInstall">
 			<name>Uninstall.SqlDataProvider</name>
-			<version>03.05.04</version>
+			<version>03.05.06</version>
 		</script>
       </scripts>
     </component>
@@ -392,7 +396,7 @@ DEALINGS IN THE SOFTWARE.</license>
   </components>
 </package>
 
-<package name="DotNetNuke.Repository.Dashboard" type="Module" version="03.05.04">
+<package name="DotNetNuke.Repository.Dashboard" type="Module" version="03.05.06">
   <friendlyName>Repository Dashboard</friendlyName>
   <description></description>
   <vendor></vendor>
