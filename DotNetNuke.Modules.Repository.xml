@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Modules.Repository</name>
+    </assembly>
+    <members>
+        <member name="M:DotNetNuke.Modules.Repository.RepositoryController.GetSearchItems(DotNetNuke.Entities.Modules.ModuleInfo)">
+            -----------------------------------------------------------------------------
+            <summary>
+            GetSearchItems implements the ISearchable Interface
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="ModInfo">The ModuleInfo for the module to be Indexed</param>
+            <history>
+            	[cnurse]	11/17/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Repository.RepositoryController.ExportModule(System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+            ExportModule implements the IPortable ExportModule Interface
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="ModuleID">The Id of the module to be exported</param>
+            <history>
+            	[cnurse]	11/17/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Modules.Repository.RepositoryController.ImportModule(System.Int32,System.String,System.String,System.Int32)">
+            -----------------------------------------------------------------------------
+            <summary>
+            ImportModule implements the IPortable ImportModule Interface
+            </summary>
+            <remarks>
+            </remarks>
+            <param name="ModuleID">The Id of the module to be imported</param>
+            <history>
+            	[cnurse]	11/17/2004	documented
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+    </members>
+</doc>
