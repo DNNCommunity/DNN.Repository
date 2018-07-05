@@ -189,6 +189,7 @@
       <DependentUpon>ModerateUploads.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Repository.ascx.cs">
       <DependentUpon>Repository.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
