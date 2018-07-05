@@ -1,34 +1,19 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-	  <package name="DotNetNuke.Repository" type="Module" version="03.05.06">
+	  <package name="DotNetNuke.Repository" type="Module" version="04.00.00">
   <friendlyName>Repository</friendlyName>
   <description>A file/object repository module that includes skinning and community features like comments and user ratings.</description>
-  <vendor>
+      <iconFile>icon_repository_32px.gif</iconFile>      
+  <owner>
     <name>DotNetNuke</name>
     <organization>DotNetNuke Corporation</organization>
     <url>www.dotnetnuke.com</url>
     <email>support@dotnetnuke.com</email>
-  </vendor>
-  <license>DotNetNuke� - http://www.dotnetnuke.com&lt;br/&gt;
-Copyright (c) 2002-2011&lt;br/&gt;
-by DotNetNuke Corporation
-&lt;br/&gt;&lt;br/&gt;
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-&lt;br/&gt;&lt;br/&gt;
-The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-of the Software.
-&lt;br/&gt;&lt;br/&gt;
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-DEALINGS IN THE SOFTWARE.</license>
-  <releaseNotes>There are no release notes for this version.</releaseNotes>
+  </owner>
+  <license src="License.html" />
+  <releaseNotes src="ReleaseNotes.html" />
   <dependencies>
-    <dependency type="CoreVersion">05.03.01</dependency>
+    <dependency type="CoreVersion">06.01.00</dependency>
   </dependencies>
   <components>
     <component type="ResourceFile">
@@ -44,65 +29,14 @@ DEALINGS IN THE SOFTWARE.</license>
       <assemblies>
 		<basePath>bin</basePath>
         <assembly>
+          <path>bin</path>
           <name>DotNetNuke.Modules.Repository.dll</name>
-          <version>03.05.06</version>
-        </assembly>
-        <assembly>
-          <name>DotNetNuke.Modules.Repository.SqlDataProvider.dll</name>
-          <version>03.05.06</version>
         </assembly>
       </assemblies>
     </component>
     <component type="File">
       <files>
-        <basePath>DesktopModules\Repository</basePath>
-        <file>
-          <path>App_LocalResources</path>
-          <name>About.ascx.resx</name>
-        </file>
-        <file>
-          <path>App_LocalResources</path>
-          <name>Form.ascx.resx</name>
-        </file>
-        <file>
-          <path>App_LocalResources</path>
-          <name>ModerateUploads.ascx.resx</name>
-        </file>
-        <file>
-          <path>App_LocalResources</path>
-          <name>Repository.ascx.resx</name>
-        </file>
-        <file>
-          <path>App_LocalResources</path>
-          <name>Settings.ascx.resx</name>
-        </file>
-        <file>
-          <name>About.ascx</name>
-        </file>
-        <file>
-          <name>EditComment.ascx</name>
-        </file>
-        <file>
-          <name>Form.ascx</name>
-        </file>
-        <file>
-          <name>MakeThumbnail.aspx</name>
-        </file>
-        <file>
-          <name>ModerateUploads.ascx</name>
-        </file>
-        <file>
-          <name>module.css</name>
-        </file>
-        <file>
-          <name>Repository.ascx</name>
-        </file>
-        <file>
-          <name>Settings.ascx</name>
-        </file>
-        <file>
-          <name>icon_repository_32px.gif</name>
-        </file>
+        <basePath>DesktopModules\Repository</basePath>                
         <file>
           <name>03.05.06.txt</name>
         </file>
@@ -121,11 +55,9 @@ DEALINGS IN THE SOFTWARE.</license>
           <name>icon_repository_32px.gif</name>
         </file>
         <file>
-          <path>App_LocalResources</path>
           <name>RepositoryDashboard.ascx.resx</name>
         </file>
         <file>
-          <path>App_LocalResources</path>
           <name>DashboardSettings.ascx.resx</name>
         </file>
       </files>
@@ -284,15 +216,7 @@ DEALINGS IN THE SOFTWARE.</license>
 		<script type="Install">
 			<name>03.05.02.sqldataprovider</name>
 			<version>03.05.02</version>
-		</script>
-		<script type="Install">
-			<name>03.05.03.sqldataprovider</name>
-			<version>03.05.03</version>
-		</script>
-		<script type="Install">
-			<name>03.05.04.sqldataprovider</name>
-			<version>03.05.04</version>
-		</script>
+		</script>		
 		<script type="Install">
 			<name>03.05.06.sqldataprovider</name>
 			<version>03.05.06</version>
@@ -396,14 +320,19 @@ DEALINGS IN THE SOFTWARE.</license>
   </components>
 </package>
 
-<package name="DotNetNuke.Repository.Dashboard" type="Module" version="03.05.06">
+<package name="DotNetNuke.Repository.Dashboard" type="Module" version="04.00.00">
   <friendlyName>Repository Dashboard</friendlyName>
   <description></description>
-  <vendor></vendor>
-  <license></license>
-  <releaseNotes></releaseNotes>
+  <owner>
+    <name>DotNetNuke</name>
+    <organization>DotNetNuke Corporation</organization>
+    <url>www.dotnetnuke.com</url>
+    <email>support@dotnetnuke.com</email>
+  </owner>
+  <license src="License.html" />
+  <releaseNotes src="ReleaseNotes.html" />
   <dependencies>
-	  <dependency type="CoreVersion">05.03.01</dependency>
+	  <dependency type="CoreVersion">06.01.00</dependency>
   </dependencies>
   <components>
 	  <component type="Module">
