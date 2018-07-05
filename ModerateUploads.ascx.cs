@@ -140,7 +140,9 @@ namespace DotNetNuke.Modules.Repository
 			//CODEGEN: This method call is required by the Web Form Designer
 			//Do not modify it using the code editor.
 			InitializeComponent();
-			base.Actions.Add(GetNextActionID(), Localization.GetString("AddObject", LocalResourceFile), "", Url: EditUrl(), Secure: SecurityAccessLevel.Edit, Visible: true);
+			
+            // base.Actions.Add(GetNextActionID(), Localization.GetString("AddObject", LocalResourceFile), "", Url: EditUrl(), Secure: SecurityAccessLevel.Edit, Visible: true);
+            base.Actions.Add(GetNextActionID(), Localization.GetString("AddObject", LocalResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
 		}
 
 		#endregion
@@ -313,7 +315,7 @@ namespace DotNetNuke.Modules.Repository
 						if (!string.IsNullOrEmpty(objRepository.AuthorEMail.ToString())) {
 							strBody = objRepository.Author.ToString() + "," + Constants.vbCrLf + Constants.vbCrLf;
 							strBody = strBody + Localization.GetString("TheFile", LocalResourceFile) + " (" + sFileName + ") " + Localization.GetString("ThatYouUploadedTo", LocalResourceFile) + " " + PortalSettings.PortalName + " " + Localization.GetString("HasBeenApprovedShort", LocalResourceFile) + Constants.vbCrLf + Constants.vbCrLf;
-							strBody = strBody + Localization.GetString("PortalAddress", LocalResourceFile) + ": " + DotNetNuke.Common.Globals.GetPortalDomainName(PortalAlias.HTTPAlias, Request) + Constants.vbCrLf + Constants.vbCrLf;
+							strBody = strBody + Localization.GetString("PortalAddress", LocalResourceFile) + ": " + DotNetNuke.Common.Globals.GetPortalDomainName(PortalAlias.HTTPAlias, Request, false) + Constants.vbCrLf + Constants.vbCrLf;
 							strBody = strBody + Localization.GetString("ThankYou", LocalResourceFile) + Constants.vbCrLf;
 							DotNetNuke.Services.Mail.Mail.SendMail(objModerator.Membership.Email, objRepository.AuthorEMail, "", PortalSettings.PortalName + ": " + Localization.GetString("HasBeenApprovedLong", LocalResourceFile), strBody, "", "html", "", "", "",
 							"");
@@ -359,7 +361,7 @@ namespace DotNetNuke.Modules.Repository
 						if (!string.IsNullOrEmpty(objRepository.AuthorEMail.ToString())) {
 							strBody = objRepository.Author.ToString() + "," + Constants.vbCrLf + Constants.vbCrLf;
 							strBody = strBody + Localization.GetString("TheFile", LocalResourceFile) + " (" + sFileName + ") " + Localization.GetString("ThatYouUploadedTo", LocalResourceFile) + " " + PortalSettings.PortalName + " " + Localization.GetString("HasBeenRejectedShort", LocalResourceFile) + Constants.vbCrLf + Constants.vbCrLf;
-							strBody = strBody + Localization.GetString("PortalAddress", LocalResourceFile) + ": " + DotNetNuke.Common.Globals.GetPortalDomainName(PortalAlias.HTTPAlias, Request) + Constants.vbCrLf + Constants.vbCrLf;
+							strBody = strBody + Localization.GetString("PortalAddress", LocalResourceFile) + ": " + DotNetNuke.Common.Globals.GetPortalDomainName(PortalAlias.HTTPAlias, Request, false) + Constants.vbCrLf + Constants.vbCrLf;
 							strBody = strBody + txtComment.Text + Constants.vbCrLf + Constants.vbCrLf;
 							DotNetNuke.Services.Mail.Mail.SendMail(objSendRejectionModerator.Membership.Email, objRepository.AuthorEMail, "", PortalSettings.PortalName + ": " + Localization.GetString("HasBeenRejectedLong", LocalResourceFile), strBody, "", "html", "", "", "",
 							"");

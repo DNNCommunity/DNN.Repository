@@ -355,7 +355,9 @@ namespace DotNetNuke.Modules.Repository
 							if ((objAdministrator != null)) {
 								strBody = objAdministrator.DisplayName + "," + Constants.vbCrLf + Constants.vbCrLf;
 								strBody = strBody + "A file has been uploaded/changed to " + _portalSettings.PortalName + " and is waiting for your Approval." + Constants.vbCrLf + Constants.vbCrLf;
-								strBody = strBody + "Portal Website Address: " + DotNetNuke.Common.Globals.GetPortalDomainName(_portalSettings.PortalAlias.HTTPAlias, HttpContext.Current.Request) + Constants.vbCrLf;
+								
+                                //strBody = strBody + "Portal Website Address: " + DotNetNuke.Common.Globals.GetPortalDomainName(_portalSettings.PortalAlias.HTTPAlias, HttpContext.Current.Request) + Constants.vbCrLf;
+                                strBody = strBody + "Portal Website Address: " + DotNetNuke.Common.Globals.GetPortalDomainName(_portalSettings.PortalAlias.HTTPAlias, HttpContext.Current.Request, false) + Constants.vbCrLf;
 								strBody = strBody + "Username: " + pRepository.Author + Constants.vbCrLf;
 								strBody = strBody + "User's email address: " + pRepository.AuthorEMail + Constants.vbCrLf;
 								strBody = strBody + "File Uploaded: " + strFileName + Constants.vbCrLf + Constants.vbCrLf;
@@ -543,7 +545,7 @@ namespace DotNetNuke.Modules.Repository
 					if (int.Parse(RoleID) == -1) {
 						RoleNames = RoleNames + DotNetNuke.Common.Globals.glbRoleAllUsersName + ";";
 					} else {
-						oRoleInfo = oRoleController.GetRole(int.Parse(RoleID), PortalID);
+                        oRoleInfo = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(PortalID, int.Parse(RoleID));
 						RoleNames = RoleNames + oRoleInfo.RoleName + ";";
 					}
 				}
