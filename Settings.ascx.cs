@@ -36,6 +36,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -275,8 +276,9 @@ namespace DotNetNuke.Modules.Repository
 		protected System.Web.UI.WebControls.TextBox txtFolderLocation;
 		protected System.Web.UI.WebControls.TextBox txtPendingLocation;
 		protected System.Web.UI.WebControls.TextBox txtAnonymousLocation;
-		protected DotNetNuke.UI.UserControls.UrlControl ctlURL;
-		protected DotNetNuke.UI.UserControls.TextEditor teContent;
+
+        UrlControl ctlURL;        
+		TextEditor teContent;
 		protected System.Web.UI.WebControls.CheckBox cbUserFolders;
 		// Protected WithEvents cblUploadTypes As System.Web.UI.WebControls.CheckBoxList
 		protected System.Web.UI.WebControls.DropDownList ddlDefaultSort;
