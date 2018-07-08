@@ -1,0 +1,17 @@
+<Objects>
+	<Object>
+		<Token>[VOTES]</Token>
+	</Object>
+	<Object>
+		<Token>[TOTAL]</Token>
+	</Object>
+	<Object>
+		<Token>[AVERAGE]</Token>
+	</Object>
+	<Object>
+		<Token>[RADIOBUTTONS]</Token>
+	</Object>
+	<Object>
+		<Token>[POSTBUTTON]</Token>
+	</Object>
+</Objects>

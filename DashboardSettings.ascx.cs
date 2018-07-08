@@ -86,8 +86,9 @@ namespace DotNetNuke.Modules.Repository
 				PackageController pc = new PackageController();
 
 
-				// Get settings from the database 
-				Hashtable settings = mc.GetModuleSettings(ModuleId);
+                // Get settings from the database 
+                var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+                var settings = moduleInfo.ModuleSettings;
 
 				if ((Page.IsPostBack == false)) {
 					lblMessage.Text = "";
@@ -104,7 +105,7 @@ namespace DotNetNuke.Modules.Repository
 					// portal
 
 					ModuleDefinitionInfo repModInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Repository");
-					PackageInfo package = PackageController.GetPackageByName("DotNetNuke.Repository");
+					PackageInfo package = PackageController.Instance.GetExtensionPackage(PortalId, m => m.Name == "DotNetNuke.Repository");
 					IDictionary<int, Entities.Tabs.TabInfo> tabsWithModule = tc.GetTabsByPackageID(PortalId, package.PackageID, false);
 
 					// first, get a list of all the tabs that contain at least one repository

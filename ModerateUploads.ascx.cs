@@ -309,7 +309,7 @@ namespace DotNetNuke.Modules.Repository
 
 					}
 					
-					UserInfo objModerator = UserController.GetCurrentUserInfo();
+					UserInfo objModerator = UserController.Instance.GetCurrentUserInfo();
 					string strBody = "";
 					if (((objRepository != null)) & ((objModerator != null))) {
 						if (!string.IsNullOrEmpty(objRepository.AuthorEMail.ToString())) {
@@ -317,7 +317,7 @@ namespace DotNetNuke.Modules.Repository
 							strBody = strBody + Localization.GetString("TheFile", LocalResourceFile) + " (" + sFileName + ") " + Localization.GetString("ThatYouUploadedTo", LocalResourceFile) + " " + PortalSettings.PortalName + " " + Localization.GetString("HasBeenApprovedShort", LocalResourceFile) + Constants.vbCrLf + Constants.vbCrLf;
 							strBody = strBody + Localization.GetString("PortalAddress", LocalResourceFile) + ": " + DotNetNuke.Common.Globals.GetPortalDomainName(PortalAlias.HTTPAlias, Request, false) + Constants.vbCrLf + Constants.vbCrLf;
 							strBody = strBody + Localization.GetString("ThankYou", LocalResourceFile) + Constants.vbCrLf;
-							DotNetNuke.Services.Mail.Mail.SendMail(objModerator.Membership.Email, objRepository.AuthorEMail, "", PortalSettings.PortalName + ": " + Localization.GetString("HasBeenApprovedLong", LocalResourceFile), strBody, "", "html", "", "", "",
+							DotNetNuke.Services.Mail.Mail.SendMail(objModerator.Email, objRepository.AuthorEMail, "", PortalSettings.PortalName + ": " + Localization.GetString("HasBeenApprovedLong", LocalResourceFile), strBody, "", "html", "", "", "",
 							"");
 						}
 					}
@@ -351,7 +351,7 @@ namespace DotNetNuke.Modules.Repository
 
 					break;
 				case "SendRejection":					
-					UserInfo objSendRejectionModerator = UserController.GetCurrentUserInfo();
+					UserInfo objSendRejectionModerator = UserController.Instance.GetCurrentUserInfo();
 					strBody = "";
 					TextBox txtComment = null;
 					string strFileName = null;
@@ -363,7 +363,7 @@ namespace DotNetNuke.Modules.Repository
 							strBody = strBody + Localization.GetString("TheFile", LocalResourceFile) + " (" + sFileName + ") " + Localization.GetString("ThatYouUploadedTo", LocalResourceFile) + " " + PortalSettings.PortalName + " " + Localization.GetString("HasBeenRejectedShort", LocalResourceFile) + Constants.vbCrLf + Constants.vbCrLf;
 							strBody = strBody + Localization.GetString("PortalAddress", LocalResourceFile) + ": " + DotNetNuke.Common.Globals.GetPortalDomainName(PortalAlias.HTTPAlias, Request, false) + Constants.vbCrLf + Constants.vbCrLf;
 							strBody = strBody + txtComment.Text + Constants.vbCrLf + Constants.vbCrLf;
-							DotNetNuke.Services.Mail.Mail.SendMail(objSendRejectionModerator.Membership.Email, objRepository.AuthorEMail, "", PortalSettings.PortalName + ": " + Localization.GetString("HasBeenRejectedLong", LocalResourceFile), strBody, "", "html", "", "", "",
+							DotNetNuke.Services.Mail.Mail.SendMail(objSendRejectionModerator.Email, objRepository.AuthorEMail, "", PortalSettings.PortalName + ": " + Localization.GetString("HasBeenRejectedLong", LocalResourceFile), strBody, "", "html", "", "", "",
 							"");
 						}
 					}
@@ -446,7 +446,9 @@ namespace DotNetNuke.Modules.Repository
 			HyperLink objHyperLink = null;
 			RepositoryInfo objRepository = null;
 
-			Hashtable settings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(ModuleId);
+            var mc = new ModuleController();
+            var mi = mc.GetModule(ModuleId);
+            Hashtable settings = mi.ModuleSettings;
 
 
 			if (e.Item.ItemType == ListItemType.Item | e.Item.ItemType == ListItemType.AlternatingItem) {

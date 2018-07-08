@@ -41,11 +41,12 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Services.Mail;
+using DotNetNuke.Security.Permissions;
 
 namespace DotNetNuke.Modules.Repository
 {
 
-	public abstract class Repository : Entities.Modules.PortalModuleBase, Entities.Modules.IActionable, Entities.Modules.IPortable, Entities.Modules.ISearchable, Entities.Modules.Communications.IModuleListener
+	public abstract class Repository : Entities.Modules.PortalModuleBase, Entities.Modules.Communications.IModuleListener
 	{
 
 		#region "Controls"
@@ -153,31 +154,34 @@ namespace DotNetNuke.Modules.Repository
 		#endregion
 
 		#region "Optional Interfaces"
-		public Entities.Modules.Actions.ModuleActionCollection ModuleActions {
-			get {
-				Entities.Modules.Actions.ModuleActionCollection Actions = new Entities.Modules.Actions.ModuleActionCollection();
-				Actions.Add(GetNextActionID(), Localization.GetString("About", LocalResourceFile), "About", "", "", EditUrl("About"), false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
-				return Actions;
-			}
-		}
 
-		public string ExportModule(int ModuleID)
-		{
-			// included as a stub only so that the core knows this module Implements Entities.Modules.IPortable
-			return string.Empty;
-		}
+        // The following methods should no longer be needed since the manifest dictates the supported interfaces, those are implemented in RepositoryController.cs
 
-		public void ImportModule(int ModuleID, string Content, string Version, int UserID)
-		{
-			// included as a stub only so that the core knows this module Implements Entities.Modules.IPortable
-		}
+		//public Entities.Modules.Actions.ModuleActionCollection ModuleActions {
+		//	get {
+		//		Entities.Modules.Actions.ModuleActionCollection Actions = new Entities.Modules.Actions.ModuleActionCollection();
+		//		Actions.Add(GetNextActionID(), Localization.GetString("About", LocalResourceFile), "About", "", "", EditUrl("About"), false, DotNetNuke.Security.SecurityAccessLevel.Edit, true, false);
+		//		return Actions;
+		//	}
+		//}
 
-		public Services.Search.SearchItemInfoCollection GetSearchItems(Entities.Modules.ModuleInfo ModInfo)
-		{
-			// included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
-			Services.Search.SearchItemInfoCollection results = new Services.Search.SearchItemInfoCollection();
-			return results;
-		}
+		//public string ExportModule(int ModuleID)
+		//{
+		//	// included as a stub only so that the core knows this module Implements Entities.Modules.IPortable
+		//	return string.Empty;
+		//}
+
+		//public void ImportModule(int ModuleID, string Content, string Version, int UserID)
+		//{
+		//	// included as a stub only so that the core knows this module Implements Entities.Modules.IPortable
+		//}
+
+		//public Services.Search.SearchItemInfoCollection GetSearchItems(Entities.Modules.ModuleInfo ModInfo)
+		//{
+		//	// included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
+		//	Services.Search.SearchItemInfoCollection results = new Services.Search.SearchItemInfoCollection();
+		//	return results;
+		//}
 
 		#endregion
 
@@ -623,7 +627,9 @@ namespace DotNetNuke.Modules.Repository
 				HyperLink objHyperLink = (HyperLink)e.Item.Cells[0].FindControl("hypEdit");
 				if ((objHyperLink != null)) {
 					objHyperLink.NavigateUrl = EditUrl("ItemID", objComment.ItemId.ToString(), "EditComment");
-					if (PortalSecurity.HasEditPermissions(ModuleId) | PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName)) {
+                    var mc = new ModuleController();
+                    var moduleInfo = mc.GetModule(ModuleId);
+					if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "", moduleInfo) | PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName)) {
 						objHyperLink.Visible = true;
 					} else {
 						objHyperLink.Visible = false;
@@ -928,8 +934,9 @@ namespace DotNetNuke.Modules.Repository
 														b_AnonymousUploads = true;
 													}
 												}
-
-												if ((HttpContext.Current.User.Identity.IsAuthenticated & (UserInfo.UserID.ToString() == objRepository.CreatedByUser.ToString()) | PortalSecurity.HasEditPermissions(ModuleId) | oRepositoryBusinessController.IsModerator(PortalId, ModuleId))) {
+                                                var mc = new ModuleController();
+                                                var moduleInfo = mc.GetModule(ModuleId);
+                                                if ((HttpContext.Current.User.Identity.IsAuthenticated & (UserInfo.UserID.ToString() == objRepository.CreatedByUser.ToString()) | ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "", moduleInfo) | oRepositoryBusinessController.IsModerator(PortalId, ModuleId))) {
 													b_CanEdit = true;
 												}
 
@@ -1113,7 +1120,7 @@ namespace DotNetNuke.Modules.Repository
 												// first get default format
 												string strFormat = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CREATEDDATE", "DateFormat", "");
 												if (HttpContext.Current.Request.IsAuthenticated) {
-													UserInfo objUser = UserController.GetCurrentUserInfo();
+													UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
 													Entities.Users.UserTime UserTime = new Entities.Users.UserTime();
 													dtDate = UserTime.ConvertToServerTime(dtDate, objUser.Profile.TimeZone);
 													// check to see if there is a special format for the user's country
@@ -1141,7 +1148,7 @@ namespace DotNetNuke.Modules.Repository
 												dtDate = objRepository.UpdatedDate;
 												strFormat = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "UPDATEDDATE", "DateFormat", "");
 												if (HttpContext.Current.Request.IsAuthenticated) {
-													UserInfo objUser = UserController.GetCurrentUserInfo();
+													UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
 													Entities.Users.UserTime UserTime = new Entities.Users.UserTime();
 													dtDate = UserTime.ConvertToServerTime(dtDate, objUser.Profile.TimeZone);
 													// check to see if there is a special format for the user's country
@@ -1441,7 +1448,7 @@ namespace DotNetNuke.Modules.Repository
 												break;
 											case "CURRENTUSER":
 												if (HttpContext.Current.User.Identity.IsAuthenticated) {
-													UserInfo objUser = UserController.GetCurrentUserInfo();
+													UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
 													string userProp = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CURRENTUSER", "Property", "DisplayName");
 													switch (userProp.ToLower()) {
 														case "userid":
@@ -1470,7 +1477,7 @@ namespace DotNetNuke.Modules.Repository
 												break;
 											case "USERPROFILE":
 												if (HttpContext.Current.User.Identity.IsAuthenticated) {
-													UserInfo objUser = UserController.GetCurrentUserInfo();
+													UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
 													string userProp = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "USERPROFILE", "Property", "FullName");
 													switch (userProp.ToLower()) {
 														case "cell":
@@ -1979,8 +1986,10 @@ namespace DotNetNuke.Modules.Repository
 			string sTag = null;
 			RepositoryAttributesController attributes = new RepositoryAttributesController();
 			RepositoryAttributesInfo attribute = null;
+            var mc = new ModuleController();
+            var moduleInfo = mc.GetModule(ModuleId);
 
-			isRss = false;
+            isRss = false;
 			try {
 				if ((Convert.ToString(Settings["rss"]) != null)) {
 					isRss = Convert.ToBoolean(Settings["rss"]);
@@ -2057,7 +2066,7 @@ namespace DotNetNuke.Modules.Repository
 									} else {
 										switch (sTag) {
 											case "UPLOADBUTTON":
-												if (b_CanUpload | (PortalSecurity.HasEditPermissions(ModuleId) | PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))) {
+                                                if (b_CanUpload | (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "", moduleInfo) | PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))) {
 													Button objUploadButton = new Button();
 													objUploadButton.ID = "btnUserUpload";
 													objUploadButton.Text = Localization.GetString("UploadButton", m_LocalResourceFile);

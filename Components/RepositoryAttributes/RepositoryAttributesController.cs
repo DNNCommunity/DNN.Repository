@@ -27,8 +27,8 @@ namespace DotNetNuke.Modules.Repository
 			return CBO.FillCollection(DataProvider.Instance().GetRepositoryAttributes(moduleID), typeof(RepositoryAttributesInfo));
 		}
 		public RepositoryAttributesInfo GetSingleRepositoryAttributes(int itemID)
-		{
-			return (RepositoryAttributesInfo)CBO.FillObject(DataProvider.Instance().GetSingleRepositoryAttributes(itemID), typeof(RepositoryAttributesInfo));
+		{			
+            return CBO.FillObject<RepositoryAttributesInfo>(DataProvider.Instance().GetSingleRepositoryAttributes(itemID));
 		}
 		public int AddRepositoryAttributes(RepositoryAttributesInfo RepositoryAttributesInfo)
 		{

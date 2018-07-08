@@ -1,0 +1,26 @@
+<Objects>
+	<Object>
+		<Token>[UPLOADBUTTON]</Token>
+	</Object>
+	<Object>
+		<Token>[MODERATEBUTTON]</Token>
+	</Object>
+	<Object>
+		<Token>[SORT]</Token>
+	</Object>
+	<Object>
+		<Token>[RSS]</Token>
+	</Object>
+	<Object>
+		<Token>[PREVIOUSPAGE]</Token>
+	</Object>
+	<Object>
+		<Token>[NEXTPAGE]</Token>
+	</Object>
+	<Object>
+		<Token>[CURRENTPAGE]</Token>
+	</Object>
+	<Object>
+		<Token>[PAGECOUNT]</Token>
+	</Object>
+</Objects>

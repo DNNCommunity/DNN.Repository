@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Repository
 		// dynamically create provider
 		private static void CreateProvider()
 		{
-			objProvider = (DataProvider)DotNetNuke.Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Repository", "DotNetNuke.Modules.Repository");
+			objProvider = (DataProvider)DotNetNuke.Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Repository", "");
 		}
 
 		// return the provider

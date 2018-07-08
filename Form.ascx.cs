@@ -44,6 +44,7 @@ using DotNetNuke.UI.WebControls;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.UserControls;
+using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -411,7 +412,7 @@ namespace DotNetNuke.Modules.Repository
 												var ImageCtl = PlaceHolder.FindControl("__URLCTLIMAGE") as UrlControl;
 												SetURLControlFile(ImageCtl, objRepository, "IMAGE");
 												ImageCtl.ShowUpLoad = bool.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "URLCONTROLIMAGE", "ShowUpLoad", "True"));
-												ImageCtl.ShowDatabase = bool.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "URLCONTROLIMAGE", "ShowDatabase", "True"));
+												// ImageCtl.ShowDatabase = bool.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "URLCONTROLIMAGE", "ShowDatabase", "True"));
 												ImageCtl.ShowTrack = bool.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "URLCONTROLIMAGE", "ShowTrack", "False"));
 												ImageCtl.ShowUsers = bool.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "URLCONTROLIMAGE", "ShowUsers", "False"));
 												ImageCtl.ShowTabs = bool.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "URLCONTROLIMAGE", "ShowTabs", "False"));
@@ -835,7 +836,7 @@ namespace DotNetNuke.Modules.Repository
 
 												RoleController objRoles = new RoleController();
 												ListItem item = null;
-												ArrayList Arr = objRoles.GetPortalRoles(PortalId);
+                                                var Arr = RoleController.Instance.GetRoles(PortalId);
 												int i = 0;
 												for (i = 0; i <= Arr.Count - 1; i++) {
 													RoleInfo objRole = (RoleInfo)Arr[i];
@@ -910,31 +911,29 @@ namespace DotNetNuke.Modules.Repository
 				// we have a repository folder item. we need to match it up to the file item.
 				// if we can't we need to create one
 				DotNetNuke.Services.FileSystem.FolderController dc = new DotNetNuke.Services.FileSystem.FolderController();
-				DotNetNuke.Services.FileSystem.FolderInfo di = null;
-				DotNetNuke.Services.FileSystem.FileController fc = new DotNetNuke.Services.FileSystem.FileController();
-				DotNetNuke.Services.FileSystem.FileInfo fi = null;
+				DotNetNuke.Services.FileSystem.IFolderInfo di = null;
 
 				// make sure the repository folder is registered with the FileSystem and synchronized
 				di = null;
-				di = dc.GetFolder(PortalId, "Repository");
+				di = FolderManager.Instance.GetFolder(PortalId, "Repository");
 				if (di == null) {
-					// create the folder item
-					FolderID = dc.AddFolder(PortalId, "Repository", 0, false, false);
-					di = dc.GetFolder(PortalId, "Repository");
+                    // create the folder item
+                    FolderID = FolderManager.Instance.AddFolder(PortalId, "Repository").FolderID;
+                    di = FolderManager.Instance.GetFolder(PortalId, "Repository");
 					// write a temp file there to update the folder 'lastupdated' date
 					System.IO.FileStream fs = File.Create(di.PhysicalPath + "REP_TEMP.TXT");
 					fs.Close();
 					// delete the temp file
 					File.Delete(di.PhysicalPath + "REP_TEMP.TXT");
-					// synch the folder
-					DotNetNuke.Common.Utilities.FileSystemUtils.SynchronizeFolder(PortalId, di.PhysicalPath, "Repository", true);
+					// synch the folder					
+                    FolderManager.Instance.Synchronize(PortalId, di.FolderPath, true, true);
 				} else {
 					FolderID = di.FolderID;
 				}
 
 				try {
-					// we now have a Repository folder, now find the file
-					fi = fc.GetFile(obj, PortalId, FolderID);
+                    // we now have a Repository folder, now find the file
+                    var fi = FileManager.Instance.GetFile(di, obj, false);
 					if ((fi != null)) {
 						obj = "FileID=" + fi.FileId;
 					}

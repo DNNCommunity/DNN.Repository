@@ -40,7 +40,7 @@ using DotNetNuke.Entities.Modules.Communications;
 namespace DotNetNuke.Modules.Repository
 {
 
-	public abstract class RepositoryDashboard : Entities.Modules.PortalModuleBase, Entities.Modules.IActionable, Entities.Modules.IPortable, Entities.Modules.ISearchable, Entities.Modules.Communications.IModuleCommunicator
+	public abstract class RepositoryDashboard : Entities.Modules.PortalModuleBase, Entities.Modules.IActionable, Entities.Modules.Communications.IModuleCommunicator
 	{
 
 		#region "Controls"
@@ -137,22 +137,24 @@ namespace DotNetNuke.Modules.Repository
 			}
 		}
 
-		public string ExportModule(int ModuleID)
-		{
-            // included as a stub only so that the core knows this module Implements Entities.Modules.IPortable
-            return "";
-		}
+        // The following 3 methods should no longer be required since the supported interfaces are now defined in the manifest...
 
-		public void ImportModule(int ModuleID, string Content, string Version, int UserID)
-		{
-            // included as a stub only so that the core knows this module Implements Entities.Modules.IPortable
-		}
+		//public string ExportModule(int ModuleID)
+		//{
+  //          // included as a stub only so that the core knows this module Implements Entities.Modules.IPortable
+  //          return "";
+		//}
 
-		public Services.Search.SearchItemInfoCollection GetSearchItems(Entities.Modules.ModuleInfo ModInfo)
-		{
-            // included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
-            return new Services.Search.SearchItemInfoCollection();
-		}
+		//public void ImportModule(int ModuleID, string Content, string Version, int UserID)
+		//{
+  //          // included as a stub only so that the core knows this module Implements Entities.Modules.IPortable
+		//}
+
+		//public Services.Search.SearchItemInfoCollection GetSearchItems(Entities.Modules.ModuleInfo ModInfo)
+		//{
+  //          // included as a stub only so that the core knows this module Implements Entities.Modules.ISearchable
+  //          return new Services.Search.SearchItemInfoCollection();
+		//}
 
 		#endregion
 

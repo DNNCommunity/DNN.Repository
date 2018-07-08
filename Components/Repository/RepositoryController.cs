@@ -27,7 +27,8 @@ namespace DotNetNuke.Modules.Repository
 		#region "Public Functions"
 		public ArrayList GetRepositoryObjects(int ModuleId, string sFilter, string sSort, int iApproved, int iCategoryId, string sAttributes, int RowCount)
 		{
-			return CBO.FillCollection(DataProvider.Instance().GetRepositoryObjects(ModuleId, sFilter, sSort, iApproved, iCategoryId.ToString(), sAttributes, RowCount), typeof(RepositoryInfo));
+            var enumerable = CBO.FillCollection<RepositoryInfo>(DataProvider.Instance().GetRepositoryObjects(ModuleId, sFilter, sSort, iApproved, iCategoryId.ToString(), sAttributes, RowCount));
+            return new ArrayList(enumerable);
 		}
 		public ArrayList GetRepositoryObjectByID(int itemid)
 		{

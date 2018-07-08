@@ -1,0 +1,32 @@
+<Objects>
+	<Object>
+		<Token>[FILENAME]</Token>
+		<Settings>
+			<Setting>
+				<Name>CssClass</Name>
+				<Value>normal</Value>
+			</Setting>
+		</Settings>
+	</Object>
+	<Object>
+		<Token>[RATING]</Token>
+		<Settings>
+			<Setting>
+				<Name>CssClass</Name>
+				<Value>breadcrumb</Value>
+			</Setting>
+		</Settings>
+	</Object>
+	<Object>
+		<Token>[IMAGE]</Token>
+	</Object>
+	<Object>
+		<Token>[THUMBNAIL]</Token>
+		<Settings>
+			<Setting>
+				<Name>Width</Name>
+				<Value>35</Value>
+			</Setting>
+		</Settings>
+	</Object>
+</Objects>

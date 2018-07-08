@@ -1,0 +1,41 @@
+<style type="text/css">
+.ArticleToggle { font-family: Arial; font-size: 11px; font-weight: bold; border:solid 1px #CCC;}
+</style>
+<script type="text/javascript" src="[JAVASCRIPTFOLDER]showhide.js"></script>
+<script language="Javascript 1.2" type="text/javascript">
+function show(id)
+{
+	el = document.getElementById(id);
+	if (el.style.display == 'none')
+	{
+		el.style.display = '';
+		el = document.getElementById('more' + id);
+		el.innerHTML = '[LABEL:HideArticle]';
+	} else {
+		el.style.display = 'none';
+		el = document.getElementById('more' + id);
+		el.innerHTML = '[LABEL:ReadArticle]';
+	}
+}
+
+</script>
+<table summary="header_table" class="normal" cellspacing="0" cellpadding="0" style="width: 100%; padding: 4px;">
+	<tr style="width: 100%;">
+		<td class="normal" align="left" colspan="3">
+  			[UPLOADBUTTON][MODERATEBUTTON]
+		</td>
+	</tr>
+	<tr style="width: 100%;">
+		<td class="breadcrumb" align="left" valign="top" width="100">
+			[LABEL:Categories]<br />
+			[CATEGORIES]
+		</td>
+		<td class="breadcrumb" align="left" valign="top" width="100">
+			[LABEL:Sort]<br />
+			[SORT]
+		</td>
+		<td class="breadcrumb" align="right" valign="bottom">
+			[PREVIOUSPAGE]&nbsp;[CURRENTPAGE]&nbsp;[LABEL:of]&nbsp;[PAGECOUNT]&nbsp;[NEXTPAGE]
+		</td>
+	</tr>
+</table>

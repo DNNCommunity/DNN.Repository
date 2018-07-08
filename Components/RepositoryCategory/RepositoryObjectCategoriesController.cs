@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Repository
 		}
 		public RepositoryObjectCategoriesInfo GetSingleRepositoryObjectCategories(int objectID, int categoryid)
 		{
-			return (RepositoryObjectCategoriesInfo)CBO.FillObject(DataProvider.Instance().GetSingleRepositoryObjectCategories(objectID, categoryid), typeof(RepositoryObjectCategoriesInfo));
+            return CBO.FillObject<RepositoryObjectCategoriesInfo>(DataProvider.Instance().GetSingleRepositoryObjectCategories(objectID, categoryid));
 		}
 		public int AddRepositoryObjectCategories(RepositoryObjectCategoriesInfo RepositoryObjectCategoriesInfo)
 		{

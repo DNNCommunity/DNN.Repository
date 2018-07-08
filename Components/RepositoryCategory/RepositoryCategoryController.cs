@@ -23,12 +23,14 @@ namespace DotNetNuke.Modules.Repository
 	{
 
 		public ArrayList GetRepositoryCategories(int ModuleId, int RootID)
-		{
-			return CBO.FillCollection(DataProvider.Instance().GetRepositoryCategories(ModuleId, RootID), typeof(RepositoryCategoryInfo));
+		{			
+            var enumerable = CBO.FillCollection<RepositoryCategoryInfo>(DataProvider.Instance().GetRepositoryCategories(ModuleId, RootID));
+            ArrayList arrayList = new ArrayList(enumerable);
+            return arrayList;
 		}
 		public RepositoryCategoryInfo GetSingleRepositoryCategory(int ItemId)
 		{
-			return (RepositoryCategoryInfo)CBO.FillObject(DataProvider.Instance().GetSingleRepositoryCategory(ItemId), typeof(RepositoryCategoryInfo));
+            return CBO.FillObject<RepositoryCategoryInfo>(DataProvider.Instance().GetSingleRepositoryCategory(ItemId));
 		}
 		public int AddRepositoryCategory(int ItemId, int ModuleId, string CategoryName, int Parent, int ViewOrder)
 		{

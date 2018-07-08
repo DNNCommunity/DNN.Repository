@@ -438,7 +438,8 @@ namespace DotNetNuke.Modules.Repository
 					//    cblUploadTypes.Items(2).Selected = True
 					//End If
 
-					teContent.Text = Convert.ToString(settings["description"]);
+                    if (settings.ContainsKey("description"))
+					    teContent.Text = settings["description"].ToString();
 
 					chkModerationRoles.Items.Clear();
 					string ModerationRoles = "";
