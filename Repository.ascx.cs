@@ -1121,8 +1121,11 @@ namespace DotNetNuke.Modules.Repository
 												string strFormat = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CREATEDDATE", "DateFormat", "");
 												if (HttpContext.Current.Request.IsAuthenticated) {
 													UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
-													Entities.Users.UserTime UserTime = new Entities.Users.UserTime();
-													dtDate = UserTime.ConvertToServerTime(dtDate, objUser.Profile.TimeZone);
+                                                    // Entities.Users.UserTime UserTime = new Entities.Users.UserTime();
+                                                    // dtDate = UserTime.ConvertToServerTime(dtDate, objUser.Profile.TimeZone);
+                                                    var utctime = TimeZoneInfo.ConvertTimeToUtc(dtDate, objUser.Profile.PreferredTimeZone);
+                                                    dtDate = TimeZoneInfo.ConvertTimeFromUtc(utctime, TimeZoneInfo.Local);
+
 													// check to see if there is a special format for the user's country
 													strFormat = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CREATEDDATE", "DateFormat-" + objUser.Profile.PreferredLocale, strFormat);
 												}
@@ -1149,10 +1152,14 @@ namespace DotNetNuke.Modules.Repository
 												strFormat = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "UPDATEDDATE", "DateFormat", "");
 												if (HttpContext.Current.Request.IsAuthenticated) {
 													UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
-													Entities.Users.UserTime UserTime = new Entities.Users.UserTime();
-													dtDate = UserTime.ConvertToServerTime(dtDate, objUser.Profile.TimeZone);
-													// check to see if there is a special format for the user's country
-													strFormat = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "UPDATEDDATE", "DateFormat-" + objUser.Profile.PreferredLocale, strFormat);
+                                                    
+                                                    //Entities.Users.UserTime UserTime = new Entities.Users.UserTime();
+                                                    //dtDate = UserTime.ConvertToServerTime(dtDate, objUser.Profile.TimeZone);
+                                                    var utctime = TimeZoneInfo.ConvertTimeToUtc(dtDate, objUser.Profile.PreferredTimeZone);
+                                                    dtDate = TimeZoneInfo.ConvertTimeFromUtc(utctime, TimeZoneInfo.Local);
+
+                                                    // check to see if there is a special format for the user's country
+                                                    strFormat = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "UPDATEDDATE", "DateFormat-" + objUser.Profile.PreferredLocale, strFormat);
 												}
 												if (bRaw) {
 													if (!string.IsNullOrEmpty(strFormat)) {
@@ -1520,7 +1527,7 @@ namespace DotNetNuke.Modules.Repository
 															objPlaceHolder.Controls.Add(new LiteralControl(objUser.Profile.Telephone));
 															break;
 														case "timezone":
-															objPlaceHolder.Controls.Add(new LiteralControl(objUser.Profile.TimeZone.ToString()));
+															objPlaceHolder.Controls.Add(new LiteralControl(objUser.Profile.PreferredTimeZone.ToString()));
 															break;
 														case "unit":
 															objPlaceHolder.Controls.Add(new LiteralControl(objUser.Profile.Unit));

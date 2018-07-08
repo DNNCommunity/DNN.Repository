@@ -270,12 +270,13 @@ namespace DotNetNuke.Modules.Repository
 
 				if (uploadSize > 0) {
 
-					if (((((objPortalController.GetPortalSpaceUsedBytes(PortalID) + uploadSize) / 1000000) <= _portalSettings.HostSpace) | _portalSettings.HostSpace == 0) | (_portalSettings.ActiveTab.ParentId == _portalSettings.SuperTabId)) {
-						if (bIsFile & Strings.InStr(1, "," + string.Join(",", DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist.AllowedExtensions).ToUpper(), "," + strExtension.ToUpper()) == 0) {
+                    var allowedExtensions = string.Join(",", DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist).ToUpper();
+                    if (((((objPortalController.GetPortalSpaceUsedBytes(PortalID) + uploadSize) / 1000000) <= _portalSettings.HostSpace) | _portalSettings.HostSpace == 0) | (_portalSettings.ActiveTab.ParentId == _portalSettings.SuperTabId)) {
+						if (bIsFile && !allowedExtensions.Contains(strExtension.ToUpper())) {
 							bIsValidFileTypes = false;
 						}
 
-						if (bIsImageFile & Strings.InStr(1, "," + string.Join(",", DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist.AllowedExtensions).ToUpper(), "," + strImageExtension.ToUpper()) == 0) {
+						if (bIsImageFile && !allowedExtensions.Contains(strImageExtension.ToUpper())) {
 							bIsValidFileTypes = false;
 						}
 
@@ -311,7 +312,7 @@ namespace DotNetNuke.Modules.Repository
 							}
 						} else {
 							// restricted file type
-							strMessage += string.Format("{0} ( *.{1} ). {2}", DotNetNuke.Services.Localization.Localization.GetString("RestrictedFilePrefix", this.LocalResourceFile), Strings.Replace(string.Join(",", DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist.AllowedExtensions).ToUpper(), ",", ", *."), DotNetNuke.Services.Localization.Localization.GetString("RestrictedFileSuffix", this.LocalResourceFile));
+							strMessage += string.Format("{0} {1} {2}", DotNetNuke.Services.Localization.Localization.GetString("RestrictedFilePrefix", this.LocalResourceFile), string.Join(",", Entities.Host.Host.AllowedExtensionWhitelist), DotNetNuke.Services.Localization.Localization.GetString("RestrictedFileSuffix", this.LocalResourceFile));
 						}
 
 					// file too large

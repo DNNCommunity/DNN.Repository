@@ -277,8 +277,8 @@ namespace DotNetNuke.Modules.Repository
 		protected System.Web.UI.WebControls.TextBox txtPendingLocation;
 		protected System.Web.UI.WebControls.TextBox txtAnonymousLocation;
 
-        UrlControl ctlURL;        
-		TextEditor teContent;
+        protected UrlControl ctlURL;        
+		protected TextEditor teContent;
 		protected System.Web.UI.WebControls.CheckBox cbUserFolders;
 		// Protected WithEvents cblUploadTypes As System.Web.UI.WebControls.CheckBoxList
 		protected System.Web.UI.WebControls.DropDownList ddlDefaultSort;
@@ -337,9 +337,10 @@ namespace DotNetNuke.Modules.Repository
 
 
 			try {
-				// Get settings from the database 
-				ModuleController mc = new ModuleController();
-				Hashtable settings = mc.GetModuleSettings(ModuleId);
+                // Get settings from the database 
+                var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+                ModuleController mc = new ModuleController();
+                Hashtable settings = moduleInfo.ModuleSettings;
 
 
 				if ((Page.IsPostBack == false)) {
@@ -486,7 +487,7 @@ namespace DotNetNuke.Modules.Repository
 					RoleController objRoles = new RoleController();
 					ListItem item = null;
 
-					ArrayList Arr = objRoles.GetPortalRoles(PortalId);
+                    var Arr = objRoles.GetRoles(PortalId);
 					int i = 0;
 
 					for (i = 0; i <= Arr.Count - 1; i++) {

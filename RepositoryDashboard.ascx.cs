@@ -200,12 +200,13 @@ namespace DotNetNuke.Modules.Repository
 		{
 			RepositoryCategoryInfo objCategory = null;
 			RepositoryInfo objItem = null;
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
 			int iPtr = 0;
 
 			if (m_RepositoryId == -1) {
 				strTemplateName = "default";
 			} else {
-				Hashtable repositorySettings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(m_RepositoryId);
+                Hashtable repositorySettings = moduleInfo.ModuleSettings;
 				if ((repositorySettings["template"] != null)) {
 					strTemplateName = Convert.ToString(repositorySettings["template"]);
 				} else {
@@ -275,13 +276,14 @@ namespace DotNetNuke.Modules.Repository
 		{
 			RepositoryCategoryController categories = new RepositoryCategoryController();
 			RepositoryCategoryInfo objCategory = null;
-			RepositoryInfo objItem = null;
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            RepositoryInfo objItem = null;
 			int iPtr = 0;
 
 			if (m_RepositoryId == -1) {
 				strTemplateName = "default";
 			} else {
-				Hashtable repositorySettings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(m_RepositoryId);
+                Hashtable repositorySettings = moduleInfo.ModuleSettings;
 				if ((repositorySettings["template"] != null)) {
 					strTemplateName = Convert.ToString(repositorySettings["template"]);
 				} else {
@@ -566,10 +568,11 @@ namespace DotNetNuke.Modules.Repository
 		private void CheckForAllItems(ArrayList categories)
 		{
 			RepositoryController repository = new RepositoryController();
-			bool addAllItems = false;
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            bool addAllItems = false;
 
 			if (m_RepositoryId != -1) {
-				Hashtable repositorySettings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(m_RepositoryId);
+                Hashtable repositorySettings = moduleInfo.ModuleSettings;
 				if ((repositorySettings["AllowAllFiles"] != null)) {
 					if (!string.IsNullOrEmpty(Convert.ToString(repositorySettings["AllowAllFiles"]))) {
 						addAllItems = bool.Parse(repositorySettings["AllowAllFiles"].ToString());
@@ -584,7 +587,7 @@ namespace DotNetNuke.Modules.Repository
 				newcat.ModuleId = ModuleId;
 				newcat.Parent = -1;
 				newcat.ViewOrder = 0;
-				Hashtable repositorySettings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(m_RepositoryId);
+                Hashtable repositorySettings = moduleInfo.ModuleSettings;
 				ArrayList bindableList = new ArrayList();
 				bool bIsPersonal = false;
 				if (repositorySettings["IsPersonal"] != null) {
@@ -629,12 +632,12 @@ namespace DotNetNuke.Modules.Repository
 
 		private ArrayList RecalcCategoryCount(ArrayList categories)
 		{
-
-			RepositoryController repository = new RepositoryController();
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            RepositoryController repository = new RepositoryController();
 			RepositoryObjectCategoriesController rc = new RepositoryObjectCategoriesController();
 
 			bool bIsPersonal = false;
-			Hashtable repositorySettings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(m_RepositoryId);
+            Hashtable repositorySettings = moduleInfo.ModuleSettings;
 
 			if (repositorySettings["IsPersonal"] != null) {
 				bIsPersonal = bool.Parse(repositorySettings["IsPersonal"].ToString());
@@ -670,11 +673,12 @@ namespace DotNetNuke.Modules.Repository
 
 		private void BindData()
 		{
-			RepositoryController repository = new RepositoryController();
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            RepositoryController repository = new RepositoryController();
 			RepositoryCategoryController cc = new RepositoryCategoryController();
 			ArrayList categories = cc.GetRepositoryCategories(m_RepositoryId, -1);
 
-			Hashtable repositorySettings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(m_RepositoryId);
+            Hashtable repositorySettings = moduleInfo.ModuleSettings;
 
 			bool bIsPersonal = false;
 			if (repositorySettings["IsPersonal"] != null) {
@@ -780,8 +784,9 @@ namespace DotNetNuke.Modules.Repository
 		private void LoadDashboardTemplate()
 		{
 			string strStyle = null;
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
 
-			switch (m_DashboardStyle) {
+            switch (m_DashboardStyle) {
 				case "categories":
 					strStyle = "categories";
 					break;
@@ -807,7 +812,7 @@ namespace DotNetNuke.Modules.Repository
 			if (m_RepositoryId == -1) {
 				strTemplateName = "default";
 			} else {
-				Hashtable repositorySettings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(m_RepositoryId);
+                Hashtable repositorySettings = moduleInfo.ModuleSettings;
 				if ((repositorySettings["template"] != null)) {
 					strTemplateName = Convert.ToString(repositorySettings["template"]);
 				} else {
@@ -842,9 +847,10 @@ namespace DotNetNuke.Modules.Repository
 
 		private void CheckItemRoles()
 		{
-			try {
-				// get module settings for associated Repository
-				Hashtable RepositorySettings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(m_RepositoryId);
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            try {
+                // get module settings for associated Repository
+                Hashtable RepositorySettings = moduleInfo.ModuleSettings;
 
 				string DownloadRoles = "";
 				if ((Convert.ToString(RepositorySettings["downloadroles"]) != null)) {
