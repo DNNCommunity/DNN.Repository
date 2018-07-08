@@ -4,18 +4,13 @@
         <name>DotNetNuke.Modules.Repository</name>
     </assembly>
     <members>
-        <member name="M:DotNetNuke.Modules.Repository.RepositoryController.GetSearchItems(DotNetNuke.Entities.Modules.ModuleInfo)">
-            -----------------------------------------------------------------------------
+        <member name="M:DotNetNuke.Modules.Repository.RepositoryController.GetModifiedSearchDocuments(DotNetNuke.Entities.Modules.ModuleInfo,System.DateTime)">
             <summary>
-            GetSearchItems implements the ISearchable Interface
+            Implementation of ModuleSearchBase
             </summary>
-            <remarks>
-            </remarks>
-            <param name="ModInfo">The ModuleInfo for the module to be Indexed</param>
-            <history>
-            	[cnurse]	11/17/2004	documented
-            </history>
-            -----------------------------------------------------------------------------
+            <param name="moduleInfo">Module Information</param>
+            <param name="beginDateUtc">Date of the search indexer run</param>
+            <returns>IList of SearchDocument</returns>
         </member>
         <member name="M:DotNetNuke.Modules.Repository.RepositoryController.ExportModule(System.Int32)">
             -----------------------------------------------------------------------------

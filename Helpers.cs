@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -91,31 +92,27 @@ namespace DotNetNuke.Modules.Repository
 		#region "Public Functions and Subs"
 
 		public string ConvertFileIDtoPath(int pid, int fid)
-		{
-			DotNetNuke.Services.FileSystem.FileController fc = new DotNetNuke.Services.FileSystem.FileController();
-			DotNetNuke.Services.FileSystem.FileInfo file = fc.GetFileById(fid, pid);
+		{			
+            var file = FileManager.Instance.GetFile(fid);
 			return file.PhysicalPath;
 		}
 
 		public string ConvertFileIDtoFileName(int pid, int fid)
-		{
-			DotNetNuke.Services.FileSystem.FileController fc = new DotNetNuke.Services.FileSystem.FileController();
-			DotNetNuke.Services.FileSystem.FileInfo file = fc.GetFileById(fid, pid);
+		{			
+            var file = FileManager.Instance.GetFile(fid);
 			return file.FileName;
 		}
 
 		public string ConvertFileIDtoExtension(int pid, int fid)
 		{
-			DotNetNuke.Services.FileSystem.FileController fc = new DotNetNuke.Services.FileSystem.FileController();
-			DotNetNuke.Services.FileSystem.FileInfo file = fc.GetFileById(fid, pid);
+            var file = FileManager.Instance.GetFile(fid);
 			return file.Extension;
 		}
 
 		public DotNetNuke.Services.FileSystem.FileInfo ConvertFileIDtoFile(int pid, int fid)
 		{
-			DotNetNuke.Services.FileSystem.FileController fc = new DotNetNuke.Services.FileSystem.FileController();
-			DotNetNuke.Services.FileSystem.FileInfo file = fc.GetFileById(fid, pid);
-			return file;
+            DotNetNuke.Services.FileSystem.FileInfo file = (DotNetNuke.Services.FileSystem.FileInfo)FileManager.Instance.GetFile(fid);
+			return file;         
 		}
 
 		public string FormatText(string strHTML)
@@ -198,7 +195,8 @@ namespace DotNetNuke.Modules.Repository
 			// Obtain PortalSettings from Current Context
 			ModuleController mc = new ModuleController();
 			PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-			Hashtable settings = mc.GetModuleSettings(ModuleID);
+            var moduleInfo = mc.GetModule(ModuleID);
+            var settings = moduleInfo.ModuleSettings;
 
 			strTargetFolder = GetTargetFolder(ModuleID, pRepository);
 
@@ -272,12 +270,13 @@ namespace DotNetNuke.Modules.Repository
 
 				if (uploadSize > 0) {
 
-					if (((((objPortalController.GetPortalSpaceUsedBytes(PortalID) + uploadSize) / 1000000) <= _portalSettings.HostSpace) | _portalSettings.HostSpace == 0) | (_portalSettings.ActiveTab.ParentId == _portalSettings.SuperTabId)) {
-						if (bIsFile & Strings.InStr(1, "," + _portalSettings.HostSettings["FileExtensions"].ToString().ToUpper(), "," + strExtension.ToUpper()) == 0) {
+                    var allowedExtensions = string.Join(",", DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist).ToUpper();
+                    if (((((objPortalController.GetPortalSpaceUsedBytes(PortalID) + uploadSize) / 1000000) <= _portalSettings.HostSpace) | _portalSettings.HostSpace == 0) | (_portalSettings.ActiveTab.ParentId == _portalSettings.SuperTabId)) {
+						if (bIsFile && !allowedExtensions.Contains(strExtension.ToUpper())) {
 							bIsValidFileTypes = false;
 						}
 
-						if (bIsImageFile & Strings.InStr(1, "," + _portalSettings.HostSettings["FileExtensions"].ToString().ToUpper(), "," + strImageExtension.ToUpper()) == 0) {
+						if (bIsImageFile && !allowedExtensions.Contains(strImageExtension.ToUpper())) {
 							bIsValidFileTypes = false;
 						}
 
@@ -313,7 +312,7 @@ namespace DotNetNuke.Modules.Repository
 							}
 						} else {
 							// restricted file type
-							strMessage += string.Format("{0} ( *.{1} ). {2}", DotNetNuke.Services.Localization.Localization.GetString("RestrictedFilePrefix", this.LocalResourceFile), Strings.Replace(_portalSettings.HostSettings["FileExtensions"].ToString(), ",", ", *."), DotNetNuke.Services.Localization.Localization.GetString("RestrictedFileSuffix", this.LocalResourceFile));
+							strMessage += string.Format("{0} {1} {2}", DotNetNuke.Services.Localization.Localization.GetString("RestrictedFilePrefix", this.LocalResourceFile), string.Join(",", Entities.Host.Host.AllowedExtensionWhitelist), DotNetNuke.Services.Localization.Localization.GetString("RestrictedFileSuffix", this.LocalResourceFile));
 						}
 
 					// file too large
@@ -399,8 +398,10 @@ namespace DotNetNuke.Modules.Repository
 			// Obtain PortalSettings from Current Context
 			PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 
-			// Get settings from the database 
-			Hashtable settings = DotNetNuke.Entities.Portals.PortalSettings.GetModuleSettings(ModuleId);
+            // Get settings from the database 
+            var moduleController = new ModuleController();
+            var moduleInfo = moduleController.GetModule(ModuleId);
+            var settings = moduleInfo.ModuleSettings;
 
 			if (!string.IsNullOrEmpty(Convert.ToString(settings["userfolders"]))) {
 				g_UserFolders = bool.Parse(Convert.ToString(settings["userfolders"]));
@@ -629,7 +630,9 @@ namespace DotNetNuke.Modules.Repository
 		public bool IsModerator(int pid, int mid)
 		{
 			PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-			Hashtable settings = PortalSettings.GetModuleSettings(mid);
+            var moduleController = new ModuleController();
+            var moduleInfo = moduleController.GetModule(mid);
+            var settings = moduleInfo.ModuleSettings;
 			string ModerateRoles = "";
 			Helpers oRepositoryController = new Helpers();
 
@@ -647,8 +650,10 @@ namespace DotNetNuke.Modules.Repository
 		public bool IsTrusted(int pid, int mid)
 		{
 			PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-			Hashtable settings = PortalSettings.GetModuleSettings(mid);
-			string TrustedRoles = "";
+            var moduleController = new ModuleController();
+            var moduleInfo = moduleController.GetModule(mid);
+            var settings = moduleInfo.ModuleSettings;
+            string TrustedRoles = "";
 			Helpers oRepositoryController = new Helpers();
 
 			if ((Convert.ToString(settings["trustedroles"]) != null)) {
@@ -844,8 +849,10 @@ namespace DotNetNuke.Modules.Repository
 
 		public static Hashtable GetModSettings(int mid)
 		{
-			ModuleController mc = new ModuleController();
-			return mc.GetModuleSettings(mid);
+            var moduleController = new ModuleController();
+            var moduleInfo = moduleController.GetModule(mid);
+            var settings = moduleInfo.ModuleSettings;
+            return settings;
 		}
 
 		public string ChangeValue(string oldUrl, string qsName, string newValue, int del = 0)
@@ -1104,10 +1111,12 @@ namespace DotNetNuke.Modules.Repository
 		{
 			string strTargetFolder = "";
 			PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-			Hashtable settings = PortalSettings.GetModuleSettings(moduleid);
+            var moduleController = new ModuleController();
+            var moduleInfo = moduleController.GetModule(moduleid);
+            var settings = moduleInfo.ModuleSettings;
 
-			UserInfo userInfo = null;
-			userInfo = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
+            UserInfo userInfo = null;
+            userInfo = UserController.Instance.GetCurrentUserInfo();
 
 			SetRepositoryFolders(moduleid);
 
@@ -1158,7 +1167,7 @@ namespace DotNetNuke.Modules.Repository
 			DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
 
 			UserInfo userInfo = null;
-			userInfo = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
+			userInfo = UserController.Instance.GetCurrentUserInfo();
 
 			strTargetFolder = GetTargetFolder(ModuleID, pRepository);
 

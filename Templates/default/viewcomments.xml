@@ -1,0 +1,23 @@
+<Objects>
+	<Object>
+		<Token>[COUNT]</Token>
+	</Object>
+	<Object>
+		<Token>[GRID]</Token>
+		<Settings>
+			<Setting>
+				<Name>CssClass</Name>
+				<Value>repCommentGrid</Value>
+			</Setting>
+		</Settings>
+	</Object>
+	<Object>
+		<Token>[USERNAME]</Token>
+	</Object>
+	<Object>
+		<Token>[TEXTBOX]</Token>
+	</Object>
+	<Object>
+		<Token>[POSTBUTTON]</Token>
+	</Object>
+</Objects>

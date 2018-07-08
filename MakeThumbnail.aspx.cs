@@ -92,10 +92,12 @@ namespace DotNetNuke.Modules.Repository
 
 				if ((objRepository != null)) {
 					if (string.IsNullOrEmpty(objRepository.Image)) {
-						// no image, display an icon or generic image based on module settings
-						Hashtable settings = _moduleController.GetModuleSettings(int.Parse(ModuleId));
+						// no image, display an icon or generic image based on module settings						
+                        var moduleController = new ModuleController();
+                        var moduleInfo = moduleController.GetModule(int.Parse(ModuleId));
+                        var settings = moduleInfo.ModuleSettings;
 
-						if (!string.IsNullOrEmpty(Convert.ToString(settings["noimage"]))) {
+                        if (!string.IsNullOrEmpty(Convert.ToString(settings["noimage"]))) {
 							strPathToImage = _portalSettings.HomeDirectory + Convert.ToString(settings["noimage"]);
 						} else {
 							if (!string.IsNullOrEmpty(Convert.ToString(settings["useicon"]))) {
@@ -155,8 +157,10 @@ namespace DotNetNuke.Modules.Repository
 
 			} else {
 				// no image id, then we display the "No Image" image for this module
-				Hashtable settings = PortalSettings.GetModuleSettings(int.Parse(ModuleId));
-				string noImageURL = Convert.ToString(settings["noimage"]);
+                var moduleController = new ModuleController();
+                var moduleInfo = moduleController.GetModule(int.Parse(ModuleId));
+                var settings = moduleInfo.ModuleSettings;
+                string noImageURL = Convert.ToString(settings["noimage"]);
 				if (System.Text.RegularExpressions.Regex.IsMatch(noImageURL.ToLower(), "(http|https|ftp|gopher)://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?")) {
 					strPathToImage = noImageURL;
 					bIsURL = true;
@@ -228,10 +232,13 @@ namespace DotNetNuke.Modules.Repository
 
 
 			} else {
-				// we are serving out the full size image
-				// if the settings indicate to use a watermark, add the watermark to the image
-				Hashtable settings = _moduleController.GetModuleSettings(int.Parse(ModuleId));
-				string watermarkText = "";
+                // we are serving out the full size image
+                // if the settings indicate to use a watermark, add the watermark to the image
+                var moduleController = new ModuleController();
+                var moduleInfo = moduleController.GetModule(int.Parse(ModuleId));
+                var settings = moduleInfo.ModuleSettings;
+
+                string watermarkText = "";
 
 				// to avoid GIF image issues, create a new blank canvas and copy the image.
 				Bitmap newImage = new Bitmap(fullSizeImg.Width, fullSizeImg.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);

@@ -10,14 +10,15 @@ using DotNetNuke;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common;
 using DotNetNuke.Services.Search;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Search.Entities;
+using System.Collections.Generic;
 
 namespace DotNetNuke.Modules.Repository
 {
 
-	public class RepositoryController : Entities.Modules.ISearchable, Entities.Modules.IPortable, Entities.Modules.IUpgradeable
-	{
-
-
+	public class RepositoryController : ModuleSearchBase, IPortable, IUpgradeable
+    {
 		private Helpers oRepositoryBusinessController;
 		public RepositoryController()
 		{
@@ -27,7 +28,8 @@ namespace DotNetNuke.Modules.Repository
 		#region "Public Functions"
 		public ArrayList GetRepositoryObjects(int ModuleId, string sFilter, string sSort, int iApproved, int iCategoryId, string sAttributes, int RowCount)
 		{
-			return CBO.FillCollection(DataProvider.Instance().GetRepositoryObjects(ModuleId, sFilter, sSort, iApproved, iCategoryId.ToString(), sAttributes, RowCount), typeof(RepositoryInfo));
+            var enumerable = CBO.FillCollection<RepositoryInfo>(DataProvider.Instance().GetRepositoryObjects(ModuleId, sFilter, sSort, iApproved, iCategoryId.ToString(), sAttributes, RowCount));
+            return new ArrayList(enumerable);
 		}
 		public ArrayList GetRepositoryObjectByID(int itemid)
 		{
@@ -35,7 +37,7 @@ namespace DotNetNuke.Modules.Repository
 		}
 		public RepositoryInfo GetSingleRepositoryObject(int ItemId)
 		{
-			return (RepositoryInfo)CBO.FillObject(DataProvider.Instance().GetSingleRepositoryObject(ItemId), typeof(RepositoryInfo));
+			return CBO.FillObject<RepositoryInfo>(DataProvider.Instance().GetSingleRepositoryObject(ItemId));
 		}
 		public int AddRepositoryObject(string UserName, int ModuleId, RepositoryInfo objRepository)
 		{
@@ -78,54 +80,50 @@ namespace DotNetNuke.Modules.Repository
 		#endregion
 
 		#region "Optional Interfaces"
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// GetSearchItems implements the ISearchable Interface
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// <param name="ModInfo">The ModuleInfo for the module to be Indexed</param>
-		/// <history>
-		///		[cnurse]	11/17/2004	documented
-		/// </history>
-		/// -----------------------------------------------------------------------------
-		public Services.Search.SearchItemInfoCollection GetSearchItems(Entities.Modules.ModuleInfo ModInfo)
-		{
-			oRepositoryBusinessController = new Helpers();
-			SearchItemInfoCollection SearchItemCollection = new SearchItemInfoCollection();
-			ArrayList RepositoryObjects = GetRepositoryObjects(ModInfo.ModuleID, "", "Name", oRepositoryBusinessController.IS_APPROVED, -1, "", -1);
-			SearchItemInfo SearchItem = null;
-			int UserId = Null.NullInteger;
-			RepositoryInfo objItem = null;
-			string strContent = null;
-			string strDescription = null;
 
-			foreach (RepositoryInfo objItem_loopVariable in RepositoryObjects) {
-				objItem = objItem_loopVariable;
-				if (Information.IsNumeric(objItem.CreatedByUser)) {
-					UserId = int.Parse(objItem.CreatedByUser);
-				}
-				strContent = System.Web.HttpUtility.HtmlDecode(string.Format("{0} {1}", objItem.Name, objItem.Description));
-				strDescription = HtmlUtils.Shorten(HtmlUtils.Clean(System.Web.HttpUtility.HtmlDecode(objItem.Description), false), 100, "...");
-				SearchItem = new SearchItemInfo(string.Format("{0} - {1}", ModInfo.ModuleTitle, objItem.Name), strDescription, UserId, objItem.CreatedDate, ModInfo.ModuleID, objItem.ItemId.ToString(), strContent, "id=" + objItem.ItemId.ToString());
-				SearchItemCollection.Add(SearchItem);
-			}
+        /// <summary>
+        /// Implementation of ModuleSearchBase
+        /// </summary>
+        /// <param name="moduleInfo">Module Information</param>
+        /// <param name="beginDateUtc">Date of the search indexer run</param>
+        /// <returns>IList of SearchDocument</returns>
+        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
+        {
+            DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);
+            var searchDocuments = new List<SearchDocument>();
+            var helpers = new Helpers();
+            var repositoryObjects = GetRepositoryObjects(moduleInfo.ModuleID, "", "Name", helpers.IS_APPROVED, -1, "", -1);
+            foreach (RepositoryInfo repObject in repositoryObjects)
+            {
+                int userId = -1;
+                int.TryParse(repObject.CreatedByUser, out userId);
 
-			return SearchItemCollection;
-		}
+                var searchDoc = new SearchDocument
+                {
+                    UniqueKey = moduleInfo.ModuleID.ToString(),
+                    PortalId = moduleInfo.PortalID,
+                    Title = moduleInfo.ModuleTitle + " - " + repObject.Name,
+                    Description = HtmlUtils.Shorten(HtmlUtils.Clean(System.Web.HttpUtility.HtmlDecode(repObject.Description), false), 100, "..."),
+                    Body = repObject.Description,
+                    ModifiedTimeUtc = repObject.UpdatedDate
+                };
+                searchDocuments.Add(searchDoc);
+            }
+            return searchDocuments;
+        }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// ExportModule implements the IPortable ExportModule Interface
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// <param name="ModuleID">The Id of the module to be exported</param>
-		/// <history>
-		///		[cnurse]	11/17/2004	documented
-		/// </history>
-		/// -----------------------------------------------------------------------------
-		public string ExportModule(int ModuleID)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// ExportModule implements the IPortable ExportModule Interface
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="ModuleID">The Id of the module to be exported</param>
+        /// <history>
+        ///		[cnurse]	11/17/2004	documented
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public string ExportModule(int ModuleID)
 		{
 			string strXML = "";
 			oRepositoryBusinessController = new Helpers();
@@ -351,8 +349,8 @@ namespace DotNetNuke.Modules.Repository
 
 		}
 
-		#endregion
+        #endregion
 
-	}
+    }
 
 }

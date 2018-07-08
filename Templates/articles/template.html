@@ -1,0 +1,55 @@
+<table class="normal" width="100%" cellspacing="0" cellpadding="5" style="background-color:white;margin-top:8px;border-top: dashed 1px lightgrey">
+	<tr>
+		<td rowspan="4" width="48" align="center" valign="top">
+			<img src="[THUMBNAIL]" border="0" alt="Thumbnail"/>
+		</td>
+	</tr>
+	<tr>
+		<td style="border: 0x; margin-bottom: 6px;">
+			<table class="normal" width="100%" cellspacing="0" cellpadding="0">
+				<tr>
+					<td class="normal" align="left" width="1" valign="top">[EDIT]</td>
+					<td class="normalbold" align="left" valign="top" style="padding-left:3px">
+				[TITLE]
+				<br />
+				[LABEL:Author] :: [AUTHOR]
+				<br />
+				[LABEL:Date] :: [UPDATEDDATE]
+			</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table class="normal" width="100%" cellspacing="0" cellpadding="4">
+				<tr>
+					<td class="normal" align="left" valign="top">
+						[SUMMARY]<br />
+						<a id="moreinfo[ITEMID]" style="cursor:pointer;padding-top:2px" onclick="javascript:show('info[ITEMID]');return false;">
+							<b>[LABEL:ReadArticle]</b>
+						</a>
+						<div id="info[ITEMID]" style="display:none">
+							<hr/>
+							[DESCRIPTION]
+						</div>
+						<br />
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="normal" align="left" valign="middle" style="padding-top: 6px; padding-right: 6px; border-top: 1px solid Gainsboro;">
+			<table class="normal" width="100%" cellspacing="0" cellpadding="0">
+				<tr>
+					<td class="normal" align="left" valign="top">[RATINGS]&nbsp;&nbsp;[COMMENTS]</td>
+					<td class="normal" align="right" valign="top">[DOWNLOAD]</td>
+				</tr>
+				<tr>
+					<td class="normal" align="left" valign="top" colspan="2">[RATINGSFORM][COMMENTSFORM]</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>

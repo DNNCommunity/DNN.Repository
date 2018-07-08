@@ -45,12 +45,13 @@
         <DeployInclude Include="**\*.html" />
         <DeployInclude Include="**\*.htm" />
         <DeployInclude Include="**\*.resx" />
+        <DeployInclude Include="**\*.jpg" />
+        <DeployInclude Include="**\*.png" />
+        <DeployInclude Include="**\*.gif" />
         <DeployInclude Include="**\*.xml" Exclude="**\obj\**;**\_ReSharper*\**;**\.git\**;**\packages\**" />
         <DeployInclude Include="**\*.aspx" />
         <DeployInclude Include="**\*.js" />
         <DeployInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\.git\**;" />
-        <DeployInclude Include="**\images\**" />
-        <DeployInclude Include="**\img\**" Exclude="packages\**" />
       </ItemGroup>
       <Zip Files="@(DeployInclude)" ZipFileName="$(MSBuildProjectDirectory)\DebugDeploy.zip"
            WorkingDirectory="$(MSBuildProjectDirectory)" />
@@ -85,6 +86,7 @@
         <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;**\.git\**;**\obj\**" />
         <InstallInclude Include="**\img\**" Exclude="packages\**" />
         <InstallInclude Include="**\images\**" Exclude="packages\**" />
+        <InstallInclude Include="**\Templates\**" />
       </ItemGroup>
 
       <!-- Set the files to include in the source-->
@@ -108,6 +110,7 @@
         <SourceInclude Include="**\*.sln" />
         <SourceInclude Include="**\img\**" Exclude="packages\**" />
         <SourceInclude Include="**\images\**" Exclude="packages\**" />
+        <SourceInclude Include="**\Templates\**" />
       </ItemGroup>
 
       <!-- Files for setup -->

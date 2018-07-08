@@ -1,7 +1,7 @@
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx"%>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="Portal" TagName="URL" Src="~/controls/URLControl.ascx" %>
-<%@ Control Language="vb" AutoEventWireup="false" Codebehind="Settings.ascx.vb" Inherits="DotNetNuke.Modules.Repository.Settings" TargetSchema="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" %>
+<%@ Control Language="C#" AutoEventWireup="false" Codebehind="Settings.ascx.cs" Inherits="DotNetNuke.Modules.Repository.Settings" TargetSchema="http://schemas.microsoft.com/intellisense/ie3-2nav3-0" %>
 
 <table cellSpacing="0" cellPadding="0" border="0" class="normal" style="width: 800px;">
 
@@ -239,8 +239,7 @@
     <tr>
 		<td><dnn:label id="plNoImage" runat="server" controlname="ctlURL" suffix=":"></dnn:label></td>
         <td class="repSetting">
-			<portal:url id="ctlURL" runat="server" width="250" shownewwindow="False" ShowLog="False" ShowTrack="False"
-				ShowTabs="False" />
+			<portal:url id="ctlURL" runat="server" width="250" ShowNewWindow="False" ShowLog="False" ShowTrack="False" ShowTabs="False" />
 		</td>
 	</tr>
 

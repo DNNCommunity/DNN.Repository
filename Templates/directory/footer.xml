@@ -1,0 +1,14 @@
+<Objects>
+	<Object>
+		<Token>[PREVIOUSPAGE]</Token>
+	</Object>
+	<Object>
+		<Token>[NEXTPAGE]</Token>
+	</Object>
+	<Object>
+		<Token>[CURRENTPAGE]</Token>
+	</Object>
+	<Object>
+		<Token>[PAGECOUNT]</Token>
+	</Object>
+</Objects>

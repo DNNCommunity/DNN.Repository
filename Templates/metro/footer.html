@@ -1,0 +1,21 @@
+<div class="rtHeaderFooter">
+<table class="rtHeader" cellspacing="0" cellpadding="0" style="width: 100%; padding: 3px;">
+	<tr width="100%">
+		<td class="breadcrumb" style="text-align: right; vertical-align: top;">
+			[PREVIOUSPAGE]&nbsp;[CURRENTPAGE]&nbsp;[LABEL:of]&nbsp;[PAGECOUNT]&nbsp;[NEXTPAGE]
+		</td>
+	</tr>
+</table>
+</div>
+<script type = "text/javascript">
+  // add space between each attribute
+  $(document).ready(function() {
+    $(".rtTitle").each(function(index) {
+      $(this).html($(this).html().replace("RATING:", "&nbsp;"));
+    });
+	// add space between SEARCH and the Search box
+	$(".rtHeaderFooter").each(function(index) {
+      $(this).html($(this).html().replace("Search", "Filter&nbsp;"));
+    });
+  });
+</script>

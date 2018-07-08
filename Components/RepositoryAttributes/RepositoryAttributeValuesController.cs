@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Repository
 		}
 		public RepositoryAttributeValuesInfo GetSingleRepositoryAttributeValues(int itemID)
 		{
-			return (RepositoryAttributeValuesInfo)CBO.FillObject(DataProvider.Instance().GetSingleRepositoryAttributeValues(itemID), typeof(RepositoryAttributeValuesInfo));
+            return (RepositoryAttributeValuesInfo)CBO.FillObject<RepositoryAttributeValuesInfo>(DataProvider.Instance().GetSingleRepositoryAttributeValues(itemID));
 		}
 		public int AddRepositoryAttributeValues(RepositoryAttributeValuesInfo RepositoryAttributeValuesInfo)
 		{

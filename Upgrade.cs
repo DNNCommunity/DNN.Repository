@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -52,17 +53,18 @@ namespace DotNetNuke.Modules.Repository
 				PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 				DesktopModuleController _desktopModuleController = new DesktopModuleController();
 
-				if ((_desktopModuleController.GetDesktopModuleByModuleName("Gooddogs Repository") == null)) {
+				if ((DesktopModuleController.GetDesktopModuleByModuleName("Gooddogs Repository", Null.NullInteger) == null)) {
 					return "Gooddogs Repository Not installed - no upgrade required";
 				}
 
 				ModuleDefinitionController _moduleDefinitionControler = new ModuleDefinitionController();
-				int OldRepositoryDefId = _moduleDefinitionControler.GetModuleDefinitionByName(_desktopModuleController.GetDesktopModuleByModuleName("Gooddogs Repository").DesktopModuleID, "Gooddogs Repository").ModuleDefID;
-				int OldDashboardDefId = _moduleDefinitionControler.GetModuleDefinitionByName(_desktopModuleController.GetDesktopModuleByModuleName("Gooddogs Dashboard").DesktopModuleID, "Gooddogs Dashboard").ModuleDefID;
-				int NewRepositoryDefId = _moduleDefinitionControler.GetModuleDefinitionByName(_desktopModuleController.GetDesktopModuleByModuleName("Repository").DesktopModuleID, "Repository").ModuleDefID;
-				int NewDashboardDefId = _moduleDefinitionControler.GetModuleDefinitionByName(_desktopModuleController.GetDesktopModuleByModuleName("Repository Dashboard").DesktopModuleID, "Repository Dashboard").ModuleDefID;
+                int OldRepositoryDefId = ModuleDefinitionController.GetModuleDefinitionByDefinitionName("Gooddogs Repository", DesktopModuleController.GetDesktopModuleByModuleName("Gooddogs Repository", Null.NullInteger).DesktopModuleID).ModuleDefID;
+                int OldDashboardDefId = ModuleDefinitionController.GetModuleDefinitionByDefinitionName("Gooddogs Dashboard", DesktopModuleController.GetDesktopModuleByModuleName("Gooddogs Dashboard", Null.NullInteger).DesktopModuleID).ModuleDefID;
+                int NewRepositoryDefId = ModuleDefinitionController.GetModuleDefinitionByDefinitionName("Repository", DesktopModuleController.GetDesktopModuleByModuleName("Repository", Null.NullInteger).DesktopModuleID).ModuleDefID;
+                int NewDashboardDefId = ModuleDefinitionController.GetModuleDefinitionByDefinitionName("Repository Dashboard", DesktopModuleController.GetDesktopModuleByModuleName("Repository Dashboard", Null.NullInteger).DesktopModuleID).ModuleDefID;
 
-				RepositoryController m_repositoryController = new RepositoryController();
+
+                RepositoryController m_repositoryController = new RepositoryController();
 
 				ModuleInfo _moduleInfo = null;
 				ModuleController _moduleController = new ModuleController();
@@ -124,7 +126,7 @@ namespace DotNetNuke.Modules.Repository
 				PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 				DesktopModuleController _desktopModuleController = new DesktopModuleController();
 
-				if ((_desktopModuleController.GetDesktopModuleByModuleName("Repository") == null)) {
+				if ((DesktopModuleController.GetDesktopModuleByModuleName("Repository", Null.NullInteger) == null)) {
 					return "No existing Repository modules found - no upgrade required";
 				}
 
@@ -135,8 +137,8 @@ namespace DotNetNuke.Modules.Repository
 
 				foreach (ModuleInfo objModule_loopVariable in arrModules) {
 					objModule = objModule_loopVariable;
-					// get the module settings
-					settings = PortalSettings.GetModuleSettings(objModule.ModuleID);
+                    // get the module settings                    
+                    settings = objModule.ModuleSettings;
 
 					// if this module is using UserFolders...
 

@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Repository
 		}
 		public RepositoryCommentInfo GetSingleRepositoryComment(int ItemId, int moduleid)
 		{
-			return (RepositoryCommentInfo)CBO.FillObject(DataProvider.Instance().GetSingleRepositoryComment(ItemId, moduleid), typeof(RepositoryCommentInfo));
+            return CBO.FillObject<RepositoryCommentInfo>(DataProvider.Instance().GetSingleRepositoryComment(ItemId, moduleid));
 		}
 		public int AddRepositoryComment(int ItemId, int moduleid, string UserName, string Comment)
 		{
