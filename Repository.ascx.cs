@@ -1742,7 +1742,9 @@ namespace DotNetNuke.Modules.Repository
 
 			// if there's a user cookie, get the category from the cookie
 			try {
-				mItemID = int.Parse(ViewState["mItemID"].ToString());
+                if (ViewState["mItemID"] != null) {
+                    mItemID = int.Parse(ViewState["mItemID"].ToString());
+                }
 				if (mItemID != null) {
 					repositoryItems = objRepository.GetRepositoryObjectByID(mItemID ?? default(int));
 				} else {
@@ -1812,8 +1814,11 @@ namespace DotNetNuke.Modules.Repository
 
 				}
 
-				string mView = null;
-				mView = ViewState["mView"].ToString();
+				string mView = string.Empty;
+                if (ViewState["mView"] != null)
+                {
+                    mView = ViewState["mView"].ToString();
+                }
 				switch (mView) {
 
 					case "Details":
