@@ -72,9 +72,9 @@ namespace DotNetNuke.Modules.Repository
 			//Read the querystring params to determine the image to create a thumbnail 
 			string ImageId = Request.QueryString["id"];
 			string ModuleId = Request.QueryString["mid"];
-			int imageHeight = int.Parse(Request.QueryString["h"]);
-			int imageWidth = int.Parse(Request.QueryString["w"]);
-			string strPathToImage = "";
+            int imageHeight = int.TryParse(Request.QueryString["h"], out imageHeight) ? imageHeight : 0;
+            int imageWidth = int.TryParse(Request.QueryString["w"], out imageWidth) ? imageWidth : 0;
+            string strPathToImage = "";
 			string strExtension = "";
 			bool b_UseIcon = false;
 			string sNoImage = null;
