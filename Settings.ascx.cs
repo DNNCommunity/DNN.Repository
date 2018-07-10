@@ -37,6 +37,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -1124,9 +1125,17 @@ namespace DotNetNuke.Modules.Repository
 			if (!string.IsNullOrEmpty(txtNewCategory.Text.Trim())) {
 				RepositoryCategoryController categories = new RepositoryCategoryController();
 				RepositoryCategoryInfo category = null;
-				int _key = int.Parse(ViewState["_key"].ToString());
-				int _index = int.Parse(ViewState["_index"].ToString());
-				int _parent = int.Parse(ddlParentCategory.SelectedValue);
+                int _key = Null.NullInteger;
+                if (ViewState["_key"] != null)
+                {
+                    _key = int.TryParse(ViewState["_key"].ToString(), out _key) ? _key : Null.NullInteger;
+                }
+                int _index = Null.NullInteger;
+                if (ViewState["_index"] != null)
+                {
+                    _index = int.TryParse(ViewState["_index"].ToString(), out _index) ? _index : Null.NullInteger;
+                }
+				int _parent = int.TryParse(ddlParentCategory.SelectedValue, out _parent) ? _parent : Null.NullInteger;
 
 				if (lbAddCategory.Text == Localization.GetString("SaveButton", LocalResourceFile)) {
 					category = categories.GetSingleRepositoryCategory(_key);
