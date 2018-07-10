@@ -1,0 +1,3 @@
+Install\Module\Repository_03.05.06.Install.zip
+Install\Module\Repository_03.05.06.Source.zip
+bin\DotNetNuke.Modules.Repository.SqlDataProvider.dll

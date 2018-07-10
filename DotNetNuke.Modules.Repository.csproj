@@ -282,6 +282,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="04.00.00.txt" />
     <Content Include="03.05.06.txt" />
     <Content Include="About.ascx" />
     <Content Include="DashboardSettings.ascx">

@@ -34,11 +34,12 @@
         </assembly>
       </assemblies>
     </component>
-    <component type="File">
+    <component type="Cleanup" version="03.05.06" filename="03.05.06.txt" />
+    <component type="Cleanup" version="04.00.00">
       <files>
-        <basePath>DesktopModules\Repository</basePath>                
         <file>
-          <name>03.05.06.txt</name>
+          <path>bin</path>
+          <name>DotNetNuke.Modules.Repository.SqlDataProvider.dll</name>
         </file>
       </files>
     </component>
