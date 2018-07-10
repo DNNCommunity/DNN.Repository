@@ -825,10 +825,13 @@
     <None Include="03.05.05.SqlDataProvider" />
     <None Include="03.05.06.SqlDataProvider" />
     <None Include="BuildScripts\ModulePackage.Targets" />
-    <None Include="DotNetNuke_DotNetNuke.Repository.dnn" />
+    <None Include="DotNetNuke_DotNetNuke.Repository.dnn">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="README.md" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
