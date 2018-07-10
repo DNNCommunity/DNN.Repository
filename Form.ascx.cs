@@ -1104,7 +1104,7 @@ namespace DotNetNuke.Modules.Repository
 				switch (controlType) {
 					case "SINGLE":
 						var objSingle = PlaceHolder.FindControl("__Categories") as RadioButtonList;
-						if ((obj != null)) {
+						if ((objSingle != null)) {
 							foreach (ListItem item in objSingle.Items) {
 								if (item.Selected) {
 									strCategories += item.Value + ";";
@@ -1114,7 +1114,7 @@ namespace DotNetNuke.Modules.Repository
 						break;
 					case "MULTIPLE":
 						var objMultiple = PlaceHolder.FindControl("__Categories") as CheckBoxList;
-						if ((obj != null)) {
+						if ((objMultiple != null)) {
 							foreach (ListItem item in objMultiple.Items) {
 								if (item.Selected) {
 									strCategories += item.Value + ";";
