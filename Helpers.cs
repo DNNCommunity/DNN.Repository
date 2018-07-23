@@ -409,23 +409,9 @@ namespace DotNetNuke.Modules.Repository
 				g_UserFolders = true;
 			}
 
-			if (!string.IsNullOrEmpty(Convert.ToString(settings["folderlocation"]))) {
-				g_ApprovedFolder = Convert.ToString(settings["folderlocation"]);
-			} else {
-				g_ApprovedFolder = HttpContext.Current.Server.MapPath(_portalSettings.HomeDirectory) + "Repository";
-			}
-
-			if (!string.IsNullOrEmpty(Convert.ToString(settings["pendinglocation"]))) {
-				g_UnApprovedFolder = Convert.ToString(settings["pendinglocation"]);
-			} else {
-				g_UnApprovedFolder = HttpContext.Current.Server.MapPath(_portalSettings.HomeDirectory) + "Repository\\Pending";
-			}
-
-			if (!string.IsNullOrEmpty(Convert.ToString(settings["anonymouslocation"]))) {
-				g_AnonymousFolder = Convert.ToString(settings["anonymouslocation"]);
-			} else {
-				g_AnonymousFolder = HttpContext.Current.Server.MapPath(_portalSettings.HomeDirectory) + "Repository\\Anonymous";
-			}
+            g_ApprovedFolder = HttpContext.Current.Server.MapPath(_portalSettings.HomeDirectory) + "Repository";
+            g_UnApprovedFolder = HttpContext.Current.Server.MapPath(_portalSettings.HomeDirectory) + "Repository\\Pending";
+            g_AnonymousFolder = HttpContext.Current.Server.MapPath(_portalSettings.HomeDirectory) + "Repository\\Anonymous";
 
 			// make sure the Repository folder exists
 			if (!Directory.Exists(g_ApprovedFolder)) {

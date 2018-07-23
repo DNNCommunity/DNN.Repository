@@ -688,11 +688,9 @@ namespace DotNetNuke.Modules.Repository
 						// default value
 					}
 
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["folderlocation"]))) {
-						txtFolderLocation.Text = Convert.ToString(settings["folderlocation"]);
-					} else {
-						txtFolderLocation.Text = Request.MapPath(_portalSettings.HomeDirectory) + "Repository";
-					}
+                    txtFolderLocation.Text = Request.MapPath(_portalSettings.HomeDirectory) + "Repository";
+                    txtFolderLocation.ReadOnly = true;
+					
 
 					if (!string.IsNullOrEmpty(Convert.ToString(settings["userfolders"]))) {
 						cbUserFolders.Checked = bool.Parse(settings["userfolders"].ToString());
@@ -700,17 +698,12 @@ namespace DotNetNuke.Modules.Repository
 						cbUserFolders.Checked = false;
 					}
 
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["pendinglocation"]))) {
-						txtPendingLocation.Text = Convert.ToString(settings["pendinglocation"]);
-					} else {
-						txtPendingLocation.Text = Request.MapPath(_portalSettings.HomeDirectory) + "Repository";
-					}
+                    txtPendingLocation.Text = Request.MapPath(_portalSettings.HomeDirectory) + "Repository\\Pending";
+                    txtPendingLocation.ReadOnly = true;
 
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["anonymouslocation"]))) {
-						txtAnonymousLocation.Text = Convert.ToString(settings["anonymouslocation"]);
-					} else {
-						txtAnonymousLocation.Text = Request.MapPath(_portalSettings.HomeDirectory) + "Repository";
-					}
+                    txtAnonymousLocation.Text = Request.MapPath(_portalSettings.HomeDirectory) + "Repository\\Anonymous";
+                    txtAnonymousLocation.ReadOnly = true;
+					
 
 					// only HOST account can modify file locations
 					if (UserInfo.IsSuperUser) {
@@ -935,10 +928,7 @@ namespace DotNetNuke.Modules.Repository
 
 				// double check to make sure the person submitting the Update is indeed a SuperUser
 				if (UserInfo.IsSuperUser) {
-					objModules.UpdateModuleSetting(ModuleId, "folderlocation", txtFolderLocation.Text.Trim());
 					objModules.UpdateModuleSetting(ModuleId, "userfolders", cbUserFolders.Checked.ToString());
-					objModules.UpdateModuleSetting(ModuleId, "pendinglocation", txtPendingLocation.Text.Trim());
-					objModules.UpdateModuleSetting(ModuleId, "anonymouslocation", txtAnonymousLocation.Text.Trim());
 				}
 
 				objModules.UpdateModuleSetting(ModuleId, "noimage", ctlURL.Url.ToString());
