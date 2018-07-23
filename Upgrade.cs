@@ -145,10 +145,10 @@ namespace DotNetNuke.Modules.Repository
 					if (!string.IsNullOrEmpty(Convert.ToString(settings["userfolders"]))) {
 						// then get the base folder name
 						if (!string.IsNullOrEmpty(Convert.ToString(settings["folderlocation"]))) {
-							m_foldername = Convert.ToString(settings["folderlocation"]);
+							m_foldername = HttpContext.Current.Server.MapPath(_portalSettings.HomeDirectory) + "Repository";
 
-							// look in the base folder for any user folders
-							m_Folders = Directory.GetDirectories(m_foldername);
+                            // look in the base folder for any user folders
+                            m_Folders = Directory.GetDirectories(m_foldername);
 
 							foreach (string m_Folder_loopVariable in m_Folders) {
 								m_Folder = m_Folder_loopVariable;
