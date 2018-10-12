@@ -206,6 +206,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 ![Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.nl-NL.resx
 
 *.zip.manifest
+/Resources.zip
 
 ############
 ## Windows
