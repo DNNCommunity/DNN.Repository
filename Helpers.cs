@@ -722,7 +722,7 @@ namespace DotNetNuke.Modules.Repository
 
 		}
 
-		public void AddCategoryToTreeObject(int moduleid, int itemid, ArrayList arr, DotNetNuke.UI.WebControls.TreeNode obj, string prefix, bool showCount)
+		public void AddCategoryToTreeObject(int moduleid, int itemid, ArrayList arr, DotNetNuke.UI.WebControls.TreeNodeCollection obj, string prefix, bool showCount)
 		{
 			RepositoryObjectCategoriesController cc = new RepositoryObjectCategoriesController();
 			RepositoryObjectCategoriesInfo cv = null;
@@ -747,10 +747,10 @@ namespace DotNetNuke.Modules.Repository
 					newNode.Selected = false;
 				}
 
-				obj.TreeNodes.Add(newNode);
+				obj.Add(newNode);
 				arr2 = cController.GetRepositoryCategories(moduleid, cat.ItemId);
 				if (arr2.Count > 0) {
-					AddCategoryToTreeObject(moduleid, itemid, arr2, newNode, "", showCount);
+					AddCategoryToTreeObject(moduleid, itemid, arr2, newNode.TreeNodes, "", showCount);
 				}
 			}
 		}
