@@ -2199,7 +2199,7 @@ namespace DotNetNuke.Modules.Repository
 														obj.CheckBoxes = false;
 														obj.NodeClick += TreeNodeClick;
 														bool bShowCount = bool.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ShowCount", "False"));
-														oRepositoryBusinessController.AddCategoryToTreeObject(ModuleId, -1, categories, obj.TreeNodes[0], "", bShowCount);
+														oRepositoryBusinessController.AddCategoryToTreeObject(ModuleId, -1, categories, obj.TreeNodes, "", bShowCount);
 														hPlaceHolder.Controls.Add(obj);
 														break;
 												}
