@@ -1763,15 +1763,16 @@ namespace DotNetNuke.Modules.Repository
 
 				bool bIsPersonal = false;
 				bIsPersonal = false;
+                bool isAdministrator = PortalSecurity.IsInRole("Administrators");
 
-				if (Settings["IsPersonal"] != null) {
+                if (Settings["IsPersonal"] != null) {
 					bIsPersonal = bool.Parse(Settings["IsPersonal"].ToString());
 				}
 
 
 				if (bIsPersonal) {
 					foreach (RepositoryInfo dataitem in repositoryItems) {
-						if (int.Parse(dataitem.CreatedByUser) == UserId | PortalSecurity.IsInRole("Administrators")) {
+						if (int.Parse(dataitem.CreatedByUser) == UserId | isAdministrator) {
 							bindableList.Add(dataitem);
 						}
 					}
@@ -1789,7 +1790,7 @@ namespace DotNetNuke.Modules.Repository
 							if (dataitem.SecurityRoles.StartsWith("U:")) {
 								string _targetUser = dataitem.SecurityRoles.Substring(2);
 								// admins see all items
-								if (string.IsNullOrEmpty(_targetUser) | PortalSecurity.IsInRole("Administrators")) {
+								if (string.IsNullOrEmpty(_targetUser) | isAdministrator) {
 									bindableList.Add(dataitem);
 								} else {
 									if (HttpContext.Current.User.Identity.IsAuthenticated) {
@@ -1933,6 +1934,7 @@ namespace DotNetNuke.Modules.Repository
 					if (!string.IsNullOrEmpty(Item)) {
 						if (PortalSecurity.IsInRole(Item)) {
 							found = true;
+                            continue;
 						}
 					}
 				}
