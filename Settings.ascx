@@ -151,6 +151,13 @@
             <asp:TextBox ID="txtEmailOnComment" runat="server" CssClass="normal" Text="" Width="350" /><br /><br />
         </td>
     </tr>
+    <tr>
+        <td><dnn:label id="plEmailOnDownload" runat="server" controlname="cbxEmailOnDownload" suffix=":"></dnn:label></td>
+        <td class="repSetting">
+            <asp:CheckBox ID="cbxEmailOnDownload" runat="server" Checked="false" CssClass="normal" Text="" />
+            <asp:TextBox ID="txtEmailOnDownload" runat="server" CssClass="normal" Text="" Width="350" /><br /><br />
+        </td>
+    </tr>
 
     <tr>
         <td><dnn:label id="plSecurityRoles" runat="server" suffix=":"></dnn:label></td>
