@@ -918,13 +918,8 @@ namespace DotNetNuke.Modules.Repository
 		public void DownloadFile(string ItemID, string target)
 		{
 			RepositoryController repository = new RepositoryController();
-			RepositoryInfo objRepository = null;
-			int i = 0;
-			int iExtension = 0;
-			int iStart = 0;
-			int iEnd = 0;
+			RepositoryInfo objRepository = null;			
 			string strDownloadURL = "";
-			string strURLTarget = "";
 
 			objRepository = repository.GetSingleRepositoryObject(Convert.ToInt32(ItemID));
 
@@ -982,126 +977,20 @@ namespace DotNetNuke.Modules.Repository
 		}
 
 
-		private void StreamFile(string FilePath, string DownloadAs)
-		{
-			DownloadAs = DownloadAs.Replace(" ", "_");
+        private void StreamFile(string FilePath, string DownloadAs)
+        {
+            DownloadAs = DownloadAs.Replace(" ", "_");
 
-			System.IO.FileInfo objFile = new System.IO.FileInfo(FilePath);
-			System.Web.HttpResponse objResponse = System.Web.HttpContext.Current.Response;
-			objResponse.ClearContent();
+            System.IO.FileInfo objFile = new System.IO.FileInfo(FilePath);
+            System.Web.HttpResponse objResponse = System.Web.HttpContext.Current.Response;
+            objResponse.ClearContent();
+            objResponse.ClearHeaders();
 
-			objResponse.ClearHeaders();
-			objResponse.AppendHeader("Content-Disposition", "attachment; filename=" + DownloadAs);
-			objResponse.AppendHeader("Content-Length", objFile.Length.ToString());
-
-			string strContentType = null;
-			switch (objFile.Extension) {
-				case ".txt":
-					strContentType = "text/plain";
-					break;
-				case ".htm":
-				case ".html":
-					strContentType = "text/html";
-					break;
-				case ".rtf":
-					strContentType = "text/richtext";
-					break;
-				case ".jpg":
-				case ".jpeg":
-					strContentType = "image/jpeg";
-					break;
-				case ".gif":
-					strContentType = "image/gif";
-					break;
-				case ".bmp":
-					strContentType = "image/bmp";
-					break;
-				case ".mpg":
-				case ".mpeg":
-					strContentType = "video/mpeg";
-					break;
-				case ".avi":
-					strContentType = "video/avi";
-					break;
-				case ".pdf":
-					strContentType = "application/pdf";
-					break;
-				case ".doc":
-				case ".dot":
-					strContentType = "application/msword";
-					break;
-				case ".csv":
-				case ".xls":
-				case ".xlt":
-					strContentType = "application/vnd.msexcel";
-					break;
-				default:
-					strContentType = "application/octet-stream";
-					break;
-			}
-			objResponse.ContentType = strContentType;
-			WriteFile(objFile.FullName);
-
-			objResponse.Flush();
-			objResponse.Close();
-
-		}
-
-		public static void WriteFile(string strFileName)
-		{
-			System.Web.HttpResponse objResponse = System.Web.HttpContext.Current.Response;
-			System.IO.Stream objStream = null;
-
-			// Buffer to read 10K bytes in chunk:
-			byte[] bytBuffer = new byte[10001];
-
-			// Length of the file:
-			int intLength = 0;
-
-			// Total bytes to read:
-			long lngDataToRead = 0;
-
-			try {
-				// Open the file.
-				objStream = new System.IO.FileStream(strFileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
-
-				// Total bytes to read:
-				lngDataToRead = objStream.Length;
-
-				objResponse.ContentType = "application/octet-stream";
-
-				// Read the bytes.
-				while (lngDataToRead > 0) {
-					// Verify that the client is connected.
-					if (objResponse.IsClientConnected) {
-						// Read the data in buffer
-						intLength = objStream.Read(bytBuffer, 0, 10000);
-
-						// Write the data to the current output stream.
-						objResponse.OutputStream.Write(bytBuffer, 0, intLength);
-
-						// Flush the data to the HTML output.
-						objResponse.Flush();
-
-						bytBuffer = new byte[10001];
-						// Clear the buffer
-						lngDataToRead = lngDataToRead - intLength;
-					} else {
-						//prevent infinite loop if user disconnects
-						lngDataToRead = -1;
-					}
-				}
-
-			} catch (Exception ex) {
-				// Trap the error, if any.
-				// objResponse.Write("Error : " & ex.Message)
-			} finally {
-				if ((objStream == null) == false) {
-					// Close the file.
-					objStream.Close();
-				}
-			}
-		}
+            objResponse.AppendHeader("Content-Type", MimeMapping.GetMimeMapping(objFile.Extension));
+            objResponse.AppendHeader("Content-Disposition", "attachment; filename=" + DownloadAs);
+            objResponse.AppendHeader("Content-Length", objFile.Length.ToString());
+            objResponse.TransmitFile(objFile.FullName);
+        }
 
 		#endregion
 
