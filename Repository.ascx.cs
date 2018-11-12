@@ -411,7 +411,6 @@ namespace DotNetNuke.Modules.Repository
         {
             try
             {
-                log.ErrorFormat("Download: {0} {1}", Settings["EmailOnDownload"], Settings["EmailOnDownloadAddress"]);
                 // check to see if we need to send an email notification
                 if (string.IsNullOrEmpty(Convert.ToString(Settings["EmailOnDownload"])) == false)
                 {
