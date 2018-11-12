@@ -42,15 +42,16 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Modules.Repository
 {
 
 	public abstract class Repository : Entities.Modules.PortalModuleBase, Entities.Modules.Communications.IModuleListener
 	{
-
-		#region "Controls"
-		protected Label lblDescription;
+        static Instrumentation.DnnLogger log = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
+        #region "Controls"
+        protected Label lblDescription;
 		private DataGrid withEventsField_lstObjects;
 		protected DataGrid lstObjects {
 			get { return withEventsField_lstObjects; }
@@ -406,8 +407,48 @@ namespace DotNetNuke.Modules.Repository
 			BindObjectList();
 
 		}
+        private void SendDownloadNotification(RepositoryInfo objRepository)
+        {
+            try
+            {
+                log.ErrorFormat("Download: {0} {1}", Settings["EmailOnDownload"], Settings["EmailOnDownloadAddress"]);
+                // check to see if we need to send an email notification
+                if (string.IsNullOrEmpty(Convert.ToString(Settings["EmailOnDownload"])) == false)
+                {
+                    if (bool.Parse(Settings["EmailOnDownload"].ToString()) == true)
+                    {
+                        string _email = Convert.ToString(Settings["EmailOnDownloadAddress"]);
+                        if (string.IsNullOrEmpty(_email) == false)
+                        {
+                            // send an email
+                            string _subject = string.Format("[{0}] New Download from Your Repository", PortalSettings.PortalName);
+                            System.Text.StringBuilder _body = new System.Text.StringBuilder();
+                            _body.Append(string.Format("A new download at {0}<br />", System.DateTime.Now));
+                            _body.Append(string.Format("by {0} ({1})<br /><br />", UserInfo.DisplayName, UserInfo.Email));
+                            _body.Append(string.Format("File {0}<br /><br />", objRepository.FileName));
+                            _body.Append("------------------------------------------------------------<br />");
+                            _body.Append(string.Format("{0}<br />", this.Request.UserHostAddress));
+                            Mail.SendMail(
+                                PortalSettings.Email,
+                                _email,
+                                "", "",
+                                Services.Mail.MailPriority.Normal,
+                                _subject,
+                                Services.Mail.MailFormat.Html,
+                                System.Text.Encoding.Default,
+                                _body.ToString(),
+                                "", "", "", "", "");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
+            }
+        }
 
-		private void SendCommentNotification(RepositoryInfo objRepository, TextBox txtName, TextBox txtComment)
+        private void SendCommentNotification(RepositoryInfo objRepository, TextBox txtName, TextBox txtComment)
 		{
 			// check to see if we need to send an email notification
 			if (!string.IsNullOrEmpty(Convert.ToString(Settings["EmailOnComment"]))) {
@@ -504,7 +545,8 @@ namespace DotNetNuke.Modules.Repository
 					string target = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "DOWNLOAD", "Target", "NEW");
 					oRepositoryBusinessController.DownloadFile(e.CommandArgument.ToString(), target);
 
-					break;
+                    SendDownloadNotification(objRepository);
+                    break;
 				case "PostComment":
 					objCommentsPanel = null;
 					TextBox txtName = null;
@@ -736,7 +778,8 @@ namespace DotNetNuke.Modules.Repository
 					string target = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "DOWNLOAD", "Target", "NEW");
 					oRepositoryBusinessController.DownloadFile(e.CommandArgument.ToString(), target);
 
-					break;
+                    SendDownloadNotification(objRepository);
+                    break;
 				case "PostComment":
 					objCommentsPanel = null;
 					TextBox txtName = null;
@@ -797,8 +840,7 @@ namespace DotNetNuke.Modules.Repository
 
 		}
 
-
-		private void DataList1_ItemDataBound(object sender, DataListItemEventArgs e)
+        private void DataList1_ItemDataBound(object sender, DataListItemEventArgs e)
 		{
 			if (e.Item.ItemType == ListItemType.Item | e.Item.ItemType == ListItemType.AlternatingItem) {
 				PlaceHolder holder = (PlaceHolder)e.Item.FindControl("PlaceHolder1");
