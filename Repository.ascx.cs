@@ -411,33 +411,32 @@ namespace DotNetNuke.Modules.Repository
         {
             try
             {
-                // check to see if we need to send an email notification
-                if (string.IsNullOrEmpty(Convert.ToString(Settings["EmailOnDownload"])) == false)
+                bool emailOnDownload = false;
+                // check to see if we need to send an email notification                
+                if (bool.TryParse(Settings["EmailOnDownload"].ToString(), out emailOnDownload) == true &&
+                    emailOnDownload == true)
                 {
-                    if (bool.Parse(Settings["EmailOnDownload"].ToString()) == true)
+                    string _email = Convert.ToString(Settings["EmailOnDownloadAddress"]);
+                    if (string.IsNullOrEmpty(_email) == false)
                     {
-                        string _email = Convert.ToString(Settings["EmailOnDownloadAddress"]);
-                        if (string.IsNullOrEmpty(_email) == false)
-                        {
-                            // send an email
-                            string _subject = string.Format("[{0}] New Download from Your Repository", PortalSettings.PortalName);
-                            System.Text.StringBuilder _body = new System.Text.StringBuilder();
-                            _body.Append(string.Format("A new download at {0}<br />", System.DateTime.Now));
-                            _body.Append(string.Format("by {0} ({1})<br /><br />", UserInfo.DisplayName, UserInfo.Email));
-                            _body.Append(string.Format("File {0}<br /><br />", objRepository.FileName));
-                            _body.Append("------------------------------------------------------------<br />");
-                            _body.Append(string.Format("{0}<br />", this.Request.UserHostAddress));
-                            Mail.SendMail(
-                                PortalSettings.Email,
-                                _email,
-                                "", "",
-                                Services.Mail.MailPriority.Normal,
-                                _subject,
-                                Services.Mail.MailFormat.Html,
-                                System.Text.Encoding.Default,
-                                _body.ToString(),
-                                "", "", "", "", "");
-                        }
+                        // send an email
+                        string _subject = string.Format("[{0}] New Download from Your Repository", PortalSettings.PortalName);
+                        System.Text.StringBuilder _body = new System.Text.StringBuilder();
+                        _body.Append(string.Format("A new download at {0}<br />", System.DateTime.Now));
+                        _body.Append(string.Format("by {0} ({1})<br /><br />", UserInfo.DisplayName, UserInfo.Email));
+                        _body.Append(string.Format("File {0}<br /><br />", objRepository.FileName));
+                        _body.Append("------------------------------------------------------------<br />");
+                        _body.Append(string.Format("{0}<br />", this.Request.UserHostAddress));
+                        Mail.SendMail(
+                            PortalSettings.Email,
+                            _email,
+                            "", "",
+                            Services.Mail.MailPriority.Normal,
+                            _subject,
+                            Services.Mail.MailFormat.Html,
+                            System.Text.Encoding.Default,
+                            _body.ToString(),
+                            "", "", "", "", "");
                     }
                 }
             }
