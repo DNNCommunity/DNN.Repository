@@ -381,10 +381,10 @@ namespace DotNetNuke.Modules.Repository
 						cbxEmailOnComment.Checked = false;
 					}
 
-
-                    if (!string.IsNullOrEmpty(Convert.ToString(settings["EmailOnDownload"])))
+                    bool emailOnDownload = false;
+                    if (bool.TryParse(settings["EmailOnDownload"].ToString(), out emailOnDownload) == true)
                     {
-                        cbxEmailOnDownload.Checked = bool.Parse(settings["EmailOnDownload"].ToString());
+                        cbxEmailOnDownload.Checked = emailOnDownload;
                     }
                     else
                     {
