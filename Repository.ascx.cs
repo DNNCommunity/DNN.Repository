@@ -1062,7 +1062,7 @@ namespace DotNetNuke.Modules.Repository
 												}
 												break;
 											case "AUTHOREMAIL":
-												if (objRepository.ShowEMail == -1) {
+												if (objRepository.ShowEMail == 1) {
 													if (bRaw) {
 														objPlaceHolder.Controls.Add(new LiteralControl(objSecurity.InputFilter(objRepository.AuthorEMail.ToString(), PortalSecurity.FilterFlag.NoScripting)));
 													} else {
