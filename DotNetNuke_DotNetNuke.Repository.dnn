@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-	  <package name="DotNetNuke.Repository" type="Module" version="04.00.00">
+	  <package name="DotNetNuke.Repository" type="Module" version="04.01.00">
   <friendlyName>Repository</friendlyName>
   <description>A file/object repository module that includes skinning and community features like comments and user ratings.</description>
       <iconFile>icon_repository_32px.gif</iconFile>      
@@ -321,7 +321,7 @@
   </components>
 </package>
 
-<package name="DotNetNuke.Repository.Dashboard" type="Module" version="04.00.00">
+<package name="DotNetNuke.Repository.Dashboard" type="Module" version="04.01.00">
   <friendlyName>Repository Dashboard</friendlyName>
   <description></description>
   <owner>
