@@ -7,11 +7,15 @@ RM is not limited to file uploads/downloads. You can even use RM for articles, n
 
 In addition to providing you with the ability to upload and download items, RM also provides a User Rating and Feedback system. You can decide if you want to allow your visitors to rate your items or enter comments on each item. RM also institutes a comprehensive security layer that allows you complete control over who can download, who can upload, who can rate or comment and where your items will be physically located on your web server. 
 
+## Maintainer
+This module is currently maintained by Ilpo Juvander @juvander , please coordinate with him regarding potential breaking changes and before any release.
+
 ## Compatibility
 | Dnn Repository version         | Min Tested Dnn version | Max Tested Dnn version |
 | -------------------------:| ----------------------:| ----------------------:|
 |      Included or 03.05.06 |               00.00.00 |               09.01.01 |
 |                  04.00.00 |               06.01.00 |               09.02.00 |
+|                  04.01.00 |               unkown   |               09.04.04 |
 
 ## Building the module from source and submitting pull requests
 1. Install Dnn (latest stable version) from https://github.com/dnnsoftware/Dnn.Platform/releases
