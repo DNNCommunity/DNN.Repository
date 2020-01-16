@@ -382,7 +382,7 @@ namespace DotNetNuke.Modules.Repository
 					}
 
                     bool emailOnDownload = false;
-                    if (bool.TryParse(settings["EmailOnDownload"].ToString(), out emailOnDownload) == true)
+                    if (bool.TryParse(settings["EmailOnDownload"]?.ToString(), out emailOnDownload) == true)
                     {
                         cbxEmailOnDownload.Checked = emailOnDownload;
                     }
