@@ -374,6 +374,12 @@
   <data name="plEmailOnComment.Text" xml:space="preserve">
     <value>Send Email when Comment Posted</value>
   </data>
+  <data name="plEmailOnDownload.Help" xml:space="preserve">
+    <value>If you want to receive an email when user downloads a file, check this box and enter the email address where you would like the notification sent</value>
+  </data>
+  <data name="plEmailOnDownload.Text" xml:space="preserve">
+    <value>Send Email when user downloads file</value>
+  </data>
   <data name="plEmailOnUpload.Help" xml:space="preserve">
     <value>If you want to receive an email when a new item is uploaded, check this box and enter the email address where you would like the notification sent</value>
   </data>

@@ -302,9 +302,11 @@ namespace DotNetNuke.Modules.Repository
 		protected System.Web.UI.WebControls.CheckBox cbAllFiles;
 		protected System.Web.UI.WebControls.CheckBox cbxIsPersonal;
 		protected System.Web.UI.WebControls.CheckBox cbxEmailOnComment;
-		protected System.Web.UI.WebControls.CheckBox cbxEmailOnUpload;
+        protected System.Web.UI.WebControls.CheckBox cbxEmailOnDownload;
+        protected System.Web.UI.WebControls.CheckBox cbxEmailOnUpload;
 		protected System.Web.UI.WebControls.TextBox txtEmailOnComment;
-		protected System.Web.UI.WebControls.TextBox txtEmailOnUpload;
+        protected System.Web.UI.WebControls.TextBox txtEmailOnDownload;
+        protected System.Web.UI.WebControls.TextBox txtEmailOnUpload;
 		protected System.Web.UI.WebControls.RadioButtonList rblDataControl;
 		protected System.Web.UI.WebControls.TextBox txtWatermark;
 
@@ -379,7 +381,17 @@ namespace DotNetNuke.Modules.Repository
 						cbxEmailOnComment.Checked = false;
 					}
 
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["AnonEditDelete"]))) {
+                    bool emailOnDownload = false;
+                    if (bool.TryParse(settings["EmailOnDownload"]?.ToString(), out emailOnDownload) == true)
+                    {
+                        cbxEmailOnDownload.Checked = emailOnDownload;
+                    }
+                    else
+                    {
+                        cbxEmailOnDownload.Checked = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["AnonEditDelete"]))) {
 						cbxAnonEditDelete.Checked = bool.Parse(settings["AnonEditDelete"].ToString());
 					} else {
 						cbxAnonEditDelete.Checked = false;
@@ -392,7 +404,17 @@ namespace DotNetNuke.Modules.Repository
 						// default value
 					}
 
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["EmailOnUpload"]))) {
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["EmailOnDownloadAddress"])))
+                    {
+                        txtEmailOnDownload.Text = Convert.ToString(settings["EmailOnDownloadAddress"]);
+                    }
+                    else
+                    {
+                        txtEmailOnDownload.Text = "";
+                        // default value
+                    }
+
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["EmailOnUpload"]))) {
 						cbxEmailOnUpload.Checked = bool.Parse(settings["EmailOnUpload"].ToString());
 					} else {
 						cbxEmailOnUpload.Checked = false;
@@ -735,7 +757,8 @@ namespace DotNetNuke.Modules.Repository
 
 					cbAllFiles.Text = Localization.GetString("AllowAllFiles", LocalResourceFile);
 					cbxIsPersonal.Text = Localization.GetString("IsPersonal", LocalResourceFile);
-					cbxEmailOnComment.Text = Localization.GetString("EmailOnComment", LocalResourceFile);
+                    cbxEmailOnComment.Text = Localization.GetString("EmailOnComment", LocalResourceFile);
+                    cbxEmailOnDownload.Text = Localization.GetString("EmailOnDownload", LocalResourceFile);
 					cbxEmailOnUpload.Text = Localization.GetString("EmailOnUpload", LocalResourceFile);
 					cbxAnonEditDelete.Text = Localization.GetString("AnonEditDelete", LocalResourceFile);
 
@@ -811,7 +834,10 @@ namespace DotNetNuke.Modules.Repository
 				objModules.UpdateModuleSetting(ModuleId, "EmailOnComment", cbxEmailOnComment.Checked.ToString());
 				objModules.UpdateModuleSetting(ModuleId, "EmailOnCommentAddress", txtEmailOnComment.Text);
 
-				objModules.UpdateModuleSetting(ModuleId, "EmailOnUpload", cbxEmailOnUpload.Checked.ToString());
+                objModules.UpdateModuleSetting(ModuleId, "EmailOnDownload", cbxEmailOnDownload.Checked.ToString());
+                objModules.UpdateModuleSetting(ModuleId, "EmailOnDownloadAddress", txtEmailOnDownload.Text);
+
+                objModules.UpdateModuleSetting(ModuleId, "EmailOnUpload", cbxEmailOnUpload.Checked.ToString());
 				objModules.UpdateModuleSetting(ModuleId, "EmailOnUploadAddress", txtEmailOnUpload.Text);
 
 				objModules.UpdateModuleSetting(ModuleId, "AnonEditDelete", cbxAnonEditDelete.Checked.ToString());
