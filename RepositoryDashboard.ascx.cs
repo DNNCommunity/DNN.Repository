@@ -996,7 +996,7 @@ namespace DotNetNuke.Modules.Repository
 			Arr = RecalcCategoryCount(Arr);
 
 			CheckForAllItems(Arr);
-			oRepositoryBusinessController.AddCategoryToTreeObject(m_RepositoryId, -1, Arr, obj.TreeNodes[0], "", bShowCount);
+			oRepositoryBusinessController.AddCategoryToTreeObject(m_RepositoryId, -1, Arr, obj.TreeNodes, "", bShowCount);
 			objPlaceHolder.Controls.Add(obj);
 			m_hasTree = true;
 		}
