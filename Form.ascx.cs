@@ -605,7 +605,7 @@ namespace DotNetNuke.Modules.Repository
 												PlaceHolder.Controls.Add(objDeleteButton);
 												break;
 											case "CATEGORIES":
-												RepositoryCategoryController categories = new RepositoryCategoryController();
+                                                RepositoryCategoryController categories = new RepositoryCategoryController();
 												RepositoryCategoryInfo category = null;
 												RepositoryObjectCategoriesController repositoryObjectCategories = new RepositoryObjectCategoriesController();
 												RepositoryObjectCategoriesInfo repositoryObjectCategory = null;
@@ -613,7 +613,7 @@ namespace DotNetNuke.Modules.Repository
 												// get control type for categories
 												string controlType = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "Categories", "Select", "MULTIPLE");
 												if (controlType == "TREE") {
-													var objTree = new DnnTree();
+                                                    var objTree = new DnnTree();
 													objTree.ID = "__Categories";
 													objTree.SystemImagesPath = ResolveUrl("~/images/");
 													objTree.ImageList.Add(ResolveUrl("~/images/folder.gif"));
@@ -623,9 +623,9 @@ namespace DotNetNuke.Modules.Repository
 													objTree.EnableViewState = true;
                                                     objTree.CheckBoxes = true;
 													ArrayList ArrCategories = categories.GetRepositoryCategories(ModuleId, -1);
-													oRepositoryBusinessController.AddCategoryToTreeObject(ModuleId, itemId, ArrCategories, objTree.TreeNodes[0], "", false);
-													PlaceHolder.Controls.Add(objTree);
-												} else {
+                                                    oRepositoryBusinessController.AddCategoryToTreeObject(ModuleId, itemId, ArrCategories, objTree.TreeNodes, "", false);
+                                                    PlaceHolder.Controls.Add(objTree);
+                                                } else {
 													switch (Strings.UCase(controlType)) {
 														case "SINGLE":
 															var objSingle = new RadioButtonList();
@@ -688,7 +688,7 @@ namespace DotNetNuke.Modules.Repository
 													}
 													
 												}
-												break;
+                                                break;
 											case "ATTRIBUTES":
 												RepositoryAttributesController attributes = new RepositoryAttributesController();
 												RepositoryAttributesInfo attribute = null;

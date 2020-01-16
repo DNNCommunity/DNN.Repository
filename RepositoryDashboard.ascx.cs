@@ -623,6 +623,7 @@ namespace DotNetNuke.Modules.Repository
 					if (!string.IsNullOrEmpty(Item)) {
 						if (PortalSecurity.IsInRole(Item)) {
 							found = true;
+                            continue;
 						}
 					}
 				}
@@ -654,20 +655,25 @@ namespace DotNetNuke.Modules.Repository
 			ArrayList repositoryItems = repository.GetRepositoryObjects(m_RepositoryId, "", "Downloads", 1, -1, "", -1);
 			ArrayList bindableList = new ArrayList();
 			LoadBindableList(bIsPersonal, repositoryItems, bindableList);
+            
+            // recalc the category counts
+            foreach (RepositoryInfo item in bindableList)
+            {
+                ArrayList cats = rc.GetRepositoryObjectCategories(item.ItemId);
+                foreach (RepositoryObjectCategoriesInfo _cat in cats)
+                {
+                    foreach (RepositoryCategoryInfo category in categories)
+                    {
+                        if (_cat.CategoryID == category.ItemId)
+                        {
+                            category.Count = category.Count + 1;
+                        }
+                    }
+                }
+            }
+            
 
-			// recalc the category counts
-			foreach (RepositoryCategoryInfo category in categories) {
-				foreach (RepositoryInfo item in bindableList) {
-					ArrayList cats = rc.GetRepositoryObjectCategories(item.ItemId);
-					foreach (RepositoryObjectCategoriesInfo _cat in cats) {
-						if (_cat.CategoryID == category.ItemId) {
-							category.Count = category.Count + 1;
-						}
-					}
-				}
-			}
-
-			return categories;
+            return categories;
 
 		}
 
@@ -761,10 +767,12 @@ namespace DotNetNuke.Modules.Repository
 		}
 
 		private void LoadBindableList(bool bIsPersonal, ArrayList repositoryItems, ArrayList bindableList)
-		{
-			if (bIsPersonal) {
-				foreach (RepositoryInfo dataitem in repositoryItems) {
-					if (int.Parse(dataitem.CreatedByUser) == UserId | PortalSecurity.IsInRole("Administrators")) {
+        {
+            if (bIsPersonal)
+            {
+                bool isAdministrator = PortalSecurity.IsInRole("Administrators");
+                foreach (RepositoryInfo dataitem in repositoryItems) {
+					if (int.Parse(dataitem.CreatedByUser) == UserId | isAdministrator) {
 						bindableList.Add(dataitem);
 					}
 				}
@@ -996,7 +1004,7 @@ namespace DotNetNuke.Modules.Repository
 			Arr = RecalcCategoryCount(Arr);
 
 			CheckForAllItems(Arr);
-			oRepositoryBusinessController.AddCategoryToTreeObject(m_RepositoryId, -1, Arr, obj.TreeNodes[0], "", bShowCount);
+			oRepositoryBusinessController.AddCategoryToTreeObject(m_RepositoryId, -1, Arr, obj.TreeNodes, "", bShowCount);
 			objPlaceHolder.Controls.Add(obj);
 			m_hasTree = true;
 		}

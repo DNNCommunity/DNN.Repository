@@ -42,15 +42,16 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Modules.Repository
 {
 
 	public abstract class Repository : Entities.Modules.PortalModuleBase, Entities.Modules.Communications.IModuleListener
 	{
-
-		#region "Controls"
-		protected Label lblDescription;
+        static Instrumentation.DnnLogger log = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
+        #region "Controls"
+        protected Label lblDescription;
 		private DataGrid withEventsField_lstObjects;
 		protected DataGrid lstObjects {
 			get { return withEventsField_lstObjects; }
@@ -406,8 +407,46 @@ namespace DotNetNuke.Modules.Repository
 			BindObjectList();
 
 		}
+        private void SendDownloadNotification(RepositoryInfo objRepository)
+        {
+            try
+            {
+                bool emailOnDownload = false;
+                // check to see if we need to send an email notification                
+                if (bool.TryParse(Settings["EmailOnDownload"].ToString(), out emailOnDownload) == true &&
+                    emailOnDownload == true)
+                {
+                    string _email = Convert.ToString(Settings["EmailOnDownloadAddress"]);
+                    if (string.IsNullOrEmpty(_email) == false)
+                    {
+                        // send an email
+                        string _subject = string.Format("[{0}] New Download from Your Repository", PortalSettings.PortalName);
+                        System.Text.StringBuilder _body = new System.Text.StringBuilder();
+                        _body.Append(string.Format("A new download at {0}<br />", System.DateTime.Now));
+                        _body.Append(string.Format("by {0} ({1})<br /><br />", UserInfo.DisplayName, UserInfo.Email));
+                        _body.Append(string.Format("File {0}<br /><br />", objRepository.FileName));
+                        _body.Append("------------------------------------------------------------<br />");
+                        _body.Append(string.Format("{0}<br />", this.Request.UserHostAddress));
+                        Mail.SendMail(
+                            PortalSettings.Email,
+                            _email,
+                            "", "",
+                            Services.Mail.MailPriority.Normal,
+                            _subject,
+                            Services.Mail.MailFormat.Html,
+                            System.Text.Encoding.Default,
+                            _body.ToString(),
+                            "", "", "", "", "");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
+            }
+        }
 
-		private void SendCommentNotification(RepositoryInfo objRepository, TextBox txtName, TextBox txtComment)
+        private void SendCommentNotification(RepositoryInfo objRepository, TextBox txtName, TextBox txtComment)
 		{
 			// check to see if we need to send an email notification
 			if (!string.IsNullOrEmpty(Convert.ToString(Settings["EmailOnComment"]))) {
@@ -504,7 +543,8 @@ namespace DotNetNuke.Modules.Repository
 					string target = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "DOWNLOAD", "Target", "NEW");
 					oRepositoryBusinessController.DownloadFile(e.CommandArgument.ToString(), target);
 
-					break;
+                    SendDownloadNotification(objRepository);
+                    break;
 				case "PostComment":
 					objCommentsPanel = null;
 					TextBox txtName = null;
@@ -736,7 +776,8 @@ namespace DotNetNuke.Modules.Repository
 					string target = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "DOWNLOAD", "Target", "NEW");
 					oRepositoryBusinessController.DownloadFile(e.CommandArgument.ToString(), target);
 
-					break;
+                    SendDownloadNotification(objRepository);
+                    break;
 				case "PostComment":
 					objCommentsPanel = null;
 					TextBox txtName = null;
@@ -797,8 +838,7 @@ namespace DotNetNuke.Modules.Repository
 
 		}
 
-
-		private void DataList1_ItemDataBound(object sender, DataListItemEventArgs e)
+        private void DataList1_ItemDataBound(object sender, DataListItemEventArgs e)
 		{
 			if (e.Item.ItemType == ListItemType.Item | e.Item.ItemType == ListItemType.AlternatingItem) {
 				PlaceHolder holder = (PlaceHolder)e.Item.FindControl("PlaceHolder1");
@@ -1062,7 +1102,7 @@ namespace DotNetNuke.Modules.Repository
 												}
 												break;
 											case "AUTHOREMAIL":
-												if (objRepository.ShowEMail == -1) {
+												if (objRepository.ShowEMail == 1) {
 													if (bRaw) {
 														objPlaceHolder.Controls.Add(new LiteralControl(objSecurity.InputFilter(objRepository.AuthorEMail.ToString(), PortalSecurity.FilterFlag.NoScripting)));
 													} else {
@@ -1763,15 +1803,16 @@ namespace DotNetNuke.Modules.Repository
 
 				bool bIsPersonal = false;
 				bIsPersonal = false;
+                bool isAdministrator = PortalSecurity.IsInRole("Administrators");
 
-				if (Settings["IsPersonal"] != null) {
+                if (Settings["IsPersonal"] != null) {
 					bIsPersonal = bool.Parse(Settings["IsPersonal"].ToString());
 				}
 
 
 				if (bIsPersonal) {
 					foreach (RepositoryInfo dataitem in repositoryItems) {
-						if (int.Parse(dataitem.CreatedByUser) == UserId | PortalSecurity.IsInRole("Administrators")) {
+						if (int.Parse(dataitem.CreatedByUser) == UserId | isAdministrator) {
 							bindableList.Add(dataitem);
 						}
 					}
@@ -1789,7 +1830,7 @@ namespace DotNetNuke.Modules.Repository
 							if (dataitem.SecurityRoles.StartsWith("U:")) {
 								string _targetUser = dataitem.SecurityRoles.Substring(2);
 								// admins see all items
-								if (string.IsNullOrEmpty(_targetUser) | PortalSecurity.IsInRole("Administrators")) {
+								if (string.IsNullOrEmpty(_targetUser) | isAdministrator) {
 									bindableList.Add(dataitem);
 								} else {
 									if (HttpContext.Current.User.Identity.IsAuthenticated) {
@@ -1933,6 +1974,7 @@ namespace DotNetNuke.Modules.Repository
 					if (!string.IsNullOrEmpty(Item)) {
 						if (PortalSecurity.IsInRole(Item)) {
 							found = true;
+                            continue;
 						}
 					}
 				}
@@ -2199,7 +2241,7 @@ namespace DotNetNuke.Modules.Repository
 														obj.CheckBoxes = false;
 														obj.NodeClick += TreeNodeClick;
 														bool bShowCount = bool.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ShowCount", "False"));
-														oRepositoryBusinessController.AddCategoryToTreeObject(ModuleId, -1, categories, obj.TreeNodes[0], "", bShowCount);
+														oRepositoryBusinessController.AddCategoryToTreeObject(ModuleId, -1, categories, obj.TreeNodes, "", bShowCount);
 														hPlaceHolder.Controls.Add(obj);
 														break;
 												}
