@@ -231,9 +231,9 @@ namespace DotNetNuke.Modules.Repository
 
 			oRepositoryBusinessController.LocalResourceFile = m_LocalResourceFile;
 			oRepositoryBusinessController.SetRepositoryFolders(ModuleId);
-
-			if (Request.Cookies[string.Format("_DRMCategory{0}", ModuleId)] != null) {
-				oRepositoryBusinessController.g_CategoryId = int.Parse(Request.Cookies[string.Format("_DRMCategory{0}", ModuleId)].Value);
+           
+            if (ViewState[string.Format("_DRMCategory{0}", ModuleId)] != null) {
+                oRepositoryBusinessController.g_CategoryId = int.Parse(Convert.ToString(ViewState[string.Format("_DRMCategory{0}", ModuleId)]));
 			} else {
 				bool allDefault = false;
 				if (Settings["AllowAllFiles"] != null) {
@@ -372,9 +372,9 @@ namespace DotNetNuke.Modules.Repository
 
 			}
 
-			CreateCookie();
+            ViewState[string.Format("_DRMCategory{0}", ModuleId)] = oRepositoryBusinessController.g_CategoryId;
 
-			CheckItemRoles();
+            CheckItemRoles();
 
 			LoadRepositoryTemplates();
 
@@ -1678,8 +1678,8 @@ namespace DotNetNuke.Modules.Repository
 			lstObjects.CurrentPageIndex = 0;
 			ViewState["mPage"] = Convert.ToString(lstObjects.CurrentPageIndex);
 			ViewState["mAttributes"] = oRepositoryBusinessController.g_Attributes;
-			CreateCookie();
-			BindObjectList();
+            ViewState[string.Format("_DRMCategory{0}", ModuleId)] = oRepositoryBusinessController.g_CategoryId;
+            BindObjectList();
 		}
 
 		public void TreeNodeClick(object source, DotNetNuke.UI.WebControls.DNNTreeNodeClickEventArgs e)
@@ -1693,8 +1693,8 @@ namespace DotNetNuke.Modules.Repository
 			lstObjects.CurrentPageIndex = 0;
 			ViewState["mPage"] = Convert.ToString(lstObjects.CurrentPageIndex);
 			ViewState["mAttributes"] = oRepositoryBusinessController.g_Attributes;
-			CreateCookie();
-			BindObjectList();
+            ViewState[string.Format("_DRMCategory{0}", ModuleId)] = oRepositoryBusinessController.g_CategoryId;
+            BindObjectList();
 		}
 
 		private void ddlCategories2_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -1740,8 +1740,8 @@ namespace DotNetNuke.Modules.Repository
 			lstObjects.CurrentPageIndex = 0;
 			ViewState["mPage"] = Convert.ToString(lstObjects.CurrentPageIndex);
 			ViewState["mAttributes"] = oRepositoryBusinessController.g_Attributes;
-			CreateCookie();
-			BindObjectList();
+            ViewState[string.Format("_DRMCategory{0}", ModuleId)] = oRepositoryBusinessController.g_CategoryId;
+            BindObjectList();
 		}
 
 		#endregion
@@ -1936,22 +1936,6 @@ namespace DotNetNuke.Modules.Repository
 			b_CanUpload = PortalSecurity.IsInRoles(UploadRoles);
 
 			b_CanModerate = oRepositoryBusinessController.IsModerator(PortalId, ModuleId);
-
-		}
-
-
-		private void CreateCookie()
-		{
-			HttpCookie objCategory = null;
-
-			if (Request.Cookies["_DRMCategory" + ModuleId] == null) {
-				objCategory = new HttpCookie("_DRMCategory" + ModuleId);
-				Response.AppendCookie(objCategory);
-			}
-
-			objCategory = Request.Cookies["_DRMCategory" + ModuleId];
-			objCategory.Value = oRepositoryBusinessController.g_CategoryId.ToString();
-			Response.SetCookie(objCategory);
 
 		}
 
@@ -2935,9 +2919,8 @@ namespace DotNetNuke.Modules.Repository
 						mFilter = e.Value.ToString();
 						break;
 				}
-				CreateCookie();
-
-				ViewState["mFilter"] = mFilter;
+                ViewState[string.Format("_DRMCategory{0}", ModuleId)] = oRepositoryBusinessController.g_CategoryId;
+                ViewState["mFilter"] = mFilter;
 				ViewState["mSortOrder"] = mSortOrder;
 				ViewState["mPage"] = "0";
 				ViewState["mItemID"] = mItemID;
