@@ -855,7 +855,7 @@ namespace DotNetNuke.Modules.Repository
                     }
 
                     // Keep backward compatibility for upgraded modules that contains some customized storage locations
-                    if (!string.IsNullOrEmpty(settings["folderlocation"].ToString()) &&
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["folderlocation"])) &&
                         settings["folderlocation"].ToString() != PortalSettings.Current.HomeDirectoryMapPath + busController.DefaultFolderLocationSubPath)
                     {
                         txtFolderLocation.Text = settings["folderlocation"].ToString();
@@ -877,7 +877,7 @@ namespace DotNetNuke.Modules.Repository
                         cbUserFolders.Checked = false;
                     }
 
-                    if (!string.IsNullOrEmpty(settings["pendinglocation"].ToString()) &&
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["pendinglocation"])) &&
                         settings["pendinglocation"].ToString() != PortalSettings.Current.HomeDirectoryMapPath + busController.DefaultPendingFolderLocationSubPath)
                     {
                         txtPendingLocation.Text = settings["pendinglocation"].ToString();
@@ -888,7 +888,7 @@ namespace DotNetNuke.Modules.Repository
                     }
                     txtPendingLocation.ReadOnly = true;
 
-                    if (!string.IsNullOrEmpty(settings["anonymouslocation"].ToString()) &&
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["anonymouslocation"])) &&
                         settings["anonymouslocation"].ToString() != PortalSettings.Current.HomeDirectoryMapPath + busController.DefaultAnonymousFolderLocationSubPath)
                     {
                         txtAnonymousLocation.Text = settings["anonymouslocation"].ToString();
