@@ -1,10 +1,5 @@
-using Microsoft.VisualBasic;
 using System;
 using System.Collections;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2005
@@ -24,23 +19,17 @@ using System.Linq;
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
-using System.Data.SqlClient;
-using System.Xml;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using DotNetNuke;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.WebControls;
-using DotNetNuke.Entities.Modules.Communications;
 
 namespace DotNetNuke.Modules.Repository
 {
 
-	public abstract class RepositoryDashboard : Entities.Modules.PortalModuleBase, Entities.Modules.IActionable, Entities.Modules.Communications.IModuleCommunicator
+    public abstract class RepositoryDashboard : Entities.Modules.PortalModuleBase, Entities.Modules.IActionable, Entities.Modules.Communications.IModuleCommunicator
 	{
 
 		#region "Controls"

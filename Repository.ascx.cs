@@ -1686,7 +1686,7 @@ namespace DotNetNuke.Modules.Repository
                                                     objPlaceHolder.Controls.Add(objCommentsPanel);
                                                     try
                                                     {
-                                                        if (ViewState["mView"].ToString().ToLower() == "details")
+                                                        if (ViewState["mView"] != null && ViewState["mView"].ToString().ToLower() == "details")
                                                         {
                                                             string bShowComments = oRepositoryBusinessController.GetSkinAttribute(xmlDetailsDoc, "COMMENTS", "ShowOnOpen", "false");
                                                             if (bShowComments.ToLower() == "true")
@@ -2534,29 +2534,33 @@ namespace DotNetNuke.Modules.Repository
                                                 }
                                                 break;
                                             case "SEARCH":
+                                                // search panel
+                                                Panel searchPanel = new Panel();
                                                 // search label
-                                                Label objLabel = new Label();
-                                                objLabel.Text = Localization.GetString("Search", LocalResourceFile);
-                                                objLabel.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlHeaderDoc, "SEARCH", "CssClass", "normal");
-                                                hPlaceHolder.Controls.Add(objLabel);
+                                                Label searchLabel = new Label();
+                                                searchLabel.Text = Localization.GetString("Search", LocalResourceFile);
+                                                searchLabel.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlHeaderDoc, "SEARCH", "CssClass", "normal");
+                                                searchPanel.Controls.Add(searchLabel);
                                                 // search box
-                                                TextBox objTextbox = new TextBox();
-                                                objTextbox.ID = "__Search";
-                                                objTextbox.TextMode = TextBoxMode.SingleLine;
-                                                objTextbox.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "SEARCHBOX", "CssClass", "normal");
-                                                objTextbox.Width = Unit.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlHeaderDoc, "SEARCHBOX", "Width", "75"));
-                                                objTextbox.Text = mFilter;
-                                                hPlaceHolder.Controls.Add(objTextbox);
+                                                TextBox searchTextbox = new TextBox();
+                                                searchTextbox.ID = "__Search";
+                                                searchTextbox.TextMode = TextBoxMode.SingleLine;
+                                                searchTextbox.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "SEARCHBOX", "CssClass", "normal");
+                                                searchTextbox.Width = Unit.Parse(oRepositoryBusinessController.GetSkinAttribute(xmlHeaderDoc, "SEARCHBOX", "Width", "75"));
+                                                searchTextbox.Text = mFilter;
+                                                searchPanel.Controls.Add(searchTextbox);
                                                 // search button
-                                                Button objButton = new Button();
-                                                objButton.ID = "btnSearch";
-                                                objButton.Text = Localization.GetString("SearchButton", LocalResourceFile);
-                                                objButton.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlHeaderDoc, "SEARCHBUTTON", "CssClass", "normal");
-                                                objButton.CommandName = "Search";
-                                                objButton.EnableViewState = true;
-                                                objButton.ToolTip = Localization.GetString("ClickToSearch", LocalResourceFile);
-                                                objButton.Click += btnSearch_Click;
-                                                hPlaceHolder.Controls.Add(objButton);
+                                                Button searchButton = new Button();
+                                                searchButton.ID = "btnSearch";
+                                                searchButton.Text = Localization.GetString("SearchButton", LocalResourceFile);
+                                                searchButton.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlHeaderDoc, "SEARCHBUTTON", "CssClass", "normal");
+                                                searchButton.CommandName = "Search";
+                                                searchButton.EnableViewState = true;
+                                                searchButton.ToolTip = Localization.GetString("ClickToSearch", LocalResourceFile);
+                                                searchButton.Click += btnSearch_Click;
+                                                searchPanel.Controls.Add(searchButton);
+                                                searchPanel.DefaultButton = searchButton.ClientID;
+                                                hPlaceHolder.Controls.Add(searchPanel);
                                                 break;
                                             case "MODERATEBUTTON":
                                                 if (oRepositoryBusinessController.IsModerator(PortalId, ModuleId))
