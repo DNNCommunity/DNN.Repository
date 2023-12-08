@@ -968,14 +968,21 @@ namespace DotNetNuke.Modules.Repository
             DownloadAs = DownloadAs.Replace(" ", "_");
 
             System.IO.FileInfo objFile = new System.IO.FileInfo(FilePath);
-            System.Web.HttpResponse objResponse = System.Web.HttpContext.Current.Response;
-            objResponse.ClearContent();
-            objResponse.ClearHeaders();
+            
+            var b = File.ReadAllBytes(FilePath);
 
-            objResponse.AppendHeader("Content-Type", MimeMapping.GetMimeMapping(objFile.Extension));
-            objResponse.AppendHeader("Content-Disposition", "attachment; filename=" + DownloadAs);
-            objResponse.AppendHeader("Content-Length", objFile.Length.ToString());
-            objResponse.TransmitFile(objFile.FullName);
+	    var Response = System.Web.HttpContext.Current.Response;
+
+            Response.Clear();            
+            Response.ContentType = MimeMapping.GetMimeMapping(objFile.Extension);
+            Response.AppendHeader("Content-Disposition", "attachment; filename=" + DownloadAs);
+            Response.AddHeader("Content-Length", b.Length.ToString());
+            Response.Flush();
+            Response.BinaryWrite(b);
+
+            HttpContext.Current.Response.Flush();
+            HttpContext.Current.Response.SuppressContent = true;
+            HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
 		#endregion
