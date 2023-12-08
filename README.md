@@ -16,6 +16,8 @@ This module is currently maintained by Ilpo Juvander @juvander , please coordina
 |      Included or 03.05.06 |               00.00.00 |               09.01.01 |
 |                  04.00.00 |               06.01.00 |               09.02.00 |
 |                  04.01.00 |               unkown   |               09.04.04 |
+|                  04.01.01 |               unkown   |               09.13.01 |
+|                  04.01.02 |               09.01.01 |               09.13.01 |
 
 ## Building the module from source and submitting pull requests
 1. Install Dnn (latest stable version) from https://github.com/dnnsoftware/Dnn.Platform/releases
