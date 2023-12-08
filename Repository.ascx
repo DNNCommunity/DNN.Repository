@@ -1,5 +1,4 @@
-<%@ Control Language="vb" Inherits="DotNetNuke.Modules.Repository.Repository" Codebehind="Repository.ascx.vb" AutoEventWireup="False" Explicit="True" %>
-<script type="text/javascript" src='<%= Page.ResolveUrl("DesktopModules/Repository/js/pngfix.js") %>'></script>
+<%@ Control Language="vb" Inherits="DotNetNuke.Modules.Repository.Repository" Codebehind="Repository.ascx.cs" AutoEventWireup="False" Explicit="True" %>
 
 <div id="repository_content" class="repository_content">
 
@@ -31,7 +30,7 @@
 					<asp:TemplateColumn>
 						<ItemTemplate>
 							<asp:Label ID="TheFileName" runat="server" Visible="False">
-								<%# DataBinder.Eval(Container.DataItem,"FileName")%>
+								<%# DataBinder.Eval(Container.DataItem, "FileName")%>
 							</asp:Label>
 							<asp:PlaceHolder ID="PlaceHolder" runat="server" Visible="False" />
 						</ItemTemplate>
