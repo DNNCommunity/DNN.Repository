@@ -1417,8 +1417,16 @@ namespace DotNetNuke.Modules.Repository
             {
                 RepositoryAttributesController attributes = new RepositoryAttributesController();
                 RepositoryAttributesInfo attribute = null;
-                int _key = int.Parse(ViewState["_key"].ToString());
-                int _index = int.Parse(ViewState["_index"].ToString());
+                int _key = Null.NullInteger;
+                if (ViewState["_key"] != null)
+                {
+                    _key = int.TryParse(ViewState["_key"].ToString(), out _key) ? _key : Null.NullInteger;
+                }
+                int _index = Null.NullInteger;
+                if (ViewState["_index"] != null)
+                {
+                    _index = int.TryParse(ViewState["_index"].ToString(), out _index) ? _index : Null.NullInteger;
+                }
 
                 if (lbAddAttribute.Text == Localization.GetString("SaveButton", LocalResourceFile))
                 {
