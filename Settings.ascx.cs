@@ -1044,6 +1044,7 @@ namespace DotNetNuke.Modules.Repository
                 objModules.UpdateModuleSetting(ModuleId, "template", cboTemplate.SelectedItem.Value);
                 objModules.UpdateModuleSetting(ModuleId, "datacontrol", rblDataControl.SelectedValue);
                 objModules.UpdateModuleSetting(ModuleId, "ratingsimages", cboRatingsImages.SelectedItem.Value);
+                objModules.UpdateModuleSetting(ModuleId, "initialized", true.ToString());
 
                 string ModerationRoles = ";";
                 foreach (ListItem item_loopVariable in chkModerationRoles.Items)
@@ -1454,7 +1455,7 @@ namespace DotNetNuke.Modules.Repository
             }
         }
 
-        private void lbAddValue_Click(object sender, System.EventArgs e)
+        private void lbAddValue_Click(object sender, EventArgs e)
         {
             DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
 
@@ -1462,8 +1463,16 @@ namespace DotNetNuke.Modules.Repository
             {
                 RepositoryAttributeValuesController attributeValues = new RepositoryAttributeValuesController();
                 RepositoryAttributeValuesInfo attributeValue = null;
-                int _key = int.Parse(ViewState["_key"].ToString());
-                int _index = int.Parse(ViewState["_index"].ToString());
+                int _key = Null.NullInteger;
+                if (ViewState["_key"] != null)
+                {
+                    _key = int.TryParse(ViewState["_key"].ToString(), out _key) ? _key : Null.NullInteger;
+                }
+                int _index = Null.NullInteger;
+                if (ViewState["_index"] != null)
+                {
+                    _index = int.TryParse(ViewState["_index"].ToString(), out _index) ? _index : Null.NullInteger;
+                }
                 if (lbAddValue.Text == Localization.GetString("SaveButton", LocalResourceFile))
                 {
                     attributeValue = attributeValues.GetSingleRepositoryAttributeValues(_key);
