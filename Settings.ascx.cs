@@ -1044,6 +1044,7 @@ namespace DotNetNuke.Modules.Repository
                 objModules.UpdateModuleSetting(ModuleId, "template", cboTemplate.SelectedItem.Value);
                 objModules.UpdateModuleSetting(ModuleId, "datacontrol", rblDataControl.SelectedValue);
                 objModules.UpdateModuleSetting(ModuleId, "ratingsimages", cboRatingsImages.SelectedItem.Value);
+                objModules.UpdateModuleSetting(ModuleId, "initialized", true.ToString());
 
                 string ModerationRoles = ";";
                 foreach (ListItem item_loopVariable in chkModerationRoles.Items)
