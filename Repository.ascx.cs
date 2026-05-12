@@ -1,6 +1,8 @@
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -12,6 +14,8 @@ using System;
 using System.Collections;
 using System.Data;
 using System.IO;
+using System.Net;
+
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2005
@@ -41,7 +45,7 @@ namespace DotNetNuke.Modules.Repository
 
     public abstract class Repository : Entities.Modules.PortalModuleBase, Entities.Modules.Communications.IModuleListener
     {
-        static Instrumentation.DnnLogger log = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
+        static ILog log = LoggerSource.Instance.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
         #region "Controls"
         protected Label lblDescription;
         private DataGrid withEventsField_lstObjects;
@@ -274,11 +278,10 @@ namespace DotNetNuke.Modules.Repository
                 }
             }
 
-            ModuleController objModules = new ModuleController();
             if (string.IsNullOrEmpty(Convert.ToString(Settings["useridupgrade"])))
             {
                 DotNetNuke.Modules.Repository.Upgrade.CustomUpgrade315();
-                objModules.UpdateModuleSetting(ModuleId, "useridupgrade", "true");
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "useridupgrade", "true");
             }
 
             try
@@ -612,8 +615,8 @@ namespace DotNetNuke.Modules.Repository
                     objCommentsPanel = (Panel)e.Item.Cells[0].FindControl("pnlComments");
                     txtName = (TextBox)objCommentsPanel.FindControl("txtUserName");
                     txtComment = (TextBox)objCommentsPanel.FindControl("txtComment");
-                    txtName.Text = objSecurity.InputFilter(txtName.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
-                    txtComment.Text = objSecurity.InputFilter(txtComment.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+                    txtName.Text = WebUtility.HtmlEncode(txtName.Text);
+                    txtComment.Text = WebUtility.HtmlEncode(txtComment.Text);
                     if (txtName.Text.Length > 0 & txtComment.Text.Length > 0)
                     {
                         repositoryComments.AddRepositoryComment(objRepository.ItemId, ModuleId, txtName.Text, txtComment.Text);
@@ -747,8 +750,7 @@ namespace DotNetNuke.Modules.Repository
                 if ((objHyperLink != null))
                 {
                     objHyperLink.NavigateUrl = EditUrl("ItemID", objComment.ItemId.ToString(), "EditComment");
-                    var mc = new ModuleController();
-                    var moduleInfo = mc.GetModule(ModuleId);
+                    var moduleInfo = ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, false);
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "", moduleInfo) | PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
                     {
                         objHyperLink.Visible = true;
@@ -888,8 +890,8 @@ namespace DotNetNuke.Modules.Repository
                     objCommentsPanel = (Panel)objPlaceHolder.FindControl("pnlComments");
                     txtName = (TextBox)objCommentsPanel.FindControl("txtUserName");
                     txtComment = (TextBox)objCommentsPanel.FindControl("txtComment");
-                    txtName.Text = objSecurity.InputFilter(txtName.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
-                    txtComment.Text = objSecurity.InputFilter(txtComment.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+                    txtName.Text = WebUtility.HtmlEncode(txtName.Text);
+                    txtComment.Text = WebUtility.HtmlEncode(txtComment.Text);
                     if (txtName.Text.Length > 0 & txtComment.Text.Length > 0)
                     {
                         repositoryComments.AddRepositoryComment(objRepository.ItemId, ModuleId, txtName.Text, txtComment.Text);
@@ -1051,13 +1053,13 @@ namespace DotNetNuke.Modules.Repository
                                 }
                                 if (bRaw)
                                 {
-                                    objPlaceHolder.Controls.Add(new LiteralControl(objSecurity.InputFilter(attributeString, PortalSecurity.FilterFlag.NoScripting)));
+                                    objPlaceHolder.Controls.Add(new LiteralControl(WebUtility.HtmlEncode(attributeString)));
                                 }
                                 else
                                 {
                                     Label objLabel = new Label
                                     {
-                                        Text = objSecurity.InputFilter(attributeString, PortalSecurity.FilterFlag.NoScripting),
+                                        Text = WebUtility.HtmlEncode(attributeString),
                                         CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "ATTRIBUTES", "CssClass", "normal")
                                     };
                                     objPlaceHolder.Controls.Add(objLabel);
@@ -1120,8 +1122,7 @@ namespace DotNetNuke.Modules.Repository
                                                         b_AnonymousUploads = true;
                                                     }
                                                 }
-                                                var mc = new ModuleController();
-                                                var moduleInfo = mc.GetModule(ModuleId);
+                                                var moduleInfo = ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, false);
                                                 if ((HttpContext.Current.User.Identity.IsAuthenticated & (UserInfo.UserID.ToString() == objRepository.CreatedByUser.ToString()) | ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "", moduleInfo) | oRepositoryBusinessController.IsModerator(PortalId, ModuleId)))
                                                 {
                                                     b_CanEdit = true;
@@ -1138,7 +1139,6 @@ namespace DotNetNuke.Modules.Repository
                                                     {
                                                         b_CanEdit = true;
                                                     }
-
                                                 }
 
                                                 if (b_CanEdit)
@@ -1158,11 +1158,11 @@ namespace DotNetNuke.Modules.Repository
                                                 LinkButton objLinkButton = new LinkButton();
                                                 if (bRaw)
                                                 {
-                                                    objPlaceHolder.Controls.Add(new LiteralControl(objSecurity.InputFilter(objRepository.Name.ToString(), PortalSecurity.FilterFlag.NoScripting)));
+                                                    objPlaceHolder.Controls.Add(new LiteralControl(WebUtility.HtmlEncode(objRepository.Name.ToString())));
                                                 }
                                                 else
                                                 {
-                                                    objLabel.Text = objSecurity.InputFilter(objRepository.Name.ToString(), PortalSecurity.FilterFlag.NoScripting);
+                                                    objLabel.Text = WebUtility.HtmlEncode(objRepository.Name.ToString());
                                                     objLabel.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "TITLE", "CssClass", "Head");
 
                                                     if (oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "TITLE", "VIEWDETAILS", "false") == "true")
@@ -1282,7 +1282,7 @@ namespace DotNetNuke.Modules.Repository
                                                 else
                                                 {
                                                     Label objAuthorLabel = new Label();
-                                                    objAuthorLabel.Text = objSecurity.InputFilter(objRepository.Author.ToString(), PortalSecurity.FilterFlag.NoScripting);
+                                                    objAuthorLabel.Text = WebUtility.HtmlEncode(objRepository.Author.ToString());
                                                     objAuthorLabel.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "AUTHOR", "CssClass", "normal");
                                                     objPlaceHolder.Controls.Add(objAuthorLabel);
                                                 }
@@ -1292,12 +1292,12 @@ namespace DotNetNuke.Modules.Repository
                                                 {
                                                     if (bRaw)
                                                     {
-                                                        objPlaceHolder.Controls.Add(new LiteralControl(objSecurity.InputFilter(objRepository.AuthorEMail.ToString(), PortalSecurity.FilterFlag.NoScripting)));
+                                                        objPlaceHolder.Controls.Add(new LiteralControl(WebUtility.HtmlEncode(objRepository.AuthorEMail.ToString())));
                                                     }
                                                     else
                                                     {
                                                         Label objAuthorEmailLabel = new Label();
-                                                        objAuthorEmailLabel.Text = string.Format("<a href='mailto:{0}'>{1}</a>", objRepository.AuthorEMail, objSecurity.InputFilter(objRepository.AuthorEMail.ToString(), PortalSecurity.FilterFlag.NoScripting));
+                                                        objAuthorEmailLabel.Text = string.Format("<a href='mailto:{0}'>{1}</a>", objRepository.AuthorEMail, WebUtility.HtmlEncode(objRepository.AuthorEMail.ToString()));
                                                         objAuthorEmailLabel.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "AUTHOREMAIL", "CssClass", "normal");
                                                         objAuthorEmailLabel.ToolTip = Localization.GetString("AuthorEMailTooltip", LocalResourceFile);
                                                         objPlaceHolder.Controls.Add(objAuthorEmailLabel);
@@ -2412,8 +2412,7 @@ namespace DotNetNuke.Modules.Repository
             string sTag = null;
             RepositoryAttributesController attributes = new RepositoryAttributesController();
             RepositoryAttributesInfo attribute = null;
-            var mc = new ModuleController();
-            var moduleInfo = mc.GetModule(ModuleId);
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, false);
 
             isRss = false;
             try

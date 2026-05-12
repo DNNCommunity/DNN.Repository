@@ -10,6 +10,8 @@ using Microsoft.VisualBasic;
 using System;
 using System.Collections;
 using System.IO;
+using System.Net;
+
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2005
@@ -398,9 +400,7 @@ namespace DotNetNuke.Modules.Repository
             {
                 // Get settings from the database 
                 var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
-                ModuleController mc = new ModuleController();
                 Hashtable settings = moduleInfo.ModuleSettings;
-
 
                 if ((Page.IsPostBack == false))
                 {
@@ -597,10 +597,9 @@ namespace DotNetNuke.Modules.Repository
                         DownloadRoles = Convert.ToString(settings["downloadroles"]);
                     }
 
-                    RoleController objRoles = new RoleController();
                     ListItem item = null;
 
-                    var Arr = objRoles.GetRoles(PortalId);
+                    var Arr = RoleController.Instance.GetRoles(PortalId);
                     int i = 0;
 
                     for (i = 0; i <= Arr.Count - 1; i++)
@@ -998,31 +997,30 @@ namespace DotNetNuke.Modules.Repository
             bool IsSuccess = true;
             try
             {
-                ModuleController objModules = new ModuleController();
                 ListItem item = null;
                 string sUploadTypes = "";
 
                 if (!string.IsNullOrEmpty(txtPageSize.Text.Trim()))
                 {
-                    objModules.UpdateModuleSetting(ModuleId, "pagesize", Convert.ToInt32(txtPageSize.Text).ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "pagesize", Convert.ToInt32(txtPageSize.Text).ToString());
                 }
 
-                objModules.UpdateModuleSetting(ModuleId, "defaultsort", ddlDefaultSort.SelectedIndex.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "defaultsort", ddlDefaultSort.SelectedIndex.ToString());
 
-                objModules.UpdateModuleSetting(ModuleId, "AllowAllFiles", cbAllFiles.Checked.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "AllowAllFiles", cbAllFiles.Checked.ToString());
 
-                objModules.UpdateModuleSetting(ModuleId, "IsPersonal", cbxIsPersonal.Checked.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "IsPersonal", cbxIsPersonal.Checked.ToString());
 
-                objModules.UpdateModuleSetting(ModuleId, "EmailOnComment", cbxEmailOnComment.Checked.ToString());
-                objModules.UpdateModuleSetting(ModuleId, "EmailOnCommentAddress", txtEmailOnComment.Text);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "EmailOnComment", cbxEmailOnComment.Checked.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "EmailOnCommentAddress", txtEmailOnComment.Text);
 
-                objModules.UpdateModuleSetting(ModuleId, "EmailOnDownload", cbxEmailOnDownload.Checked.ToString());
-                objModules.UpdateModuleSetting(ModuleId, "EmailOnDownloadAddress", txtEmailOnDownload.Text);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "EmailOnDownload", cbxEmailOnDownload.Checked.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "EmailOnDownloadAddress", txtEmailOnDownload.Text);
 
-                objModules.UpdateModuleSetting(ModuleId, "EmailOnUpload", cbxEmailOnUpload.Checked.ToString());
-                objModules.UpdateModuleSetting(ModuleId, "EmailOnUploadAddress", txtEmailOnUpload.Text);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "EmailOnUpload", cbxEmailOnUpload.Checked.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "EmailOnUploadAddress", txtEmailOnUpload.Text);
 
-                objModules.UpdateModuleSetting(ModuleId, "AnonEditDelete", cbxAnonEditDelete.Checked.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "AnonEditDelete", cbxAnonEditDelete.Checked.ToString());
 
                 //If cblUploadTypes.Items(0).Selected = True Then
                 //    sUploadTypes &= "F"
@@ -1039,11 +1037,11 @@ namespace DotNetNuke.Modules.Repository
 
                 //objModules.UpdateModuleSetting(ModuleId, "uploadfields", sUploadTypes)
 
-                objModules.UpdateModuleSetting(ModuleId, "description", teContent.Text);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "description", teContent.Text);
 
-                objModules.UpdateModuleSetting(ModuleId, "template", cboTemplate.SelectedItem.Value);
-                objModules.UpdateModuleSetting(ModuleId, "datacontrol", rblDataControl.SelectedValue);
-                objModules.UpdateModuleSetting(ModuleId, "ratingsimages", cboRatingsImages.SelectedItem.Value);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "template", cboTemplate.SelectedItem.Value);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "datacontrol", rblDataControl.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "ratingsimages", cboRatingsImages.SelectedItem.Value);
 
                 string ModerationRoles = ";";
                 foreach (ListItem item_loopVariable in chkModerationRoles.Items)
@@ -1147,24 +1145,24 @@ namespace DotNetNuke.Modules.Repository
                     }
                 }
 
-                objModules.UpdateModuleSetting(ModuleId, "viewcomments", ddlViewComments.SelectedIndex.ToString());
-                objModules.UpdateModuleSetting(ModuleId, "viewratings", ddlViewRatings.SelectedIndex.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "viewcomments", ddlViewComments.SelectedIndex.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "viewratings", ddlViewRatings.SelectedIndex.ToString());
 
-                objModules.UpdateModuleSetting(ModuleId, "moderationroles", ModerationRoles);
-                objModules.UpdateModuleSetting(ModuleId, "trustedroles", TrustedRoles);
-                objModules.UpdateModuleSetting(ModuleId, "ratingroles", RatingRoles);
-                objModules.UpdateModuleSetting(ModuleId, "commentroles", CommentRoles);
-                objModules.UpdateModuleSetting(ModuleId, "uploadroles", UploadRoles);
-                objModules.UpdateModuleSetting(ModuleId, "downloadroles", DownloadRoles);
-                objModules.UpdateModuleSetting(ModuleId, "watermark", txtWatermark.Text.Trim());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "moderationroles", ModerationRoles);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "trustedroles", TrustedRoles);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "ratingroles", RatingRoles);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "commentroles", CommentRoles);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "uploadroles", UploadRoles);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "downloadroles", DownloadRoles);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "watermark", txtWatermark.Text.Trim());
 
                 // double check to make sure the person submitting the Update is indeed a SuperUser
                 if (UserInfo.IsSuperUser)
                 {
-                    objModules.UpdateModuleSetting(ModuleId, "userfolders", cbUserFolders.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "userfolders", cbUserFolders.Checked.ToString());
                 }
 
-                objModules.UpdateModuleSetting(ModuleId, "noimage", ctlURL.Url.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "noimage", ctlURL.Url.ToString());
 
                 //Module failed to load
             }
@@ -1380,8 +1378,8 @@ namespace DotNetNuke.Modules.Repository
                 if (lbAddCategory.Text == Localization.GetString("SaveButton", LocalResourceFile))
                 {
                     category = categories.GetSingleRepositoryCategory(_key);
-                    categories.UpdateRepositoryCategory(_key, objSecurity.InputFilter(txtNewCategory.Text.Trim(), PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup), _parent, category.ViewOrder);
-                    lstCategories.Items[_index].Text = objSecurity.InputFilter(txtNewCategory.Text.Trim(), PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+                    categories.UpdateRepositoryCategory(_key, WebUtility.HtmlEncode(txtNewCategory.Text.Trim()), _parent, category.ViewOrder);
+                    lstCategories.Items[_index].Text = WebUtility.HtmlEncode(txtNewCategory.Text.Trim());
                     txtNewCategory.Text = "";
                     lbAddCategory.Text = Localization.GetString("AddCategory", LocalResourceFile);
                     lbCancelCategory.Visible = false;
@@ -1389,9 +1387,9 @@ namespace DotNetNuke.Modules.Repository
                 else
                 {
                     int dNewCatId = 0;
-                    dNewCatId = categories.AddRepositoryCategory(-1, ModuleId, objSecurity.InputFilter(txtNewCategory.Text.Trim(), PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup), _parent, 99);
+                    dNewCatId = categories.AddRepositoryCategory(-1, ModuleId, WebUtility.HtmlEncode(txtNewCategory.Text.Trim()), _parent, 99);
                     ListItem objListItem = new ListItem();
-                    objListItem.Text = objSecurity.InputFilter(txtNewCategory.Text.Trim(), PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+                    objListItem.Text = WebUtility.HtmlEncode(txtNewCategory.Text.Trim());
                     objListItem.Value = dNewCatId.ToString();
                     lstCategories.Items.Add(objListItem);
                     txtNewCategory.Text = "";
@@ -1423,7 +1421,7 @@ namespace DotNetNuke.Modules.Repository
                 if (lbAddAttribute.Text == Localization.GetString("SaveButton", LocalResourceFile))
                 {
                     attribute = attributes.GetSingleRepositoryAttributes(_key);
-                    attribute.AttributeName = objSecurity.InputFilter(txtNewAttribute.Text.Trim(), PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+                    attribute.AttributeName = WebUtility.HtmlEncode(txtNewAttribute.Text.Trim());
                     RepositoryAttributesController.UpdateRepositoryAttributes(attribute);
                     lstAttributes.Items[_index].Text = attribute.AttributeName;
                     txtNewAttribute.Text = "";
@@ -1434,7 +1432,7 @@ namespace DotNetNuke.Modules.Repository
                 {
                     int dNewAttrId = 0;
                     attribute = new RepositoryAttributesInfo();
-                    attribute.AttributeName = objSecurity.InputFilter(txtNewAttribute.Text.Trim(), PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+                    attribute.AttributeName = WebUtility.HtmlEncode(txtNewAttribute.Text.Trim());
                     attribute.ModuleID = ModuleId;
                     dNewAttrId = attributes.AddRepositoryAttributes(attribute);
                     ListItem objListItem = new ListItem();
@@ -1459,7 +1457,7 @@ namespace DotNetNuke.Modules.Repository
                 if (lbAddValue.Text == Localization.GetString("SaveButton", LocalResourceFile))
                 {
                     attributeValue = attributeValues.GetSingleRepositoryAttributeValues(_key);
-                    attributeValue.ValueName = objSecurity.InputFilter(txtNewValue.Text.Trim(), PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+                    attributeValue.ValueName = WebUtility.HtmlEncode(txtNewValue.Text.Trim());
                     RepositoryAttributeValuesController.UpdateRepositoryAttributeValues(attributeValue);
                     lstValues.Items[_index].Text = attributeValue.ValueName;
                     txtNewValue.Text = "";
@@ -1471,7 +1469,7 @@ namespace DotNetNuke.Modules.Repository
                     int dNewAttrId = 0;
                     attributeValue = new RepositoryAttributeValuesInfo();
                     attributeValue.AttributeID = Convert.ToInt32(lstAttributes.SelectedValue);
-                    attributeValue.ValueName = objSecurity.InputFilter(txtNewValue.Text.Trim(), PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+                    attributeValue.ValueName = WebUtility.HtmlEncode(txtNewValue.Text.Trim());
                     dNewAttrId = attributeValues.AddRepositoryAttributeValues(attributeValue);
                     ListItem objListItem = new ListItem();
                     objListItem.Text = attributeValue.ValueName;

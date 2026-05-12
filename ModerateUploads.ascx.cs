@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -169,8 +170,6 @@ namespace DotNetNuke.Modules.Repository
 			oRepositoryBusinessController.LocalResourceFile = this.LocalResourceFile;
 			oRepositoryBusinessController.SetRepositoryFolders(ModuleId);
 
-			ModuleController objModules = new ModuleController();
-
 			try {
 				lstObjects.PageSize = Convert.ToInt32(Settings["pagesize"].ToString());
 			} catch (Exception ex) {
@@ -195,7 +194,6 @@ namespace DotNetNuke.Modules.Repository
 			btnReturn.Text = Localization.GetString("ReturnButton", LocalResourceFile);
 			lnkNext.Text = Localization.GetString("NextButton", LocalResourceFile);
 			lnkPrev.Text = Localization.GetString("PrevButton", LocalResourceFile);
-
 		}
 
 		public void lstObjects_PageIndexChanged(object source, System.Web.UI.WebControls.DataGridPageChangedEventArgs e)
@@ -446,8 +444,7 @@ namespace DotNetNuke.Modules.Repository
 			HyperLink objHyperLink = null;
 			RepositoryInfo objRepository = null;
 
-            var mc = new ModuleController();
-            var mi = mc.GetModule(ModuleId);
+            var mi = ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, false);
             Hashtable settings = mi.ModuleSettings;
 
 

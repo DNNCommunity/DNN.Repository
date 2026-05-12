@@ -128,8 +128,7 @@ namespace DotNetNuke.Modules.Repository
 			string strXML = "";
 			oRepositoryBusinessController = new Helpers();
 
-			Entities.Modules.ModuleController objModules = new Entities.Modules.ModuleController();
-			Entities.Modules.ModuleInfo objModule = objModules.GetModule(ModuleID, Null.NullInteger);
+			Entities.Modules.ModuleInfo objModule = Entities.Modules.ModuleController.Instance.GetModule(ModuleID, Null.NullInteger, false);
 
 			RepositoryObjectCategoriesController RepositoryItemCategoryController = new RepositoryObjectCategoriesController();
 			ArrayList RepositoryItemCategories = null;

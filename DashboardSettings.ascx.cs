@@ -81,11 +81,6 @@ namespace DotNetNuke.Modules.Repository
 			PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 
 			try {
-				ModuleController mc = new ModuleController();
-				TabController tc = new TabController();
-				PackageController pc = new PackageController();
-
-
                 // Get settings from the database 
                 var moduleInfo = ModuleController.Instance.GetModule(ModuleId, TabId, false);
                 var settings = moduleInfo.ModuleSettings;
@@ -96,7 +91,6 @@ namespace DotNetNuke.Modules.Repository
 					ddlRepositoryID.Items.Clear();
 
 					RepositoryController repositories = new RepositoryController();
-					TabController tabs = new TabController();
 					TabInfo objTab = null;
 					ModuleInfo objModule = null;
 					ListItem objItem = null;
@@ -106,13 +100,13 @@ namespace DotNetNuke.Modules.Repository
 
 					ModuleDefinitionInfo repModInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Repository");
 					PackageInfo package = PackageController.Instance.GetExtensionPackage(PortalId, m => m.Name == "DotNetNuke.Repository");
-					IDictionary<int, Entities.Tabs.TabInfo> tabsWithModule = tc.GetTabsByPackageID(PortalId, package.PackageID, false);
+					IDictionary<int, Entities.Tabs.TabInfo> tabsWithModule = TabController.Instance.GetTabsByPackageID(PortalId, package.PackageID, false);
 
 					// first, get a list of all the tabs that contain at least one repository
 
 					foreach (Entities.Tabs.TabInfo tab in tabsWithModule.Values) {
 						// for each tab, get the repository module info
-						Dictionary<int, ModuleInfo> modules = mc.GetTabModules(tab.TabID);
+						Dictionary<int, ModuleInfo> modules = ModuleController.Instance.GetTabModules(tab.TabID);
 						foreach (ModuleInfo objModule_loopVariable in modules.Values) {
 							objModule = objModule_loopVariable;
 							if (objModule.ModuleDefID == repModInfo.ModuleDefID) {
@@ -122,7 +116,6 @@ namespace DotNetNuke.Modules.Repository
 								ddlRepositoryID.Items.Add(objItem);
 							}
 						}
-
 					}
 
 					objItem = new ListItem();
@@ -164,17 +157,16 @@ namespace DotNetNuke.Modules.Repository
 		public override void UpdateSettings()
 		{
 			try {
-				ModuleController objModules = new ModuleController();
 				ListItem item = null;
 
 				if (!string.IsNullOrEmpty(ddlRepositoryID.SelectedValue)) {
-					objModules.UpdateModuleSetting(ModuleId, "repository", Convert.ToInt32(ddlRepositoryID.SelectedValue).ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "repository", Convert.ToInt32(ddlRepositoryID.SelectedValue).ToString());
 				}
 				if (!string.IsNullOrEmpty(rbStyle.SelectedValue)) {
-					objModules.UpdateModuleSetting(ModuleId, "style", Convert.ToString(rbStyle.SelectedValue));
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "style", Convert.ToString(rbStyle.SelectedValue));
 				}
 				if (!string.IsNullOrEmpty(txtRowCount.Text)) {
-					objModules.UpdateModuleSetting(ModuleId, "rowcount", Convert.ToInt32(txtRowCount.Text).ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "rowcount", Convert.ToInt32(txtRowCount.Text).ToString());
 				}
 
 				// Redirect back to the portal home page

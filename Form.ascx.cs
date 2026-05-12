@@ -100,7 +100,6 @@ namespace DotNetNuke.Modules.Repository
             oRepositoryBusinessController.SetRepositoryFolders(ModuleId);
 
             // Obtain PortalSettings from Current Context
-            ModuleController objModules = new ModuleController();
 
             // Determine ItemId of Document to Update
             if ((Request.Params["ItemId"] != null))
@@ -915,7 +914,6 @@ namespace DotNetNuke.Modules.Repository
                                                         break;
                                                 }
 
-                                                RoleController objRoles = new RoleController();
                                                 ListItem item = null;
                                                 var Arr = RoleController.Instance.GetRoles(PortalId);
                                                 int i = 0;
