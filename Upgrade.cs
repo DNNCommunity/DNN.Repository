@@ -51,13 +51,11 @@ namespace DotNetNuke.Modules.Repository
 
 			try {
 				PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-				DesktopModuleController _desktopModuleController = new DesktopModuleController();
 
 				if ((DesktopModuleController.GetDesktopModuleByModuleName("Gooddogs Repository", Null.NullInteger) == null)) {
 					return "Gooddogs Repository Not installed - no upgrade required";
 				}
 
-				ModuleDefinitionController _moduleDefinitionControler = new ModuleDefinitionController();
                 int OldRepositoryDefId = ModuleDefinitionController.GetModuleDefinitionByDefinitionName("Gooddogs Repository", DesktopModuleController.GetDesktopModuleByModuleName("Gooddogs Repository", Null.NullInteger).DesktopModuleID).ModuleDefID;
                 int OldDashboardDefId = ModuleDefinitionController.GetModuleDefinitionByDefinitionName("Gooddogs Dashboard", DesktopModuleController.GetDesktopModuleByModuleName("Gooddogs Dashboard", Null.NullInteger).DesktopModuleID).ModuleDefID;
                 int NewRepositoryDefId = ModuleDefinitionController.GetModuleDefinitionByDefinitionName("Repository", DesktopModuleController.GetDesktopModuleByModuleName("Repository", Null.NullInteger).DesktopModuleID).ModuleDefID;
@@ -67,10 +65,9 @@ namespace DotNetNuke.Modules.Repository
                 RepositoryController m_repositoryController = new RepositoryController();
 
 				ModuleInfo _moduleInfo = null;
-				ModuleController _moduleController = new ModuleController();
 
 				// replace all Gooddogs Repository controls with the new Repository controls
-				ArrayList _allModules = _moduleController.GetAllModules();
+				ArrayList _allModules = ModuleController.Instance.GetAllModules();
 
 				foreach (ModuleInfo mi in _allModules) {
 					if (mi.ModuleDefID == OldRepositoryDefId) {
@@ -80,7 +77,6 @@ namespace DotNetNuke.Modules.Repository
 					if (mi.ModuleDefID == OldDashboardDefId) {
 						m_repositoryController.ChangeRepositoryModuleDefId(mi.ModuleID, mi.ModuleDefID, NewDashboardDefId);
 					}
-
 				}
 
 				// we're all done .. so now we can remove the old Gooddogs Repository and Gooddogs Dashboard modules
@@ -124,7 +120,6 @@ namespace DotNetNuke.Modules.Repository
 
 			try {
 				PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-				DesktopModuleController _desktopModuleController = new DesktopModuleController();
 
 				if ((DesktopModuleController.GetDesktopModuleByModuleName("Repository", Null.NullInteger) == null)) {
 					return "No existing Repository modules found - no upgrade required";

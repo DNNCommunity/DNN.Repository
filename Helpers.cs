@@ -1,3 +1,4 @@
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -26,6 +27,7 @@ using System.Collections;
 // DEALINGS IN THE SOFTWARE.
 
 using System.IO;
+using System.Net;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -165,7 +167,6 @@ namespace DotNetNuke.Modules.Repository
         public string UploadFiles(int PortalID, int ModuleID, string fileURL, string imageURL, HttpPostedFile objFile, HttpPostedFile objImageFile, RepositoryInfo pRepository, string strCategories, string strAttributes)
         {
 
-            PortalController objPortalController = new PortalController();
             string strMessage = "";
             string strFileName = "";
             string strExtension = "";
@@ -197,9 +198,8 @@ namespace DotNetNuke.Modules.Repository
             _ModuleID = ModuleID;
 
             // Obtain PortalSettings from Current Context
-            ModuleController mc = new ModuleController();
             PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            var moduleInfo = mc.GetModule(ModuleID);
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleID, Null.NullInteger, false);
             var settings = moduleInfo.ModuleSettings;
 
             strTargetFolder = GetTargetFolder(ModuleID, pRepository);
@@ -305,7 +305,7 @@ namespace DotNetNuke.Modules.Repository
                 {
 
                     var allowedExtensions = string.Join(",", DotNetNuke.Entities.Host.Host.AllowedExtensionWhitelist).ToUpper();
-                    if (((((objPortalController.GetPortalSpaceUsedBytes(PortalID) + uploadSize) / 1000000) <= _portalSettings.HostSpace) | _portalSettings.HostSpace == 0) | (_portalSettings.ActiveTab.ParentId == _portalSettings.SuperTabId))
+                    if (((((PortalController.Instance.GetPortalSpaceUsedBytes(PortalID) + uploadSize) / 1000000) <= _portalSettings.HostSpace) | _portalSettings.HostSpace == 0) | (_portalSettings.ActiveTab.ParentId == _portalSettings.SuperTabId))
                     {
                         if (bIsFile && !allowedExtensions.Contains(strExtension.ToUpper()))
                         {
@@ -621,11 +621,9 @@ namespace DotNetNuke.Modules.Repository
 
         public string ConvertToRoles(string RoleIDs, int PortalID)
         {
-
             string RoleNames = ";";
             string RoleID = "";
-            DotNetNuke.Security.Roles.RoleController oRoleController = new DotNetNuke.Security.Roles.RoleController();
-            DotNetNuke.Security.Roles.RoleInfo oRoleInfo = null;
+            DotNetNuke.Security.Roles.RoleInfo roleInfo = null;
 
             foreach (string RoleID_loopVariable in RoleIDs.Split(';'))
             {
@@ -638,8 +636,8 @@ namespace DotNetNuke.Modules.Repository
                     }
                     else
                     {
-                        oRoleInfo = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(PortalID, int.Parse(RoleID));
-                        RoleNames = RoleNames + oRoleInfo.RoleName + ";";
+                        roleInfo = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(PortalID, int.Parse(RoleID));
+                        RoleNames = RoleNames + roleInfo.RoleName + ";";
                     }
                 }
             }
@@ -737,8 +735,7 @@ namespace DotNetNuke.Modules.Repository
         public bool IsModerator(int pid, int mid)
         {
             PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            var moduleController = new ModuleController();
-            var moduleInfo = moduleController.GetModule(mid);
+            var moduleInfo = ModuleController.Instance.GetModule(mid, Null.NullInteger, false);
             var settings = moduleInfo.ModuleSettings;
             string ModerateRoles = "";
             Helpers oRepositoryController = new Helpers();
@@ -761,8 +758,7 @@ namespace DotNetNuke.Modules.Repository
         public bool IsTrusted(int pid, int mid)
         {
             PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            var moduleController = new ModuleController();
-            var moduleInfo = moduleController.GetModule(mid);
+            var moduleInfo = ModuleController.Instance.GetModule(mid, Null.NullInteger, false);
             var settings = moduleInfo.ModuleSettings;
             string TrustedRoles = "";
             Helpers oRepositoryController = new Helpers();
@@ -1004,8 +1000,7 @@ namespace DotNetNuke.Modules.Repository
 
         public static Hashtable GetModSettings(int mid)
         {
-            var moduleController = new ModuleController();
-            var moduleInfo = moduleController.GetModule(mid);
+            var moduleInfo = ModuleController.Instance.GetModule(mid, Null.NullInteger, false);
             var settings = moduleInfo.ModuleSettings;
             return settings;
         }
@@ -1197,8 +1192,7 @@ namespace DotNetNuke.Modules.Repository
         {
             string strTargetFolder = "";
             PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            var moduleController = new ModuleController();
-            var moduleInfo = moduleController.GetModule(moduleid);
+            var moduleInfo = ModuleController.Instance.GetModule(moduleid, Null.NullInteger, false);
             var settings = moduleInfo.ModuleSettings;
 
             UserInfo userInfo = null;
@@ -1495,11 +1489,11 @@ namespace DotNetNuke.Modules.Repository
             // ------------------------------------------------------------------
 
             objRepository.ItemId = pRepository.ItemId;
-            objRepository.Name = objSecurity.InputFilter(pRepository.Name, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+            objRepository.Name = WebUtility.HtmlEncode(pRepository.Name);
             objRepository.Description = objSecurity.InputFilter(pRepository.Description, PortalSecurity.FilterFlag.NoScripting);
             objRepository.Summary = objSecurity.InputFilter(pRepository.Summary, PortalSecurity.FilterFlag.NoScripting);
-            objRepository.Author = objSecurity.InputFilter(pRepository.Author, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
-            objRepository.AuthorEMail = objSecurity.InputFilter(pRepository.AuthorEMail, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
+            objRepository.Author = WebUtility.HtmlEncode(pRepository.Author);
+            objRepository.AuthorEMail = WebUtility.HtmlEncode(pRepository.AuthorEMail);
             objRepository.CreatedByUser = userInfo.UserID.ToString();
             objRepository.ModuleId = _ModuleID;
             objRepository.PreviewImage = "";

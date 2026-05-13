@@ -154,8 +154,6 @@ namespace DotNetNuke.Modules.Repository
 		{
 			oRepositoryBusinessController.LocalResourceFile = this.LocalResourceFile;
 
-			ModuleController objModules = new ModuleController();
-
 			if (!string.IsNullOrEmpty(Convert.ToString(Settings["repository"]))) {
 				m_RepositoryId = int.Parse(Settings["repository"].ToString());
 				// now check to see if the repository that we're tied to is on the same page
@@ -496,8 +494,6 @@ namespace DotNetNuke.Modules.Repository
 
 		private void lstObjects_ItemCommand(object source, System.Web.UI.WebControls.DataGridCommandEventArgs e)
 		{
-			ModuleController objModules = new ModuleController();
-
 			if (e.CommandName == "Download") {
 				RepositoryController objRepository = new RepositoryController();
 				objRepository.UpdateRepositoryClicks(Convert.ToInt32(e.CommandArgument));
@@ -831,9 +827,8 @@ namespace DotNetNuke.Modules.Repository
 		private bool FindRepository()
 		{
 			// see what tab the repository is on
-			ModuleController modules = new ModuleController();
 			ModuleInfo objModule = new ModuleInfo();
-			objModule = modules.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger);
+			objModule = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
 			m_RepositoryTabId = objModule.TabID;
 			if (m_RepositoryTabId == PortalSettings.ActiveTab.TabID) {
 				return true;

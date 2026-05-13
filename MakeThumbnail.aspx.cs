@@ -32,6 +32,7 @@ using System.Drawing.Imaging;
 using DotNetNuke;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -81,7 +82,6 @@ namespace DotNetNuke.Modules.Repository
 			bool bIsURL = false;
 
 			PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-			ModuleController _moduleController = new ModuleController();
 
 			RepositoryController repository = new RepositoryController();
 			RepositoryInfo objRepository = null;
@@ -93,8 +93,7 @@ namespace DotNetNuke.Modules.Repository
 				if ((objRepository != null)) {
 					if (string.IsNullOrEmpty(objRepository.Image)) {
 						// no image, display an icon or generic image based on module settings						
-                        var moduleController = new ModuleController();
-                        var moduleInfo = moduleController.GetModule(int.Parse(ModuleId));
+                        var moduleInfo = ModuleController.Instance.GetModule(int.Parse(ModuleId), Null.NullInteger, false);
                         var settings = moduleInfo.ModuleSettings;
 
                         if (!string.IsNullOrEmpty(Convert.ToString(settings["noimage"]))) {
@@ -157,8 +156,7 @@ namespace DotNetNuke.Modules.Repository
 
 			} else {
 				// no image id, then we display the "No Image" image for this module
-                var moduleController = new ModuleController();
-                var moduleInfo = moduleController.GetModule(int.Parse(ModuleId));
+                var moduleInfo = ModuleController.Instance.GetModule(int.Parse(ModuleId), Null.NullInteger, false);
                 var settings = moduleInfo.ModuleSettings;
                 string noImageURL = Convert.ToString(settings["noimage"]);
 				if (System.Text.RegularExpressions.Regex.IsMatch(noImageURL.ToLower(), "(http|https|ftp|gopher)://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?")) {
@@ -234,8 +232,7 @@ namespace DotNetNuke.Modules.Repository
 			} else {
                 // we are serving out the full size image
                 // if the settings indicate to use a watermark, add the watermark to the image
-                var moduleController = new ModuleController();
-                var moduleInfo = moduleController.GetModule(int.Parse(ModuleId));
+                var moduleInfo = ModuleController.Instance.GetModule(int.Parse(ModuleId), Null.NullInteger, false);
                 var settings = moduleInfo.ModuleSettings;
 
                 string watermarkText = "";
