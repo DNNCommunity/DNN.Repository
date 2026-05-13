@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Net;
 
 //
@@ -284,21 +285,7 @@ namespace DotNetNuke.Modules.Repository
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "useridupgrade", "true");
             }
 
-            try
-            {
-                if (Settings["description"] != null)
-                {
-                    lblDescription.Text = Server.HtmlDecode(Convert.ToString(Settings["description"]));
-                }
-                else
-                {
-                    lblDescription.Text = (Localization.GetString("InitialMessage", LocalResourceFile));
-                }
-            }
-            catch (Exception ex)
-            {
-                lblDescription.Text = (Localization.GetString("InitialMessage", LocalResourceFile));
-            }
+            lblDescription.Text = this.GetDescription();
 
             try
             {
@@ -438,6 +425,20 @@ namespace DotNetNuke.Modules.Repository
 
         }
 
+        private string GetDescription()
+        {
+            if (Settings.ContainsKey("description"))
+            {
+                return Server.HtmlDecode(Convert.ToString(Settings["description"]));
+            }
+
+            if (!Settings.ContainsKey("initialized") || Convert.ToBoolean(Settings["initialized"]) == false)
+            {
+                return this.UserInfo.IsInRole(PortalSettings.AdministratorRoleName) ? Localization.GetString("InitialMessage", LocalResourceFile) : string.Empty;
+            }            
+
+            return string.Empty;
+        }
 
         private void lstObjects_ItemCreated(object sender, System.Web.UI.WebControls.DataGridItemEventArgs e)
         {
