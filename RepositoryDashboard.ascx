@@ -1,5 +1,6 @@
-<%@ Control language="vb" Inherits="DotNetNuke.Modules.Repository.RepositoryDashboard" CodeBehind="RepositoryDashboard.ascx.vb" AutoEventWireup="False" Explicit="True" %>
+<%@ Control language="vb" Inherits="DotNetNuke.Modules.Repository.RepositoryDashboard" CodeBehind="RepositoryDashboard.ascx.cs" AutoEventWireup="false" Explicit="true" %>
 <div id="repository_dashboard_content" class="repository_dashboard_content">
+<asp:Label ID="lblAdminMessage" runat="server" CssClass="normal" />
 <asp:Table id="DashTable" Width="100%" Runat="server" CssClass="normal" CellSpacing="0" CellPadding="0"
 	BorderWidth="0">
 	<asp:TableRow Width="100%" VerticalAlign="Top">

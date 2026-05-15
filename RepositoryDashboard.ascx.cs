@@ -64,6 +64,7 @@ namespace DotNetNuke.Modules.Repository
 				}
 			}
 		}
+		protected System.Web.UI.WebControls.Label lblAdminMessage;
 		protected System.Web.UI.WebControls.Table DashTable;
 
 		protected System.Web.UI.WebControls.PlaceHolder PlaceHolder;
@@ -174,20 +175,27 @@ namespace DotNetNuke.Modules.Repository
 				m_RowCount = 10;
 			}
 
-			CheckItemRoles();
-			oRepositoryBusinessController.SetRepositoryFolders(m_RepositoryId);
+            if (m_RepositoryId != -1)
+            {
+                CheckItemRoles();
+                oRepositoryBusinessController.SetRepositoryFolders(m_RepositoryId);
 
-			LoadDashboardTemplate();
-			m_hasTree = false;
-			BindData();
+                LoadDashboardTemplate();
+                m_hasTree = false;
+                BindData();
+            }
+            else if (this.UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+            {
+				lblAdminMessage.Text = Localization.GetString("InitialMessage", LocalResourceFile);
+			}
 
-		}
+        }
 
-		private void datList_ItemDataBound(object sender, System.Web.UI.WebControls.DataListItemEventArgs e)
+        private void datList_ItemDataBound(object sender, System.Web.UI.WebControls.DataListItemEventArgs e)
 		{
 			RepositoryCategoryInfo objCategory = null;
 			RepositoryInfo objItem = null;
-            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
 			int iPtr = 0;
 
 			if (m_RepositoryId == -1) {
@@ -263,7 +271,7 @@ namespace DotNetNuke.Modules.Repository
 		{
 			RepositoryCategoryController categories = new RepositoryCategoryController();
 			RepositoryCategoryInfo objCategory = null;
-            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
             RepositoryInfo objItem = null;
 			int iPtr = 0;
 
@@ -553,7 +561,7 @@ namespace DotNetNuke.Modules.Repository
 		private void CheckForAllItems(ArrayList categories)
 		{
 			RepositoryController repository = new RepositoryController();
-            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
             bool addAllItems = false;
 
 			if (m_RepositoryId != -1) {
@@ -618,7 +626,7 @@ namespace DotNetNuke.Modules.Repository
 
 		private ArrayList RecalcCategoryCount(ArrayList categories)
 		{
-            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
             RepositoryController repository = new RepositoryController();
 			RepositoryObjectCategoriesController rc = new RepositoryObjectCategoriesController();
 
@@ -664,7 +672,7 @@ namespace DotNetNuke.Modules.Repository
 
 		private void BindData()
 		{
-            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
             RepositoryController repository = new RepositoryController();
 			RepositoryCategoryController cc = new RepositoryCategoryController();
 			ArrayList categories = cc.GetRepositoryCategories(m_RepositoryId, -1);
@@ -777,7 +785,7 @@ namespace DotNetNuke.Modules.Repository
 		private void LoadDashboardTemplate()
 		{
 			string strStyle = null;
-            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
 
             switch (m_DashboardStyle) {
 				case "categories":
@@ -839,7 +847,7 @@ namespace DotNetNuke.Modules.Repository
 
 		private void CheckItemRoles()
 		{
-            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, TabId, false);
+            var moduleInfo = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
             try {
                 // get module settings for associated Repository
                 Hashtable RepositorySettings = moduleInfo.ModuleSettings;
