@@ -87,6 +87,7 @@
         <InstallInclude Include="**\img\**" Exclude="packages\**" />
         <InstallInclude Include="**\images\**" Exclude="packages\**" />
         <InstallInclude Include="**\Templates\**" />
+		<InstallInclude Include="icon_repository_32px.gif" />
       </ItemGroup>
 
       <!-- Set the files to include in the source-->
@@ -111,6 +112,7 @@
         <SourceInclude Include="**\img\**" Exclude="packages\**" />
         <SourceInclude Include="**\images\**" Exclude="packages\**" />
         <SourceInclude Include="**\Templates\**" />
+		<SourceInclude Include="icon_repository_32px.gif" />
       </ItemGroup>
 
       <!-- Files for setup -->
@@ -129,7 +131,7 @@
       <CreateItem Include="**\*.txt" Exclude="**\obj\**">
         <Output TaskParameter="Include" ItemName="CleanupFiles" />
       </CreateItem>
-      <CreateItem Include="DashboardSettings.ascx;DashboardSettings.ascx.resx;RepositoryDashboard.ascx;RepositoryDashboard.ascx.resx;RepositoryDashboard.ascx;RepositoryDashboard.ascx.resx">
+      <CreateItem Include="DashboardSettings.ascx;DashboardSettings.ascx.resx;RepositoryDashboard.ascx;RepositoryDashboard.ascx.resx">
         <Output TaskParameter="Include" ItemName="DashboardFiles" />
       </CreateItem>
       <CreateItem Include="icon_repository_32px.gif">
@@ -143,7 +145,7 @@
       <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
       <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
       <Copy SourceFiles="@(DashboardFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-      <Copy SourceFiles="@(icons)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+      <Copy SourceFiles="@(Icons)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
 
       <!-- Create the install resources.zip file -->
       <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
