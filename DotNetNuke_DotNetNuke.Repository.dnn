@@ -3,7 +3,7 @@
 	  <package name="DotNetNuke.Repository" type="Module" version="04.01.04">
   <friendlyName>Repository</friendlyName>
   <description>A file/object repository module that includes skinning and community features like comments and user ratings.</description>
-      <iconFile>icon_repository_32px.gif</iconFile>      
+  <iconFile>icon_repository_32px.gif</iconFile>      
   <owner>
     <name>DotNetNuke</name>
     <organization>DotNetNuke Corporation</organization>
@@ -53,12 +53,11 @@
           <name>RepositoryDashboard.ascx</name>
         </file>
         <file>
-          <name>icon_repository_32px.gif</name>
-        </file>
-        <file>
+          <path>App_LocalResources</path>
           <name>RepositoryDashboard.ascx.resx</name>
         </file>
         <file>
+          <path>App_LocalResources</path>
           <name>DashboardSettings.ascx.resx</name>
         </file>
       </files>
