@@ -112,16 +112,18 @@ namespace DotNetNuke.Modules.Repository
 						}
 					}
 
-					objItem = new ListItem();
-					objItem.Text = Localization.GetString("plRepositoryPrompt", this.LocalResourceFile);
-					objItem.Value = "";
-					ddlRepositoryID.Items.Insert(0, objItem);
-
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["repository"]))) {
-						ddlRepositoryID.SelectedValue = settings["repository"].ToString();
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["repository"])) && ddlRepositoryID.Items.FindByValue(settings["repository"].ToString()) != null) {
+                        ddlRepositoryID.SelectedValue = settings["repository"].ToString();
+					}
+					else
+					{
+						objItem = new ListItem();
+						objItem.Text = Localization.GetString("plRepositoryPrompt", this.LocalResourceFile);
+						objItem.Value = "";
+						ddlRepositoryID.Items.Insert(0, objItem);
 					}
 
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["rowcount"]))) {
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["rowcount"]))) {
 						txtRowCount.Text = Convert.ToString(settings["rowcount"]);
 					}
 
