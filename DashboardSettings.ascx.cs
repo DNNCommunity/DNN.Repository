@@ -90,9 +90,6 @@ namespace DotNetNuke.Modules.Repository
 					// get a list of repository modules on this portal
 					ddlRepositoryID.Items.Clear();
 
-					RepositoryController repositories = new RepositoryController();
-					TabInfo objTab = null;
-					ModuleInfo objModule = null;
 					ListItem objItem = null;
 
 					// get a list of all of the Repository Modules installed in this
@@ -107,14 +104,11 @@ namespace DotNetNuke.Modules.Repository
 					foreach (Entities.Tabs.TabInfo tab in tabsWithModule.Values) {
 						// for each tab, get the repository module info
 						Dictionary<int, ModuleInfo> modules = ModuleController.Instance.GetTabModules(tab.TabID);
-						foreach (ModuleInfo objModule_loopVariable in modules.Values) {
-							objModule = objModule_loopVariable;
-							if (objModule.ModuleDefID == repModInfo.ModuleDefID) {
-								objItem = new ListItem();
-								objItem.Text = string.Format("{0} : {1}", tab.TabName, objModule.ModuleTitle);
-								objItem.Value = objModule.ModuleID.ToString();
-								ddlRepositoryID.Items.Add(objItem);
-							}
+						foreach (ModuleInfo objModule in modules.Values.Where(m => m.ModuleDefID == repModInfo.ModuleDefID && !m.IsDeleted)) {
+                            objItem = new ListItem();
+							objItem.Text = string.Format("{0} : {1}", tab.TabName, objModule.ModuleTitle);
+							objItem.Value = objModule.ModuleID.ToString();
+							ddlRepositoryID.Items.Add(objItem);
 						}
 					}
 
