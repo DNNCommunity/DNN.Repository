@@ -87,7 +87,8 @@ namespace DotNetNuke.Modules.Repository
 		private bool m_IsLocal;
 		private int m_RepositoryTabId;
 
-		private bool m_hasTree;
+		private bool linkedRepositoryModuleIsDeleted;
+        private bool m_hasTree;
 		private bool b_CanDownload;
 		private bool b_CanRate;
 		private bool b_CanComment;
@@ -177,14 +178,21 @@ namespace DotNetNuke.Modules.Repository
 
             if (m_RepositoryId != -1)
             {
-                CheckItemRoles();
-                oRepositoryBusinessController.SetRepositoryFolders(m_RepositoryId);
+				if (!linkedRepositoryModuleIsDeleted)
+				{
+					CheckItemRoles();
+					oRepositoryBusinessController.SetRepositoryFolders(m_RepositoryId);
 
-                LoadDashboardTemplate();
-                m_hasTree = false;
-                BindData();
+					LoadDashboardTemplate();
+					m_hasTree = false;
+					BindData();
+				}
+                else if (this.UserInfo.IsAdmin)
+                {
+					lblAdminMessage.Text = Localization.GetString("RepositoryModuleDeleted", LocalResourceFile);
+				}
             }
-            else if (this.UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+            else if (this.UserInfo.IsAdmin)
             {
 				lblAdminMessage.Text = Localization.GetString("InitialMessage", LocalResourceFile);
 			}
@@ -837,7 +845,12 @@ namespace DotNetNuke.Modules.Repository
 			// see what tab the repository is on
 			ModuleInfo objModule = new ModuleInfo();
 			objModule = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
-			m_RepositoryTabId = objModule.TabID;
+			if (objModule == null || objModule.IsDeleted)
+			{
+				linkedRepositoryModuleIsDeleted = true;
+				return false;
+            }
+            m_RepositoryTabId = objModule.TabID;
 			if (m_RepositoryTabId == PortalSettings.ActiveTab.TabID) {
 				return true;
 			} else {
