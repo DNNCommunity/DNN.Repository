@@ -1,11 +1,16 @@
+using DotNetNuke;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2005
@@ -26,11 +31,7 @@ using System.Linq;
 // DEALINGS IN THE SOFTWARE.
 
 using System.IO;
-using DotNetNuke;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Security;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
+using System.Linq;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -83,12 +84,14 @@ namespace DotNetNuke.Modules.Repository
 			}
 
 		}
-		#endregion
+        #endregion
 
-		#region "Private Members"
+        protected INavigationManager navigationManager;
+
+        #region "Private Members"
 
 
-		private int ItemId;
+        private int ItemId;
 		#endregion
 
 		#region " Web Form Designer Generated Code "
@@ -134,8 +137,9 @@ namespace DotNetNuke.Modules.Repository
 						}
 
 					} else {
-						Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
-					}
+						Response.Redirect(navigationManager.NavigateURL(), true);
+
+                    }
 				} else {
 					cmdDelete.Visible = false;
 				}
@@ -160,9 +164,10 @@ namespace DotNetNuke.Modules.Repository
 					objRepositoryComments.UpdateRepositoryComment(ItemId, ModuleId, objComment.CreatedByUser, objComment.Comment);
 
 					// Redirect back to the portal home page
-					Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
+					Response.Redirect(navigationManager.NavigateURL(), true);
 
-				}
+
+                }
 			//Module failed to load
 			} catch (Exception exc) {
 				Exceptions.ProcessModuleLoadException(this, exc);
@@ -178,9 +183,9 @@ namespace DotNetNuke.Modules.Repository
 				}
 
 				// Redirect back to the portal home page
-				Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
-			//Module failed to load
-			} catch (Exception exc) {
+				Response.Redirect(navigationManager.NavigateURL(), true);
+            //Module failed to load
+            } catch (Exception exc) {
 				Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
@@ -188,9 +193,9 @@ namespace DotNetNuke.Modules.Repository
 		private void cmdCancel_Click(object sender, EventArgs e)
 		{
 			try {
-				Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
-			//Module failed to load
-			} catch (Exception exc) {
+				Response.Redirect(navigationManager.NavigateURL(), true);
+            //Module failed to load
+            } catch (Exception exc) {
 				Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
@@ -198,10 +203,12 @@ namespace DotNetNuke.Modules.Repository
 		{
 			Load += Page_Load;
 			Init += Page_Init;
-		}
 
-		#endregion
+            navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
-	}
+        #endregion
+
+    }
 
 }

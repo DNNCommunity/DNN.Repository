@@ -1,3 +1,9 @@
+using DotNetNuke.Abstractions;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
 //
@@ -21,10 +27,6 @@ using System.Collections;
 
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -68,12 +70,14 @@ namespace DotNetNuke.Modules.Repository
 		protected System.Web.UI.WebControls.Table DashTable;
 
 		protected System.Web.UI.WebControls.PlaceHolder PlaceHolder;
-		#endregion
+        #endregion
 
-		#region "Private Members"
+        protected INavigationManager navigationManager;
+
+        #region "Private Members"
 
 
-		private PlaceHolder objPlaceHolder;
+        private PlaceHolder objPlaceHolder;
 		private string strTemplateName = "";
 		private string strTemplate = "";
 		private string[] aTemplate;
@@ -261,8 +265,8 @@ namespace DotNetNuke.Modules.Repository
 					ModuleCommunication(this, moduleCommunicationEventArgs);
 				}
 			} else {
-				// repository is on another page, so we need to go there, then send a message to it
-				Response.Redirect(DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?grm2catid=" + e.Node.Key + "&tabid=" + m_RepositoryTabId.ToString(), true);
+                // repository is on another page, so we need to go there, then send a message to it
+                Response.Redirect(navigationManager.NavigateURL(m_RepositoryTabId, "", "grm2catid", e.Node.Key), true);
 			}
 		}
 
@@ -494,7 +498,7 @@ namespace DotNetNuke.Modules.Repository
 				// repository is on another page, so we need to go there, then send a message to it
 				switch (e.CommandName) {
 					case "SelectCategory":
-						Response.Redirect(DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?grm2catid=" + e.CommandArgument.ToString() + "&tabid=" + m_RepositoryTabId.ToString(), true);
+						Response.Redirect(navigationManager.NavigateURL(m_RepositoryTabId, "", "grm2catid", e.CommandArgument.ToString()) , true);
 						break;
 				}
 			}
@@ -537,11 +541,11 @@ namespace DotNetNuke.Modules.Repository
 					// repository is on another page, so we need to go there, then send a message to it
 					switch (e.CommandName) {
 						case "SelectCategory":
-							Response.Redirect(DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?grm2catid=" + e.CommandArgument.ToString() + "&tabid=" + m_RepositoryTabId.ToString(), true);
-							break;
+                            Response.Redirect(navigationManager.NavigateURL(m_RepositoryTabId, "", "grm2catid", e.CommandArgument.ToString()), true);
+                            break;
 						case "SelectFile":
-							Response.Redirect(DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?id=" + e.CommandArgument.ToString() + "&tabid=" + m_RepositoryTabId.ToString(), true);
-							break;
+                            Response.Redirect(navigationManager.NavigateURL(m_RepositoryTabId, "", "id", e.CommandArgument.ToString()), true);
+                            break;
 						case "Download":
 							RepositoryController objRepository = new RepositoryController();
 							objRepository.UpdateRepositoryClicks(Convert.ToInt32(e.CommandArgument));
@@ -1058,10 +1062,12 @@ namespace DotNetNuke.Modules.Repository
 		{
 			Load += Page_Load;
 			Init += Page_Init;
-		}
 
-		#endregion
+            navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
-	}
+        #endregion
+
+    }
 
 }
