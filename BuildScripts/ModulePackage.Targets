@@ -18,13 +18,15 @@
 
     <Target Name="DeleteTempFiles">
       <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" />
-      <RemoveDir Directories ="$(MSBuildProjectDirectory)\ResourcesZip" />
+      <RemoveDir Directories ="$(MSBuildProjectDirectory)\RepositoryResourcesZip" />
+      <RemoveDir Directories ="$(MSBuildProjectDirectory)\DashboardResourcesZip" />
       <ItemGroup>
         <CleanupInclude Include="DNN_$(ModuleName)_*_Install.zip" Exclude="Install\**" />
         <CleanupInclude Include="DNN_$(ModuleName)_*_Source.zip" Exclude="Install\**" />
       </ItemGroup>
       <Delete Files="@(CleanupInclude)" />
-      <Delete Files="$(MSBuildProjectDirectory)\Resources.zip" />
+      <Delete Files="$(MSBuildProjectDirectory)\RepositoryResources.zip" />
+      <Delete Files="$(MSBuildProjectDirectory)\DashboardResources.zip" />
     </Target>
 
     <Target Name="DeployModule">
@@ -51,7 +53,7 @@
         <DeployInclude Include="**\*.xml" Exclude="**\obj\**;**\_ReSharper*\**;**\.git\**;**\packages\**" />
         <DeployInclude Include="**\*.aspx" />
         <DeployInclude Include="**\*.js" />
-        <DeployInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\.git\**;" />
+        <DeployInclude Include="*.txt" />
       </ItemGroup>
       <Zip Files="@(DeployInclude)" ZipFileName="$(MSBuildProjectDirectory)\DebugDeploy.zip"
            WorkingDirectory="$(MSBuildProjectDirectory)" />
@@ -73,47 +75,63 @@
       <!-- Remove the temporary folders in case previous build failed in the middle of an operation-->
       <MSBuild Projects="$(MSBuildProjectFile)" Targets="DeleteTempFiles" Properties="step=start"></MSBuild>
 
-      <!-- Set the files to include in install package-->
-      <ItemGroup>
-        <InstallInclude Include="**\*.ascx" Exclude="packages\**" />
-        <InstallInclude Include="**\*.asmx" Exclude="packages\**" />
-        <InstallInclude Include="**\*.css" Exclude="packages\**" />
-        <InstallInclude Include="**\*.html" Exclude="packages\**;Tests\**" />
-        <InstallInclude Include="**\*.htm" Exclude="packages\**;package\**" />
-        <InstallInclude Include="**\*.resx" Exclude="packages\**" />
-        <InstallInclude Include="**\*.aspx" Exclude="packages\**" />
-        <InstallInclude Include="**\*.js" Exclude="packages\**" />
-        <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;**\.git\**;**\obj\**" />
-        <InstallInclude Include="**\img\**" Exclude="packages\**" />
-        <InstallInclude Include="**\images\**" Exclude="packages\**" />
-        <InstallInclude Include="**\Templates\**" />
-		<InstallInclude Include="icon_repository_32px.gif" />
-      </ItemGroup>
+			<!-- Set the files to include in Repository install package -->
+			<ItemGroup>
+				<RepositoryInstallInclude Include="**\*.ascx" Exclude="packages\**;DashboardSettings.ascx;RepositoryDashboard.ascx" />
+				<RepositoryInstallInclude Include="**\*.asmx" Exclude="packages\**" />
+				<RepositoryInstallInclude Include="**\*.css" Exclude="packages\**" />
+				<RepositoryInstallInclude Include="**\*.html" Exclude="packages\**;Tests\**" />
+				<RepositoryInstallInclude Include="**\*.htm" Exclude="packages\**;package\**" />
+				<RepositoryInstallInclude Include="**\*.resx" Exclude="packages\**;App_LocalResources\DashboardSettings.ascx.resx;App_LocalResources\RepositoryDashboard.ascx.resx" />
+				<RepositoryInstallInclude Include="**\*.aspx" Exclude="packages\**" />
+				<RepositoryInstallInclude Include="**\*.js" Exclude="packages\**" />
+				<RepositoryInstallInclude Include="**\img\**" Exclude="packages\**" />
+				<RepositoryInstallInclude Include="**\images\**" Exclude="packages\**" />
+				<RepositoryInstallInclude Include="**\Templates\**" />
+				<RepositoryInstallInclude Include="icon_repository_32px.gif" />
+			</ItemGroup>
 
-      <!-- Set the files to include in the source-->
-      <ItemGroup>
-        <SourceInclude Include="**\*.ascx" />
-        <SourceInclude Include="**\*.asmx" />
-        <SourceInclude Include="**\*.css" />
-        <SourceInclude Include="**\*.xsl" />
-        <SourceInclude Include="**\*.html" />
-        <SourceInclude Include="**\*.htm" />
-        <SourceInclude Include="**\*.resx" />
-        <SourceInclude Include="**\*.xml" Exclude="**\obj\**;**\_ReSharper*\**;**\.git\**;**\packages\**" />
-        <SourceInclude Include="**\*.aspx" />
-        <SourceInclude Include="**\*.js" />
-        <SourceInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\.git\**;**\obj\**" />
-        <SourceInclude Include="**\images\**" />
-        <SourceInclude Include="**\*.cs" Exclude="**\obj\**" />
-        <SourceInclude Include="**\*.cs.designer" />
-        <SourceInclude Include="**\*.csproj" />
-        <SourceInclude Include="**\*.targets" Exclude="**\packages\**" />
-        <SourceInclude Include="**\*.sln" />
-        <SourceInclude Include="**\img\**" Exclude="packages\**" />
-        <SourceInclude Include="**\images\**" Exclude="packages\**" />
-        <SourceInclude Include="**\Templates\**" />
-		<SourceInclude Include="icon_repository_32px.gif" />
-      </ItemGroup>
+			<!-- Set the files to include in Dashboard install package -->
+			<ItemGroup>
+				<DashboardInstallInclude Include="**\DashboardSettings.ascx" />
+				<DashboardInstallInclude Include="**\RepositoryDashboard.ascx" />
+				<DashboardInstallInclude Include="**\DashboardSettings.ascx.resx" />
+				<DashboardInstallInclude Include="**\RepositoryDashboard.ascx.resx" />
+			</ItemGroup>
+
+			<!-- Set the files to include in Repository source package -->
+			<ItemGroup>
+				<RepositorySourceInclude Include="**\*.ascx" Exclude="DashboardSettings.ascx;RepositoryDashboard.ascx" />
+				<RepositorySourceInclude Include="**\*.asmx" />
+				<RepositorySourceInclude Include="**\*.css" />
+				<RepositorySourceInclude Include="**\*.xsl" />
+				<RepositorySourceInclude Include="**\*.html" />
+				<RepositorySourceInclude Include="**\*.htm" />
+				<RepositorySourceInclude Include="**\*.resx" Exclude="App_LocalResources\DashboardSettings.ascx.resx;App_LocalResources\RepositoryDashboard.ascx.resx" />
+				<RepositorySourceInclude Include="**\*.xml" Exclude="**\obj\**;**\_ReSharper*\**;**\.git\**;**\packages\**" />
+				<RepositorySourceInclude Include="**\*.aspx" />
+				<RepositorySourceInclude Include="**\*.js" />
+				<RepositorySourceInclude Include="**\images\**" />
+				<RepositorySourceInclude Include="**\*.cs" Exclude="**\obj\**" />
+				<RepositorySourceInclude Include="**\*.cs.designer" />
+				<RepositorySourceInclude Include="**\*.csproj" />
+				<RepositorySourceInclude Include="**\*.targets" Exclude="**\packages\**" />
+				<RepositorySourceInclude Include="**\*.sln" />
+				<RepositorySourceInclude Include="**\img\**" Exclude="packages\**" />
+				<RepositorySourceInclude Include="**\images\**" Exclude="packages\**" />
+				<RepositorySourceInclude Include="**\Templates\**" />
+				<RepositorySourceInclude Include="icon_repository_32px.gif" />
+			</ItemGroup>
+
+			<!-- Set the files to include in Dashboard source package -->
+			<ItemGroup>
+				<DashboardSourceInclude Include="**\DashboardSettings.ascx" />
+				<DashboardSourceInclude Include="**\RepositoryDashboard.ascx" />
+				<DashboardSourceInclude Include="**\DashboardSettings.ascx.resx" />
+				<DashboardSourceInclude Include="**\RepositoryDashboard.ascx.resx" />
+				<DashboardSourceInclude Include="DashboardSettings.ascx.cs" />
+				<DashboardSourceInclude Include="RepositoryDashboard.ascx.cs" />
+			</ItemGroup>
 
       <!-- Files for setup -->
       <CreateItem Include="$(MSBuildProjectDirectory)\DotNetNuke_DotNetNuke.Repository.dnn">
@@ -128,14 +146,8 @@
       <CreateItem Include="**\*.SqlDataProvider">
         <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
       </CreateItem>
-      <CreateItem Include="**\*.txt" Exclude="**\obj\**">
+      <CreateItem Include="*.txt">
         <Output TaskParameter="Include" ItemName="CleanupFiles" />
-      </CreateItem>
-      <CreateItem Include="DashboardSettings.ascx;DashboardSettings.ascx.resx;RepositoryDashboard.ascx;RepositoryDashboard.ascx.resx">
-        <Output TaskParameter="Include" ItemName="DashboardFiles" />
-      </CreateItem>
-      <CreateItem Include="icon_repository_32px.gif">
-        <Output TaskParameter="Include" ItemName="Icons" />
       </CreateItem>
 
       <!-- Grab files for install setup -->
@@ -144,16 +156,22 @@
       <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
       <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
       <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-      <Copy SourceFiles="@(DashboardFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-      <Copy SourceFiles="@(Icons)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
 
-      <!-- Create the install resources.zip file -->
-      <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
-      <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
-        <Output TaskParameter="Include" ItemName="ResourcesContent" />
+      <!-- Create RepositoryResources.zip -->
+      <Copy SourceFiles="@(RepositoryInstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\RepositoryResourcesZip\%(RecursiveDir)" />
+      <CreateItem Include="$(MSBuildProjectDirectory)\RepositoryResourcesZip\**\*.*">
+        <Output TaskParameter="Include" ItemName="RepositoryResourcesContent" />
       </CreateItem>
-      <Zip Files="@(ResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.zip"/>
-      <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.zip" DestinationFolder="package/" />
+      <Zip Files="@(RepositoryResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\RepositoryResourcesZip" ZipFileName="RepositoryResources.zip"/>
+      <Copy SourceFiles="$(MSBuildProjectDirectory)\RepositoryResources.zip" DestinationFolder="package/" />
+
+      <!-- Create DashboardResources.zip -->
+      <Copy SourceFiles="@(DashboardInstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\DashboardResourcesZip\%(RecursiveDir)" />
+      <CreateItem Include="$(MSBuildProjectDirectory)\DashboardResourcesZip\**\*.*">
+        <Output TaskParameter="Include" ItemName="DashboardResourcesContent" />
+      </CreateItem>
+      <Zip Files="@(DashboardResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\DashboardResourcesZip" ZipFileName="DashboardResources.zip"/>
+      <Copy SourceFiles="$(MSBuildProjectDirectory)\DashboardResources.zip" DestinationFolder="package/" />
       <CreateItem Include="$(MSBuildProjectDirectory)\package\**\*.*">
         <Output TaskParameter="Include" ItemName="OutputContent" />
       </CreateItem>
@@ -173,13 +191,21 @@
       <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
       <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
 
-      <!-- Create the sources resources.zip file -->
-      <Copy SourceFiles="@(SourceInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
-      <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
-        <Output TaskParameter="Include" ItemName="SourceResourcesContent" />
+      <!-- Create RepositoryResources.zip for source package -->
+      <Copy SourceFiles="@(RepositorySourceInclude)" DestinationFolder="$(MSBuildProjectDirectory)\RepositoryResourcesZip\%(RecursiveDir)" />
+      <CreateItem Include="$(MSBuildProjectDirectory)\RepositoryResourcesZip\**\*.*">
+        <Output TaskParameter="Include" ItemName="RepositorySourceResourcesContent" />
       </CreateItem>
-      <Zip Files="@(SourceResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.zip"/>
-      <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.zip" DestinationFolder="package/" />
+      <Zip Files="@(RepositorySourceResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\RepositoryResourcesZip" ZipFileName="RepositoryResources.zip"/>
+      <Copy SourceFiles="$(MSBuildProjectDirectory)\RepositoryResources.zip" DestinationFolder="package/" />
+
+      <!-- Create DashboardResources.zip for source package -->
+      <Copy SourceFiles="@(DashboardSourceInclude)" DestinationFolder="$(MSBuildProjectDirectory)\DashboardResourcesZip\%(RecursiveDir)" />
+      <CreateItem Include="$(MSBuildProjectDirectory)\DashboardResourcesZip\**\*.*">
+        <Output TaskParameter="Include" ItemName="DashboardSourceResourcesContent" />
+      </CreateItem>
+      <Zip Files="@(DashboardSourceResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\DashboardResourcesZip" ZipFileName="DashboardResources.zip"/>
+      <Copy SourceFiles="$(MSBuildProjectDirectory)\DashboardResources.zip" DestinationFolder="package/" />
       <CreateItem Include="$(MSBuildProjectDirectory)\package\**\*.*">
         <Output TaskParameter="Include" ItemName="SourceOutputContent" />
       </CreateItem>

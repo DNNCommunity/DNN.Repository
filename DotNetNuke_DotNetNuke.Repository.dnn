@@ -20,8 +20,8 @@
       <resourceFiles>
         <basePath>DesktopModules\Repository</basePath>
         <resourceFile>
-          <name>Resources.zip</name>
-          <sourceFileName>Resources.zip</sourceFileName>
+          <name>RepositoryResources.zip</name>
+          <sourceFileName>RepositoryResources.zip</sourceFileName>
         </resourceFile>
       </resourceFiles>
     </component>
@@ -40,25 +40,6 @@
         <file>
           <path>bin</path>
           <name>DotNetNuke.Modules.Repository.SqlDataProvider.dll</name>
-        </file>
-      </files>
-    </component>
-    <component type="File">
-      <files>
-        <basePath>DesktopModules\Dashboard</basePath>
-        <file>
-          <name>DashboardSettings.ascx</name>
-        </file>
-        <file>
-          <name>RepositoryDashboard.ascx</name>
-        </file>
-        <file>
-          <path>App_LocalResources</path>
-          <name>RepositoryDashboard.ascx.resx</name>
-        </file>
-        <file>
-          <path>App_LocalResources</path>
-          <name>DashboardSettings.ascx.resx</name>
         </file>
       </files>
     </component>
@@ -334,10 +315,19 @@
   <dependencies>
 	  <dependency type="CoreVersion">06.01.00</dependency>
   </dependencies>
-  <components>
-	  <component type="Module">
-		  <desktopModule>
-			  <moduleName>Repository Dashboard</moduleName>
+	<components>
+		<component type="ResourceFile">
+			<resourceFiles>
+				<basePath>DesktopModules\Dashboard</basePath>
+				<resourceFile>
+					<name>DashboardResources.zip</name>
+					<sourceFileName>DashboardResources.zip</sourceFileName>
+				</resourceFile>
+			</resourceFiles>
+		</component>
+		<component type="Module">
+			<desktopModule>
+				<moduleName>Repository Dashboard</moduleName>
 			  <foldername>Dashboard</foldername>
 			  <moduleDefinitions>
 				  <moduleDefinition>

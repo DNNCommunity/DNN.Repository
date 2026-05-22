@@ -1,3 +1,4 @@
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -8,6 +9,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
@@ -48,6 +50,8 @@ namespace DotNetNuke.Modules.Repository
 
         protected System.Web.UI.WebControls.Panel pnlContent;
         #endregion
+
+        protected INavigationManager navigationManager;
 
         #region "Private Members"
 
@@ -149,7 +153,7 @@ namespace DotNetNuke.Modules.Repository
                     // we can do if anonymous uploads are allowed
                     if (Request.Params["HTTP_REFERER"] == null)
                     {
-                        Response.Redirect(DotNetNuke.Common.Globals.NavigateURL("Access Denied"), true);
+                        Response.Redirect(navigationManager.NavigateURL("Access Denied"), true);
                     }
                 }
                 else
@@ -159,7 +163,7 @@ namespace DotNetNuke.Modules.Repository
                     // as configured by the module admin
                     if (!PortalSecurity.IsInRoles(UploadRoles))
                     {
-                        Response.Redirect(DotNetNuke.Common.Globals.NavigateURL("Access Denied"), true);
+                        Response.Redirect(navigationManager.NavigateURL("Access Denied"), true);
                     }
 
                 }
@@ -213,7 +217,7 @@ namespace DotNetNuke.Modules.Repository
             // has passed the requirements, if not, kick em out
             if (!bCanDelete)
             {
-                Response.Redirect(DotNetNuke.Common.Globals.NavigateURL("Access Denied"), true);
+                Response.Redirect(navigationManager.NavigateURL("Access Denied"), true);
             }
 
             // load and parse the input form from the form.html/form.xml templates for the current skin
@@ -1507,6 +1511,8 @@ namespace DotNetNuke.Modules.Repository
         {
             Load += Page_Load;
             Init += Page_Init;
+
+            navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #endregion

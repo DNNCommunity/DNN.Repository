@@ -1,10 +1,23 @@
+using DotNetNuke;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2005
@@ -27,18 +40,6 @@ using System.Linq;
 
 using System.Web;
 using System.Web.UI.WebControls;
-using System.IO;
-using DotNetNuke;
-using DotNetNuke.Security;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Entities.Modules.Definitions;
-using System.Collections.Generic;
-using DotNetNuke.Services.Installer.Packages;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -51,10 +52,13 @@ namespace DotNetNuke.Modules.Repository
 		protected TextBox txtRowCount;
 
 		protected System.Web.UI.WebControls.Label lblMessage;
+
+        protected INavigationManager navigationManager;
+        
 		#region " Web Form Designer Generated Code "
 
-		//This call is required by the Web Form Designer.
-		[System.Diagnostics.DebuggerStepThrough()]
+        //This call is required by the Web Form Designer.
+        [System.Diagnostics.DebuggerStepThrough()]
 
 		private void InitializeComponent()
 		{
@@ -90,9 +94,6 @@ namespace DotNetNuke.Modules.Repository
 					// get a list of repository modules on this portal
 					ddlRepositoryID.Items.Clear();
 
-					RepositoryController repositories = new RepositoryController();
-					TabInfo objTab = null;
-					ModuleInfo objModule = null;
 					ListItem objItem = null;
 
 					// get a list of all of the Repository Modules installed in this
@@ -107,27 +108,26 @@ namespace DotNetNuke.Modules.Repository
 					foreach (Entities.Tabs.TabInfo tab in tabsWithModule.Values) {
 						// for each tab, get the repository module info
 						Dictionary<int, ModuleInfo> modules = ModuleController.Instance.GetTabModules(tab.TabID);
-						foreach (ModuleInfo objModule_loopVariable in modules.Values) {
-							objModule = objModule_loopVariable;
-							if (objModule.ModuleDefID == repModInfo.ModuleDefID) {
-								objItem = new ListItem();
-								objItem.Text = string.Format("{0} : {1}", tab.TabName, objModule.ModuleTitle);
-								objItem.Value = objModule.ModuleID.ToString();
-								ddlRepositoryID.Items.Add(objItem);
-							}
+						foreach (ModuleInfo objModule in modules.Values.Where(m => m.ModuleDefID == repModInfo.ModuleDefID && !m.IsDeleted)) {
+                            objItem = new ListItem();
+							objItem.Text = string.Format("{0} : {1}", tab.TabName, objModule.ModuleTitle);
+							objItem.Value = objModule.ModuleID.ToString();
+							ddlRepositoryID.Items.Add(objItem);
 						}
 					}
 
-					objItem = new ListItem();
-					objItem.Text = Localization.GetString("plRepositoryPrompt", this.LocalResourceFile);
-					objItem.Value = "";
-					ddlRepositoryID.Items.Insert(0, objItem);
-
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["repository"]))) {
-						ddlRepositoryID.SelectedValue = settings["repository"].ToString();
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["repository"])) && ddlRepositoryID.Items.FindByValue(settings["repository"].ToString()) != null) {
+                        ddlRepositoryID.SelectedValue = settings["repository"].ToString();
+					}
+					else
+					{
+						objItem = new ListItem();
+						objItem.Text = Localization.GetString("plRepositoryPrompt", this.LocalResourceFile);
+						objItem.Value = "";
+						ddlRepositoryID.Items.Insert(0, objItem);
 					}
 
-					if (!string.IsNullOrEmpty(Convert.ToString(settings["rowcount"]))) {
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["rowcount"]))) {
 						txtRowCount.Text = Convert.ToString(settings["rowcount"]);
 					}
 
@@ -170,9 +170,9 @@ namespace DotNetNuke.Modules.Repository
 				}
 
 				// Redirect back to the portal home page
-				Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
-			//Module failed to load
-			} catch (Exception exc) {
+				Response.Redirect(navigationManager.NavigateURL(), true);
+            //Module failed to load
+            } catch (Exception exc) {
 				lblMessage.Text = exc.Message;
 			}
 		}
@@ -180,10 +180,12 @@ namespace DotNetNuke.Modules.Repository
 		{
 			Load += Page_Load;
 			Init += Page_Init;
-		}
 
-		#endregion
+            navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
-	}
+        #endregion
+
+    }
 
 }

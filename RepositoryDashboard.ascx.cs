@@ -1,3 +1,9 @@
+using DotNetNuke.Abstractions;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
 //
@@ -21,10 +27,6 @@ using System.Collections;
 
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -68,12 +70,14 @@ namespace DotNetNuke.Modules.Repository
 		protected System.Web.UI.WebControls.Table DashTable;
 
 		protected System.Web.UI.WebControls.PlaceHolder PlaceHolder;
-		#endregion
+        #endregion
 
-		#region "Private Members"
+        protected INavigationManager navigationManager;
+
+        #region "Private Members"
 
 
-		private PlaceHolder objPlaceHolder;
+        private PlaceHolder objPlaceHolder;
 		private string strTemplateName = "";
 		private string strTemplate = "";
 		private string[] aTemplate;
@@ -87,7 +91,8 @@ namespace DotNetNuke.Modules.Repository
 		private bool m_IsLocal;
 		private int m_RepositoryTabId;
 
-		private bool m_hasTree;
+		private bool linkedRepositoryModuleIsDeleted;
+        private bool m_hasTree;
 		private bool b_CanDownload;
 		private bool b_CanRate;
 		private bool b_CanComment;
@@ -177,14 +182,21 @@ namespace DotNetNuke.Modules.Repository
 
             if (m_RepositoryId != -1)
             {
-                CheckItemRoles();
-                oRepositoryBusinessController.SetRepositoryFolders(m_RepositoryId);
+				if (!linkedRepositoryModuleIsDeleted)
+				{
+					CheckItemRoles();
+					oRepositoryBusinessController.SetRepositoryFolders(m_RepositoryId);
 
-                LoadDashboardTemplate();
-                m_hasTree = false;
-                BindData();
+					LoadDashboardTemplate();
+					m_hasTree = false;
+					BindData();
+				}
+                else if (this.UserInfo.IsAdmin)
+                {
+					lblAdminMessage.Text = Localization.GetString("RepositoryModuleDeleted", LocalResourceFile);
+				}
             }
-            else if (this.UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+            else if (this.UserInfo.IsAdmin)
             {
 				lblAdminMessage.Text = Localization.GetString("InitialMessage", LocalResourceFile);
 			}
@@ -261,8 +273,8 @@ namespace DotNetNuke.Modules.Repository
 					ModuleCommunication(this, moduleCommunicationEventArgs);
 				}
 			} else {
-				// repository is on another page, so we need to go there, then send a message to it
-				Response.Redirect(DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?grm2catid=" + e.Node.Key + "&tabid=" + m_RepositoryTabId.ToString(), true);
+                // repository is on another page, so we need to go there, then send a message to it
+                Response.Redirect(navigationManager.NavigateURL(m_RepositoryTabId, "", "grm2catid", e.Node.Key), true);
 			}
 		}
 
@@ -494,7 +506,7 @@ namespace DotNetNuke.Modules.Repository
 				// repository is on another page, so we need to go there, then send a message to it
 				switch (e.CommandName) {
 					case "SelectCategory":
-						Response.Redirect(DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?grm2catid=" + e.CommandArgument.ToString() + "&tabid=" + m_RepositoryTabId.ToString(), true);
+						Response.Redirect(navigationManager.NavigateURL(m_RepositoryTabId, "", "grm2catid", e.CommandArgument.ToString()) , true);
 						break;
 				}
 			}
@@ -537,11 +549,11 @@ namespace DotNetNuke.Modules.Repository
 					// repository is on another page, so we need to go there, then send a message to it
 					switch (e.CommandName) {
 						case "SelectCategory":
-							Response.Redirect(DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?grm2catid=" + e.CommandArgument.ToString() + "&tabid=" + m_RepositoryTabId.ToString(), true);
-							break;
+                            Response.Redirect(navigationManager.NavigateURL(m_RepositoryTabId, "", "grm2catid", e.CommandArgument.ToString()), true);
+                            break;
 						case "SelectFile":
-							Response.Redirect(DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?id=" + e.CommandArgument.ToString() + "&tabid=" + m_RepositoryTabId.ToString(), true);
-							break;
+                            Response.Redirect(navigationManager.NavigateURL(m_RepositoryTabId, "", "id", e.CommandArgument.ToString()), true);
+                            break;
 						case "Download":
 							RepositoryController objRepository = new RepositoryController();
 							objRepository.UpdateRepositoryClicks(Convert.ToInt32(e.CommandArgument));
@@ -837,7 +849,12 @@ namespace DotNetNuke.Modules.Repository
 			// see what tab the repository is on
 			ModuleInfo objModule = new ModuleInfo();
 			objModule = ModuleController.Instance.GetModule(m_RepositoryId, DotNetNuke.Common.Utilities.Null.NullInteger, false);
-			m_RepositoryTabId = objModule.TabID;
+			if (objModule == null || objModule.IsDeleted)
+			{
+				linkedRepositoryModuleIsDeleted = true;
+				return false;
+            }
+            m_RepositoryTabId = objModule.TabID;
 			if (m_RepositoryTabId == PortalSettings.ActiveTab.TabID) {
 				return true;
 			} else {
@@ -1058,10 +1075,12 @@ namespace DotNetNuke.Modules.Repository
 		{
 			Load += Page_Load;
 			Init += Page_Init;
-		}
 
-		#endregion
+            navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
-	}
+        #endregion
+
+    }
 
 }
