@@ -129,4 +129,7 @@
   <data name="InitialMessage.Text" xml:space="preserve">
     <value>&lt;b&gt;&lt;font color=red&gt;ADMIN:&lt;/font&gt;&lt;/b&gt; Select Repository Dashboard Settings from the Module Settings drop down menu to select the Repository instance.&lt;br&gt;</value>
   </data>
+  <data name="RepositoryModuleDeleted.Text" xml:space="preserve">
+    <value>&lt;b&gt;&lt;font color=red&gt;ADMIN:&lt;/font&gt;&lt;/b&gt; Select Repository Dashboard Settings from the Module Settings drop down menu to select another Repository instance because the current is deleted!&lt;br&gt;</value>
+  </data>
 </root>
