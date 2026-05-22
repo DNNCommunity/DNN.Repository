@@ -513,6 +513,11 @@ namespace DotNetNuke.Modules.Repository
                 Directory.CreateDirectory(g_ApprovedFolder);
                 // copy the noimage graphic to the newly created folder.
                 File.Copy(HttpContext.Current.Server.MapPath("~/DesktopModules/Repository/images/noimage.jpg"), g_ApprovedFolder + "\\noimage.jpg");
+                if (g_ApprovedFolder.StartsWith(_portalSettings.HomeDirectoryMapPath))
+                {
+                    string relativeApprovedFolderPath = g_ApprovedFolder.Substring(_portalSettings.HomeDirectoryMapPath.Length);
+                    FolderManager.Instance.Synchronize(_PortalID, relativeApprovedFolderPath);
+                }
             }
 
             // and make sure the Pending folder exists

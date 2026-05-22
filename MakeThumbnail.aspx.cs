@@ -163,7 +163,18 @@ namespace DotNetNuke.Modules.Repository
 					strPathToImage = noImageURL;
 					bIsURL = true;
 				} else {
-					strPathToImage = Server.MapPath(_portalSettings.HomeDirectory + noImageURL);
+					string g_ApprovedFolder = "";
+                    if (!string.IsNullOrEmpty(Convert.ToString(settings["folderlocation"])) &&
+						settings["folderlocation"].ToString() != PortalSettings.Current.HomeDirectoryMapPath + oRepositoryBusinessController.DefaultFolderLocationSubPath)
+                    {
+                        g_ApprovedFolder = settings["folderlocation"].ToString();
+                    }
+                    else
+                    {
+                        g_ApprovedFolder = _portalSettings.HomeDirectoryMapPath;
+                    }
+
+                    strPathToImage = g_ApprovedFolder + noImageURL.Replace("/", "\\");
 				}
 			}
 

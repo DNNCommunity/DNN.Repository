@@ -909,19 +909,14 @@ namespace DotNetNuke.Modules.Repository
                         FileLocationRow5.Visible = true;
                     }
 
-                    // make sure that the default noimage.jpg file exists in the default Portal folder
-                    if (!File.Exists(Server.MapPath(_portalSettings.HomeDirectory + "noimage.jpg")))
-                    {
-                        File.Copy(Server.MapPath("~/DesktopModules/Repository/images/noimage.jpg"), Server.MapPath(_portalSettings.HomeDirectory + "noimage.jpg"));
-                    }
-
+                    ctlURL.FileFilter = Common.Globals.ImageFileTypes;
                     if (!string.IsNullOrEmpty(Convert.ToString(settings["noimage"])))
                     {
                         ctlURL.Url = Convert.ToString(settings["noimage"]);
                     }
                     else
                     {
-                        ctlURL.Url = "noImage.jpg";
+                        ctlURL.Url = busController.DefaultFolderLocationSubPath + "/noImage.jpg";
                     }
 
                     // Localization
