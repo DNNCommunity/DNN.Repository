@@ -1,11 +1,16 @@
+using DotNetNuke;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2005
@@ -26,16 +31,12 @@ using System.Linq;
 // DEALINGS IN THE SOFTWARE.
 
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
-using System.IO;
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -108,11 +109,13 @@ namespace DotNetNuke.Modules.Repository
 		protected System.Web.UI.WebControls.Label lbTitle;
 
 		protected System.Web.UI.WebControls.Label lbNoFiles;
-		#endregion
+        #endregion
 
-		#region "Private Members"
+        protected INavigationManager navigationManager;
 
-		private string strRepositoryFolder;
+        #region "Private Members"
+
+        private string strRepositoryFolder;
 
 		private bool b_UseTemplate = false;
 
@@ -164,7 +167,7 @@ namespace DotNetNuke.Modules.Repository
 			}
 
 			if (!bCanModerate) {
-				Response.Redirect(DotNetNuke.Common.Globals.NavigateURL("Access Denied"), true);
+				Response.Redirect(navigationManager.NavigateURL("Access Denied"), true);
 			}
 
 			oRepositoryBusinessController.LocalResourceFile = this.LocalResourceFile;
@@ -530,8 +533,9 @@ namespace DotNetNuke.Modules.Repository
 		private void btnReturn_Click(object sender, System.EventArgs e)
 		{
 			// Redirect back to the portal home page
-			Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
-		}
+			Response.Redirect(navigationManager.NavigateURL(), true);
+
+        }
 
 		#endregion
 
@@ -590,10 +594,12 @@ namespace DotNetNuke.Modules.Repository
 		{
 			Load += Page_Load;
 			Init += Page_Init;
-		}
 
-		#endregion
+            navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
-	}
+        #endregion
+
+    }
 
 }

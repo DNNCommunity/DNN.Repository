@@ -1,3 +1,4 @@
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -9,6 +10,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections;
@@ -47,6 +49,8 @@ namespace DotNetNuke.Modules.Repository
     public abstract class Repository : Entities.Modules.PortalModuleBase, Entities.Modules.Communications.IModuleListener
     {
         static ILog log = LoggerSource.Instance.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString());
+        protected INavigationManager navigationManager;
+
         #region "Controls"
         protected Label lblDescription;
         private DataGrid withEventsField_lstObjects;
@@ -537,8 +541,7 @@ namespace DotNetNuke.Modules.Repository
                 case "Edit":
                     // save the current page, so when the edit is done, we can return to the
                     // same page the user was on
-                    string currentPage = "page=" + lstObjects.CurrentPageIndex;
-                    Response.Redirect(EditUrl("ItemID", objRepository.ItemId.ToString(), "Edit", currentPage));
+                    Response.Redirect(EditUrl("ItemID", objRepository.ItemId.ToString(), "", "page", lstObjects.CurrentPageIndex.ToString()), true);
 
                     break;
                 case "ShowRating":
@@ -802,7 +805,7 @@ namespace DotNetNuke.Modules.Repository
             {
 
                 case "Edit":
-                    Response.Redirect(EditUrl("ItemID", objRepository.ItemId.ToString(), "Edit"));
+                    Response.Redirect(EditUrl("ItemID", objRepository.ItemId.ToString()), true);
 
                     break;
                 case "ShowRating":
@@ -1801,7 +1804,7 @@ namespace DotNetNuke.Modules.Repository
                                                 HyperLink objHyperlink = new HyperLink();
                                                 objHyperlink.ID = "hypPermalink";
                                                 objHyperlink.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "PERMALINK", "CssClass", "normal");
-                                                objHyperlink.NavigateUrl = DotNetNuke.Common.Globals.ApplicationPath + "/Default.aspx?tabid=" + TabId + "&id=" + objRepository.ItemId.ToString();
+                                                objHyperlink.NavigateUrl = navigationManager.NavigateURL(TabId, "", "id", objRepository.ItemId.ToString());
                                                 objHyperlink.Text = Localization.GetString("PermaLink", LocalResourceFile);
                                                 objPlaceHolder.Controls.Add(objHyperlink);
                                                 break;
@@ -1957,13 +1960,14 @@ namespace DotNetNuke.Modules.Repository
         }
         private void btnUserUpload_Click(object sender, System.EventArgs e)
         {
-            Response.Redirect(EditUrl("", "", "UserUpload"));
+            Response.Redirect(EditUrl("UserUpload"), true);
         }
 
         private void btnModerateUploads_Click(object sender, System.EventArgs e)
         {
-            string destUrl = EditUrl("", "", "Moderate", "pid=" + PortalId);
-            Response.Redirect(destUrl);
+            string destUrl = EditUrl("pid", PortalId.ToString(), "Moderate");
+
+            Response.Redirect(destUrl, true);
         }
 
         private void btnSearch_Click(object sender, System.EventArgs e)
@@ -3482,6 +3486,8 @@ namespace DotNetNuke.Modules.Repository
         {
             Load += Page_Load;
             Init += Page_Init;
+
+            navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #endregion

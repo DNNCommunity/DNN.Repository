@@ -1,10 +1,8 @@
-using Microsoft.VisualBasic;
-using System;
-using System.Collections;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
+
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2005
@@ -27,11 +25,6 @@ using System.Linq;
 
 using System.Web;
 using System.Web.UI.WebControls;
-using System.IO;
-using DotNetNuke;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.Repository
 {
@@ -77,12 +70,14 @@ namespace DotNetNuke.Modules.Repository
 			InitializeComponent();
 		}
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        protected INavigationManager navigationManager;
+
+        #region "Event Handlers"
 
 
-		private void Page_Load(System.Object sender, System.EventArgs e)
+        private void Page_Load(System.Object sender, System.EventArgs e)
 		{
 			// Obtain PortalSettings from Current Context
 			PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
@@ -98,16 +93,19 @@ namespace DotNetNuke.Modules.Repository
 
 		private void btnCancel_Click(object sender, System.EventArgs e)
 		{
-			HttpContext.Current.Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
-		}
+            Response.Redirect(navigationManager.NavigateURL(), true);
+
+        }
 		public AboutRepository()
 		{
 			Load += Page_Load;
 			Init += Page_Init;
-		}
 
-		#endregion
+            navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
-	}
+        #endregion
+
+    }
 
 }
