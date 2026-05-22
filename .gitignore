@@ -41,6 +41,8 @@
 *.dotCover
 *.ldf
 [Bb]in
+[Ii]nstall
+[Pp]ackage
 
 # git merge artifacts
 *.orig

@@ -824,9 +824,6 @@
     <Content Include="Templates\Slides\viewcomments.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="About.ascx.resx">
-      <DependentUpon>About.ascx.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\About.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\DashboardSettings.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Form.ascx.resx" />
@@ -834,30 +831,6 @@
     <EmbeddedResource Include="App_LocalResources\Repository.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\RepositoryDashboard.ascx.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
-    <EmbeddedResource Include="DashboardSettings.ascx.resx">
-      <DependentUpon>DashboardSettings.ascx.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditComment.ascx.resx">
-      <DependentUpon>EditComment.ascx.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form.ascx.resx">
-      <DependentUpon>Form.ascx.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MakeThumbnail.aspx.resx">
-      <DependentUpon>MakeThumbnail.aspx.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModerateUploads.ascx.resx">
-      <DependentUpon>ModerateUploads.ascx.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Repository.ascx.resx">
-      <DependentUpon>Repository.ascx.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RepositoryDashboard.ascx.resx">
-      <DependentUpon>RepositoryDashboard.ascx.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings.ascx.resx">
-      <DependentUpon>Settings.ascx.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Templates\articles\App_LocalResources\Form.ascx.resx" />
     <EmbeddedResource Include="Templates\blog\App_LocalResources\Form.ascx.resx" />
     <EmbeddedResource Include="Templates\businesscards\App_LocalResources\Form.ascx.resx" />
