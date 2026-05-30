@@ -860,11 +860,11 @@ namespace DotNetNuke.Modules.Repository
                 DotNetNuke.UI.WebControls.TreeNode newNode = new DotNetNuke.UI.WebControls.TreeNode();
                 if (showCount)
                 {
-                    newNode.Text = cat.Category + "(" + cat.Count.ToString() + ")";
+                    newNode.Text = WebUtility.HtmlEncode(cat.Category) + "(" + cat.Count.ToString() + ")";
                 }
                 else
                 {
-                    newNode.Text = cat.Category;
+                    newNode.Text = WebUtility.HtmlEncode(cat.Category);
                 }
                 newNode.Key = cat.ItemId.ToString();
                 newNode.ToolTip = "";
@@ -1494,11 +1494,11 @@ namespace DotNetNuke.Modules.Repository
             // ------------------------------------------------------------------
 
             objRepository.ItemId = pRepository.ItemId;
-            objRepository.Name = WebUtility.HtmlEncode(pRepository.Name);
-            objRepository.Description = objSecurity.InputFilter(pRepository.Description, PortalSecurity.FilterFlag.NoScripting);
-            objRepository.Summary = objSecurity.InputFilter(pRepository.Summary, PortalSecurity.FilterFlag.NoScripting);
-            objRepository.Author = WebUtility.HtmlEncode(pRepository.Author);
-            objRepository.AuthorEMail = WebUtility.HtmlEncode(pRepository.AuthorEMail);
+            objRepository.Name = HtmlUtils.StripTags(pRepository.Name, false);
+            objRepository.Description = HtmlUtils.SanitizeHtmlIfNeeded(System.Web.HttpUtility.HtmlDecode(pRepository.Description), false);
+            objRepository.Summary = HtmlUtils.SanitizeHtmlIfNeeded(System.Web.HttpUtility.HtmlDecode(pRepository.Summary), false);
+            objRepository.Author = HtmlUtils.StripTags(pRepository.Author, false);
+            objRepository.AuthorEMail = HtmlUtils.StripTags(pRepository.AuthorEMail, false);
             objRepository.CreatedByUser = userInfo.UserID.ToString();
             objRepository.ModuleId = _ModuleID;
             objRepository.PreviewImage = "";

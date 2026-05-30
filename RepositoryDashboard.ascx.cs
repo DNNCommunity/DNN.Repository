@@ -6,6 +6,7 @@ using DotNetNuke.UI.WebControls;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
+using System.Net;
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2005
@@ -929,12 +930,12 @@ namespace DotNetNuke.Modules.Repository
 			// -- check the download roles
 			LinkButton objLinkButton = new LinkButton();
 			objLinkButton.ID = "hypDownload";
-			objLinkButton.Text = objItem.Author.ToString();
+			objLinkButton.Text = WebUtility.HtmlEncode(objItem.Author.ToString());
 			objLinkButton.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "AUTHOR", "CssClass", "SubHead");
 			objLinkButton.CommandName = "SelectAuthor";
 			objLinkButton.CommandArgument = objItem.Author.ToString();
 			objLinkButton.EnableViewState = true;
-			objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + objItem.Author.ToString());
+			objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + WebUtility.HtmlEncode(objItem.Author.ToString()));
 			objPlaceHolder.Controls.Add(objLinkButton);
 		}
 
@@ -946,7 +947,7 @@ namespace DotNetNuke.Modules.Repository
 					LinkButton objLinkButton = new LinkButton();
 					objLinkButton.ID = "hypDownload";
 					if (isFileName) {
-						objLinkButton.Text = objItem.Name.ToString();
+						objLinkButton.Text = WebUtility.HtmlEncode(objItem.Name.ToString());
 						if (oRepositoryBusinessController.IsURL(objItem.FileName)) {
 							objLinkButton.ToolTip = Localization.GetString("ClickToDownload", LocalResourceFile);
 						} else {
@@ -978,14 +979,14 @@ namespace DotNetNuke.Modules.Repository
 			} else {
 				LinkButton objLinkButton = new LinkButton();
 				objLinkButton.ID = "hypDownload";
-				objLinkButton.Text = objItem.Name.ToString();
+				objLinkButton.Text = WebUtility.HtmlEncode(objItem.Name.ToString());
 				objLinkButton.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "FILENAME", "CssClass", "normal");
 				objLinkButton.EnableViewState = true;
-				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + objItem.Name.ToString());
+				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + WebUtility.HtmlEncode(objItem.Name.ToString()));
 				objLinkButton.CommandName = "SelectFile";
 				objLinkButton.CommandArgument = objItem.ItemId.ToString();
 				objLinkButton.EnableViewState = true;
-				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + objItem.Name.ToString());
+				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + WebUtility.HtmlEncode(objItem.Name.ToString()));
 				objPlaceHolder.Controls.Add(objLinkButton);
 				objLinkButton.ToolTip = Localization.GetString("ClickToVisit", LocalResourceFile);
 				objLinkButton.EnableViewState = true;
@@ -1053,12 +1054,12 @@ namespace DotNetNuke.Modules.Repository
 			if (!string.IsNullOrEmpty(objCategory.Category)) {
 				LinkButton objLinkButton = new LinkButton();
 				objLinkButton.ID = "hypDownload";
-				objLinkButton.Text = objCategory.Category.ToString();
+				objLinkButton.Text = WebUtility.HtmlEncode(objCategory.Category.ToString());
 				objLinkButton.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "CssClass", "SubHead");
 				objLinkButton.CommandName = "SelectCategory";
 				objLinkButton.CommandArgument = objCategory.ItemId.ToString();
 				objLinkButton.EnableViewState = true;
-				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + " " + objCategory.Category.ToString());
+				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + " " + WebUtility.HtmlEncode(objCategory.Category.ToString()));
 				objPlaceHolder.Controls.Add(objLinkButton);
 			}
 		}
