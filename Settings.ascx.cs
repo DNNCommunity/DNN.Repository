@@ -1374,8 +1374,8 @@ namespace DotNetNuke.Modules.Repository
                 if (lbAddCategory.Text == Localization.GetString("SaveButton", LocalResourceFile))
                 {
                     category = categories.GetSingleRepositoryCategory(_key);
-                    categories.UpdateRepositoryCategory(_key, WebUtility.HtmlEncode(txtNewCategory.Text.Trim()), _parent, category.ViewOrder);
-                    lstCategories.Items[_index].Text = WebUtility.HtmlEncode(txtNewCategory.Text.Trim());
+                    categories.UpdateRepositoryCategory(_key, HtmlUtils.StripTags(txtNewCategory.Text.Trim(), false), _parent, category.ViewOrder);
+                    lstCategories.Items[_index].Text = HtmlUtils.StripTags(txtNewCategory.Text.Trim(), false);
                     txtNewCategory.Text = "";
                     lbAddCategory.Text = Localization.GetString("AddCategory", LocalResourceFile);
                     lbCancelCategory.Visible = false;
@@ -1383,9 +1383,9 @@ namespace DotNetNuke.Modules.Repository
                 else
                 {
                     int dNewCatId = 0;
-                    dNewCatId = categories.AddRepositoryCategory(-1, ModuleId, WebUtility.HtmlEncode(txtNewCategory.Text.Trim()), _parent, 99);
+                    dNewCatId = categories.AddRepositoryCategory(-1, ModuleId, HtmlUtils.StripTags(txtNewCategory.Text.Trim(), false), _parent, 99);
                     ListItem objListItem = new ListItem();
-                    objListItem.Text = WebUtility.HtmlEncode(txtNewCategory.Text.Trim());
+                    objListItem.Text = HtmlUtils.StripTags(txtNewCategory.Text.Trim(), false);
                     objListItem.Value = dNewCatId.ToString();
                     lstCategories.Items.Add(objListItem);
                     txtNewCategory.Text = "";
@@ -1425,7 +1425,7 @@ namespace DotNetNuke.Modules.Repository
                 if (lbAddAttribute.Text == Localization.GetString("SaveButton", LocalResourceFile))
                 {
                     attribute = attributes.GetSingleRepositoryAttributes(_key);
-                    attribute.AttributeName = WebUtility.HtmlEncode(txtNewAttribute.Text.Trim());
+                    attribute.AttributeName = HtmlUtils.StripTags(txtNewAttribute.Text.Trim(), false);
                     RepositoryAttributesController.UpdateRepositoryAttributes(attribute);
                     lstAttributes.Items[_index].Text = attribute.AttributeName;
                     txtNewAttribute.Text = "";
@@ -1436,7 +1436,7 @@ namespace DotNetNuke.Modules.Repository
                 {
                     int dNewAttrId = 0;
                     attribute = new RepositoryAttributesInfo();
-                    attribute.AttributeName = WebUtility.HtmlEncode(txtNewAttribute.Text.Trim());
+                    attribute.AttributeName = HtmlUtils.StripTags(txtNewAttribute.Text.Trim(), false);
                     attribute.ModuleID = ModuleId;
                     dNewAttrId = attributes.AddRepositoryAttributes(attribute);
                     ListItem objListItem = new ListItem();
@@ -1469,7 +1469,7 @@ namespace DotNetNuke.Modules.Repository
                 if (lbAddValue.Text == Localization.GetString("SaveButton", LocalResourceFile))
                 {
                     attributeValue = attributeValues.GetSingleRepositoryAttributeValues(_key);
-                    attributeValue.ValueName = WebUtility.HtmlEncode(txtNewValue.Text.Trim());
+                    attributeValue.ValueName = HtmlUtils.StripTags(txtNewValue.Text.Trim(), false);
                     RepositoryAttributeValuesController.UpdateRepositoryAttributeValues(attributeValue);
                     lstValues.Items[_index].Text = attributeValue.ValueName;
                     txtNewValue.Text = "";
@@ -1481,7 +1481,7 @@ namespace DotNetNuke.Modules.Repository
                     int dNewAttrId = 0;
                     attributeValue = new RepositoryAttributeValuesInfo();
                     attributeValue.AttributeID = Convert.ToInt32(lstAttributes.SelectedValue);
-                    attributeValue.ValueName = WebUtility.HtmlEncode(txtNewValue.Text.Trim());
+                    attributeValue.ValueName = HtmlUtils.StripTags(txtNewValue.Text.Trim(), false);
                     dNewAttrId = attributeValues.AddRepositoryAttributeValues(attributeValue);
                     ListItem objListItem = new ListItem();
                     objListItem.Text = attributeValue.ValueName;
