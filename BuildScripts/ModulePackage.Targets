@@ -7,6 +7,7 @@
     <ModuleIconFile>icon_repository_32px.gif</ModuleIconFile>
     <DotNetNukeDir>..\..\</DotNetNukeDir>
     <DeployModuleFolder>$(DotNetNukeDir)DesktopModules\Repository</DeployModuleFolder>
+    <DeployDashboardFolder>$(DotNetNukeDir)DesktopModules\Dashboard</DeployDashboardFolder>
     <InstallDir>$(MSBuildProjectDirectory)\Install</InstallDir>
     <BinDir>$(DotNetNukeDir)\bin</BinDir>
   </PropertyGroup>
@@ -59,6 +60,17 @@
            WorkingDirectory="$(MSBuildProjectDirectory)" />
       <Unzip ZipFileName="$(MSBuildProjectDirectory)\DebugDeploy.zip" TargetDirectory="$(DeployModuleFolder)" />
       <Delete Files="$(MSBuildProjectDirectory)\DebugDeploy.zip" />
+
+      <!-- Copy Dashboard files to Dashboard deploy folder -->
+      <ItemGroup>
+        <DashboardDeployInclude Include="DashboardSettings.ascx" />
+        <DashboardDeployInclude Include="DashboardSettings.ascx.cs" />
+        <DashboardDeployInclude Include="RepositoryDashboard.ascx" />
+        <DashboardDeployInclude Include="RepositoryDashboard.ascx.cs" />
+        <DashboardDeployInclude Include="App_LocalResources\DashboardSettings.ascx.resx" />
+        <DashboardDeployInclude Include="App_LocalResources\RepositoryDashboard.ascx.resx" />
+      </ItemGroup>
+      <Copy SourceFiles="@(DashboardDeployInclude)" DestinationFolder="$(DeployDashboardFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" ContinueOnError="true" />
     </Target>
 
     <Target Name="CreateInstallPackages">
