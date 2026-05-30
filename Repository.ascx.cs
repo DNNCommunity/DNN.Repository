@@ -527,7 +527,6 @@ namespace DotNetNuke.Modules.Repository
 
         public void lstObjects_ItemCommand(object source, DataGridCommandEventArgs e)
         {
-            DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
             PlaceHolder objPlaceHolder = (PlaceHolder)e.Item.Cells[0].FindControl("PlaceHolder");
             HtmlTable objCommentTable = (HtmlTable)e.Item.Cells[0].FindControl("tblComments");
 
@@ -785,7 +784,6 @@ namespace DotNetNuke.Modules.Repository
 
         private void DataList1_ItemCommand(object source, System.Web.UI.WebControls.DataListCommandEventArgs e)
         {
-            DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
             PlaceHolder objPlaceHolder = (PlaceHolder)e.Item.FindControl("PlaceHolder1");
             HtmlTable objCommentTable = (HtmlTable)e.Item.FindControl("tblComments");
 
@@ -977,7 +975,6 @@ namespace DotNetNuke.Modules.Repository
             RepositoryAttributeValuesInfo value = null;
             RepositoryObjectValuesController objectValues = new RepositoryObjectValuesController();
             RepositoryObjectValuesInfo objectValue = null;
-            DotNetNuke.Security.PortalSecurity objSecurity = new DotNetNuke.Security.PortalSecurity();
 
             objRepository = new RepositoryInfo();
             objRepository = dataItem as RepositoryInfo;
@@ -1320,12 +1317,12 @@ namespace DotNetNuke.Modules.Repository
                                             case "DESCRIPTION":
                                                 if (bRaw)
                                                 {
-                                                    objPlaceHolder.Controls.Add(new LiteralControl(objSecurity.InputFilter(objRepository.Description, PortalSecurity.FilterFlag.NoScripting)));
+                                                    objPlaceHolder.Controls.Add(new LiteralControl(HtmlUtils.SanitizeHtmlIfNeeded(objRepository.Description, false)));
                                                 }
                                                 else
                                                 {
                                                     Label objDescriptionLabel = new Label();
-                                                    objDescriptionLabel.Text = objSecurity.InputFilter(objRepository.Description, PortalSecurity.FilterFlag.NoScripting);
+                                                    objDescriptionLabel.Text = HtmlUtils.SanitizeHtmlIfNeeded(objRepository.Description, false);
                                                     objDescriptionLabel.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "DESCRIPTION", "CssClass", "normal");
                                                     objPlaceHolder.Controls.Add(objDescriptionLabel);
                                                 }
@@ -1333,12 +1330,12 @@ namespace DotNetNuke.Modules.Repository
                                             case "SUMMARY":
                                                 if (bRaw)
                                                 {
-                                                    objPlaceHolder.Controls.Add(new LiteralControl(objSecurity.InputFilter(objRepository.Summary, PortalSecurity.FilterFlag.NoScripting)));
+                                                    objPlaceHolder.Controls.Add(new LiteralControl(HtmlUtils.SanitizeHtmlIfNeeded(objRepository.Summary, false)));
                                                 }
                                                 else
                                                 {
                                                     Label objSummaryLabel = new Label();
-                                                    objSummaryLabel.Text = objSecurity.InputFilter(objRepository.Summary, PortalSecurity.FilterFlag.NoScripting);
+                                                    objSummaryLabel.Text = HtmlUtils.SanitizeHtmlIfNeeded(objRepository.Summary, false);
                                                     objSummaryLabel.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "SUMMARY", "CssClass", "normal");
                                                     objPlaceHolder.Controls.Add(objSummaryLabel);
                                                 }
