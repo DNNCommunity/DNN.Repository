@@ -935,7 +935,7 @@ namespace DotNetNuke.Modules.Repository
 			objLinkButton.CommandName = "SelectAuthor";
 			objLinkButton.CommandArgument = objItem.Author.ToString();
 			objLinkButton.EnableViewState = true;
-			objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + WebUtility.HtmlEncode(objItem.Author.ToString()));
+			objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", string.Concat(Localization.GetString("ClickToView", LocalResourceFile), " ", objItem.Author.ToString()));
 			objPlaceHolder.Controls.Add(objLinkButton);
 		}
 
@@ -982,13 +982,9 @@ namespace DotNetNuke.Modules.Repository
 				objLinkButton.Text = WebUtility.HtmlEncode(objItem.Name.ToString());
 				objLinkButton.CssClass = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "FILENAME", "CssClass", "normal");
 				objLinkButton.EnableViewState = true;
-				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + WebUtility.HtmlEncode(objItem.Name.ToString()));
+				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", string.Concat(Localization.GetString("ClickToView", LocalResourceFile), " ", objItem.Name.ToString()));
 				objLinkButton.CommandName = "SelectFile";
 				objLinkButton.CommandArgument = objItem.ItemId.ToString();
-				objLinkButton.EnableViewState = true;
-				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + WebUtility.HtmlEncode(objItem.Name.ToString()));
-				objPlaceHolder.Controls.Add(objLinkButton);
-				objLinkButton.ToolTip = Localization.GetString("ClickToVisit", LocalResourceFile);
 				objLinkButton.EnableViewState = true;
 				objPlaceHolder.Controls.Add(objLinkButton);
 			}
@@ -1059,7 +1055,7 @@ namespace DotNetNuke.Modules.Repository
 				objLinkButton.CommandName = "SelectCategory";
 				objLinkButton.CommandArgument = objCategory.ItemId.ToString();
 				objLinkButton.EnableViewState = true;
-				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", Localization.GetString("ClickToView", LocalResourceFile) + " " + WebUtility.HtmlEncode(objCategory.Category.ToString()));
+				objLinkButton.ToolTip = oRepositoryBusinessController.GetSkinAttribute(xmlDoc, "CATEGORY", "ToolTip", string.Concat(Localization.GetString("ClickToView", LocalResourceFile), " ", objCategory.Category.ToString()));
 				objPlaceHolder.Controls.Add(objLinkButton);
 			}
 		}
